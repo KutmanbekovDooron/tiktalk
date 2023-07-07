@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="0dp"
+            android:layout_marginTop="24dp"
+
+            app:contentInsetStart="0dp">
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <ImageView
+                    android:id="@+id/btnBlockedToolbarBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_left"
+                    android:paddingStart="26dp"
+                    android:paddingEnd="26dp"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/back"/>
+
+            <TextView
+                    android:id="@+id/tvBlockedToolbarTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/auth_sign_in_title"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/colorGrey"/>
+        </FrameLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical" tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_blocked_account"
+                android:layout_gravity="center"
+                android:contentDescription="@string/sad_smile"/>
+
+        <TextView
+                android:id="@+id/tvBlockedAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="27dp"
+                android:gravity="center"
+                android:text="@string/blocked_account_text"
+                android:textSize="16sp"
+                android:textColor="@color/colorGreyDark"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_marginStart="60dp"
+                android:layout_marginEnd="60dp"
+                android:lineHeight="23dp" tools:ignore="UnusedAttribute"/>
+    </LinearLayout>
+
+</LinearLayout>

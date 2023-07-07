@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <include layout="@layout/app_toolbar_zone_single"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:id="@+id/toolbarChatSingle"/>
+
+    <include layout="@layout/app_toolbar_chat_single_tap"
+             android:id="@+id/toolbarChatSingleTap" android:visibility="gone"/>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+        <TextView
+                android:id="@+id/tvZoneName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Coyote Bar  (25)"
+                android:layout_marginEnd="26dp"
+                android:textSize="28sp"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="?attr/colorTextGreyDarkOrWhite"/>
+
+        <ImageView
+                android:id="@+id/btnUsersDropdown"
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_group"
+                android:tint="?attr/colorTextGreyDarkOrWhite"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="end|top"
+                android:contentDescription="@string/users"/>
+    </FrameLayout>
+
+    <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:tabSelectedTextColor="?attr/colorBlackOrWhite"
+            app:tabTextColor="?attr/colorBlack50OrWhite50"
+            app:tabIndicatorColor="?attr/colorBlackOrWhite"
+            app:tabMode="fixed"
+            app:tabGravity="fill"/>
+
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/singleZoneViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
+
+</LinearLayout>

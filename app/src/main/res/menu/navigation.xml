@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layoutDirection="rtl">
+
+    <item
+            android:id="@+id/messagesFragment"
+            android:icon="@drawable/ic_bottom_bar_messages"
+            android:title="@string/navigation_bottom_messages"/>
+
+    <item
+            android:id="@+id/zoneListFragment"
+            android:icon="@drawable/ic_bottom_bar_places"
+            android:title="@string/navigation_bottom_places"/>
+
+    <item
+            android:id="@+id/matchesFragment"
+            android:icon="@drawable/ic_bottom_bar_matches"
+            android:title="@string/navigation_bottom_matches"/>
+
+    <item
+            android:id="@+id/navigation_live_stream"
+            android:icon="@drawable/ic_bottom_bar_live_stream"
+            android:title="@string/navigation_bottom_live_stream"/>
+
+</menu>

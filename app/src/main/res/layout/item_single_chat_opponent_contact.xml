@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/layoutChatSingleOpponentContactRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="100dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:layout_marginBottom="2dp"
+        android:orientation="vertical">
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:paddingTop="2dp"
+            android:paddingBottom="7dp"
+            android:background="@drawable/bg_chat_single_opponent"
+            android:orientation="vertical" tools:ignore="UselessParent">
+
+        <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="16dp"
+                android:paddingEnd="11dp" tools:ignore="RtlSymmetry">
+
+            <ImageView
+                    android:id="@+id/ivOpponentContactAvatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    tools:visibility="visible"
+                    android:visibility="visible"
+                    android:layout_gravity="start|center_vertical"
+                    tools:background="@drawable/ic_profile_placeholder"
+                    android:scaleType="centerCrop"/>
+
+            <TextView
+                    android:id="@+id/tvOpponentContactUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="56dp"
+                    android:textSize="20sp"
+                    tools:text="Aya K."
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/colorBlack"/>
+
+        </FrameLayout>
+
+        <TextView
+                android:id="@+id/tvOpponentContactMessageTime"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="10dp"
+                android:gravity="center_vertical"
+                android:layout_gravity="end"
+                tools:text="16:26"
+                android:textColor="@color/colorChatOpponentTime"
+                android:textSize="11sp"
+                android:fontFamily="@font/sf_pro_display_medium"
+                tools:ignore="SmallSp"/>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/colorBlack50"/>
+
+        <TextView
+                android:id="@+id/btnOpponentAddToContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:paddingStart="11dp"
+                android:paddingEnd="11dp"
+                android:textSize="16sp"
+                android:text="@string/add_to_contact"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/colorBlack"/>
+    </LinearLayout>
+
+</LinearLayout>

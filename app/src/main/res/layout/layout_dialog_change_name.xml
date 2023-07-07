@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:background="@color/colorWhite">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:orientation="vertical">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/change_name"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginTop="21dp"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/roboto_regular"
+                app:layout_constraintTop_toBottomOf="@id/btnClose"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <EditText
+                android:id="@+id/etChangeName"
+                android:layout_marginTop="28dp"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/roboto_regular"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:backgroundTint="@color/colorBtnViolet"
+                tools:text="Marco"
+                android:inputType="textCapSentences|textShortMessage"
+                tools:ignore="Autofill,LabelFor"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/btnCancel"
+                android:paddingTop="30dp"
+                android:paddingBottom="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/cancel"
+                android:textAllCaps="true"/>
+        <TextView
+                android:id="@+id/btnOk"
+                android:paddingTop="30dp"
+                android:paddingBottom="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="43dp"
+                android:layout_marginEnd="35dp"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/ok"/>
+    </LinearLayout>
+
+</LinearLayout>

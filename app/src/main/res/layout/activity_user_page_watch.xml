@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.editProfile.userPageWatch.UserPageWatchActivity">
+
+    <ImageView
+            android:id="@+id/toolbarBtnClose"
+            android:layout_width="74dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="40dp"
+            android:paddingBottom="30dp"
+            android:layout_gravity="start|center_vertical"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:src="@drawable/ic_close"
+            android:tint="?attr/colorBlackOrWhite"
+            android:contentDescription="@string/close"/>
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="?attr/navigation_bar_height"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <ImageView
+                    android:id="@+id/UserAvatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="450dp"
+                    android:visibility="invisible"
+                    android:layout_gravity="start|center_vertical"
+                    android:scaleType="centerCrop"/>
+
+            <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textSize="40sp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="?attr/colorTextGreyDarkOrWhite"
+                    tools:text="Roman, 24"/>
+            <TextView
+                    android:id="@+id/tvWork"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="?attr/colorTextGreyDarkOrWhite"
+                    tools:text="Manager"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:textSize="27sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="?attr/colorBlackOrWhite"
+                    android:text="@string/matches_user_page_about"/>
+            <TextView
+                    android:id="@+id/tvAbout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="?attr/colorTextGreyLightOrWhite"
+                    tools:text="A beautiful woman feels beautiful within, from the love she gives to her ideas and the creative ways she expresses her soul."/>
+
+            <include layout="@layout/layout_user_page_preferences"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="24dp"
+                     android:layout_marginBottom="40dp"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+
+</LinearLayout>

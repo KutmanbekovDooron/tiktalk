@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/main_graph" app:startDestination="@id/messagesFragment">
+
+    <fragment android:id="@+id/messagesFragment" android:name="com.andyshon.tiktalk.ui.messages.MessagesFragment"
+              android:label="MessagesFragment"/>
+    <fragment android:id="@+id/zoneListFragment" android:name="com.andyshon.tiktalk.ui.zones.ZoneListFragment"
+              android:label="ZoneListFragment"/>
+    <fragment android:id="@+id/matchesFragment" android:name="com.andyshon.tiktalk.ui.matches.MatchesFragment"
+              android:label="MatchesFragment"/>
+    <fragment android:id="@+id/matchesChatFragment" android:name="com.andyshon.tiktalk.ui.matches.chat.MatchesChatFragment"
+              android:label="MatchesChatFragment"/>
+</navigation>

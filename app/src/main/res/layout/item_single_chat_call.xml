@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:layout_marginBottom="2dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="?attr/colorBlack15OrWhite15">
+
+    <ImageView
+            android:id="@+id/icon"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_call_end_white_24dp"
+            android:background="@drawable/bg_round_stroke_grey"
+            android:tint="?attr/colorBlack50OrWhite50"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+            android:id="@+id/tvCallStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            tools:text="Call ended"
+            android:textSize="16sp"
+            android:fontFamily="@font/sf_pro_display_medium"
+            android:textColor="?attr/colorBlack50OrWhite50"
+            app:layout_constraintTop_toTopOf="@+id/icon"
+            app:layout_constraintBottom_toTopOf="@+id/tvCallDuration"
+            app:layout_constraintStart_toEndOf="@+id/icon"/>
+
+    <TextView
+            android:id="@+id/tvCallDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            tools:text="Lasted n hour(s) n minute(s) n second(s)"
+            android:lines="1"
+            android:textSize="14sp"
+            android:fontFamily="@font/sf_pro_display_medium"
+            android:textColor="?attr/colorBlack50OrWhite50"
+            app:layout_constraintTop_toBottomOf="@+id/tvCallStatus"
+            app:layout_constraintBottom_toBottomOf="@+id/icon"
+            app:layout_constraintEnd_toStartOf="@+id/tvMessageTime"
+            app:layout_constraintStart_toStartOf="@+id/tvCallStatus"/>
+
+    <TextView
+            android:id="@+id/tvMessageTime"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            tools:text="18:33"
+            android:textColor="?attr/colorBlack50OrWhite50"
+            android:textSize="11sp"
+            android:fontFamily="@font/sf_pro_display_medium"
+            android:layout_marginTop="4dp"
+            tools:ignore="SmallSp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvCallStatus"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

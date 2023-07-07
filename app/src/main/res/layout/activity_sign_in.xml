@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="?attr/navigation_bar_height"
+        tools:context=".ui.auth.signIn.SignInActivity">
+
+    <include layout="@layout/app_toolbar_title"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/auth_sign_in_enter_mobile_number"
+            android:textSize="15sp"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="?attr/colorTextGreyDarkOrWhite"
+            android:gravity="center"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="55dp"
+            android:layout_marginEnd="55dp"/>
+
+    <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:id="@+id/btnCodeSelect"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="74dp"
+                android:layout_marginStart="34dp"
+                android:layout_marginEnd="34dp">
+
+            <TextView
+                    android:id="@+id/tvIsoCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🇺🇦 +380"
+                    android:paddingStart="8dp"
+                    android:textSize="18sp"
+                    android:textColor="?attr/colorBlackOrWhite"
+                    android:layout_gravity="center_vertical" tools:ignore="HardcodedText,RtlSymmetry"/>
+
+            <ImageView
+                    android:id="@+id/btnSpinnerArrowSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_down"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/open"/>
+
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                <EditText
+                        android:id="@+id/etPhoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="phone"
+                        android:layout_marginStart="10dp"
+                        android:paddingStart="2dp"
+                        android:padding="0dp"
+                        android:layout_gravity="center_vertical"
+                        android:textCursorDrawable="@color/colorBtnViolet"
+                        android:hint="@string/auth_sign_in_hint_phone_number"
+                        android:textColorHint="?attr/colorTextGreyDarkOrGreyLight"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="?attr/colorBlackOrWhite" tools:ignore="Autofill,RtlSymmetry"/>
+
+                <ImageView
+                        android:id="@+id/btnClearNumber"
+                        tools:visibility="visible"
+                        android:visibility="gone"
+                        android:layout_width="21dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_close"
+                        android:tint="?attr/colorBlackOrWhite"
+                        android:layout_gravity="end|center_vertical"
+                        android:paddingEnd="5dp"
+                        android:paddingStart="5dp"
+                        android:contentDescription="@string/clear"/>
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <TextView
+                android:id="@+id/tvIncorrectNumber"
+                tools:visibility="visible"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/auth_sign_in_number_is_invalid"
+                android:layout_marginTop="36dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="#E63950"
+                android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <Button
+            android:id="@+id/btnVerifyPhone"
+            android:enabled="true"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:fontFamily="@font/avenir_next_regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="34dp"
+            android:layout_marginEnd="34dp"
+            android:textAllCaps="false"
+            android:background="@drawable/selector_btn_red"
+            android:text="@string/auth_sign_in_verify_phone_number"/>
+
+    <TextView
+            android:id="@+id/tvSignInTerms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_with_terms"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="@font/montserrat_regular"
+            android:layout_marginTop="110dp"
+            android:layout_marginBottom="72dp"
+            android:textColor="@color/colorGrey"/>
+
+</LinearLayout>

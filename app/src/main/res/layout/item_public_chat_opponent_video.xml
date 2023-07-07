@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/layoutChatPublicOpponentVideoRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:layout_marginBottom="2dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="100dp"
+        android:orientation="horizontal">
+
+    <ImageView
+            android:id="@+id/ivAvatarOpponentVideo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="bottom"
+            tools:background="@drawable/ic_tik_talk_logo"/>
+
+    <FrameLayout
+            android:id="@+id/opponentVideoBackground"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="76dp"
+            android:layout_gravity="start"
+            android:background="@drawable/bg_chat_single_opponent_image"
+            android:orientation="vertical" tools:ignore="UselessParent">
+
+        <SurfaceView
+                android:id="@+id/surfaceOpponentVideo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"/>
+
+        <ImageView
+                android:id="@+id/btnPlayVideoOpponent"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_btn_play"
+                android:padding="9dp"
+                android:tint="@color/colorWhite"
+                android:background="@drawable/bg_round_video_btn"
+                android:layout_gravity="center"
+                android:contentDescription="@string/play"/>
+        <ProgressBar
+                android:id="@+id/opponentVideoProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:indeterminate="false"
+                android:scaleY="1.9"
+                android:scaleX="1.9"
+                tools:secondaryProgress="100"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressDrawable="@drawable/circular"/>
+
+        <ImageView
+                android:id="@+id/icOpponentVideoCamera"
+                android:layout_width="18dp"
+                android:layout_height="12dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_video_camera"
+                android:layout_gravity="start|top"
+                android:contentDescription="@string/attach_files_camera"/>
+
+        <TextView
+                android:id="@+id/tvOpponentVideoDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginStart="43dp"
+                tools:text="1:13"
+                android:textColor="@color/colorWhite"
+                android:textSize="11sp"
+                android:layout_gravity="start|top"
+                android:fontFamily="@font/sf_pro_display_medium"
+                tools:ignore="SmallSp"/>
+
+        <TextView
+                android:id="@+id/tvOpponentVideoMessageTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                tools:text="18:33"
+                android:textColor="@color/colorWhite"
+                android:textSize="11sp"
+                android:fontFamily="@font/sf_pro_display_medium"
+                android:gravity="center_vertical"
+                android:layout_gravity="end|bottom"
+                android:layout_marginBottom="14dp"
+                android:layout_marginEnd="18dp"
+                tools:ignore="RtlSymmetry,SmallSp"/>
+    </FrameLayout>
+</FrameLayout>

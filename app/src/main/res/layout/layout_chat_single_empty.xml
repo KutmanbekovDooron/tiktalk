@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_gravity="center_vertical"
+              android:gravity="center_vertical">
+
+    <TextView
+            android:id="@+id/tvMatchedWith"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="You matched with Alina"
+            android:textSize="22sp"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/colorBtnViolet"
+            android:gravity="center"/>
+
+    <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="15 mins ago"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/colorGreyDark50"
+            android:gravity="center"/>
+
+    <ImageView
+            android:id="@+id/matchedUserAvatar"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="24dp"
+            tools:visibility="visible"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            tools:background="@drawable/ic_add_photo"
+            android:scaleType="centerCrop"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/match_no_fear"
+            android:textSize="16sp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/colorBtnViolet"
+            android:gravity="center"/>
+
+
+</LinearLayout>

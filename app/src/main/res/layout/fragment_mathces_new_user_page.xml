@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.matches.MatchesFragment">
+
+    <include layout="@layout/app_toolbar_matches_user_page"
+             android:id="@+id/toolbarMainMessages"/>
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="450dp"
+                    android:orientation="vertical"
+                    android:layout_marginTop="14dp">
+
+                <ImageView
+                        android:id="@+id/avatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="35dp"
+                        android:layout_gravity="top"
+                        tools:visibility="visible"
+                        android:visibility="invisible"
+                        android:scaleType="centerCrop"/>
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/bg_round_white_10"
+                        android:padding="12dp">
+                    <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="12dp"
+                            android:src="@drawable/ic_message_verification_mark"
+                            android:tint="?attr/colorTextGreyDarkOrWhite"
+                            android:contentDescription="@string/checkMark"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/matches_user_page_where_is_user_fake"
+                            android:textSize="15sp"
+                            android:fontFamily="@font/roboto_regular"
+                            android:textColor="?attr/colorTextGreyDarkOrWhite"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginStart="26dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginBottom="94dp">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="Anna, 24"
+                            android:textSize="40sp"
+                            android:fontFamily="@font/roboto_bold"
+                            android:textColor="@color/colorWhite"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="dancer"
+                            android:textSize="24sp"
+                            android:fontFamily="@font/roboto_regular"
+                            android:textColor="@color/colorWhite"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_gravity="bottom"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginEnd="18dp">
+                    <ImageView
+                            android:id="@+id/btnPrevious"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_round_white"
+                            android:src="@drawable/ic_arrow_circle"
+                            android:padding="8dp"
+                            android:contentDescription="@string/previous"/>
+                    <View
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"/>
+                    <ImageView
+                            android:id="@+id/btnIgnore"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:background="@drawable/bg_round_white"
+                            android:src="@drawable/ic_close"
+                            android:tint="#002C61"
+                            android:padding="20dp"
+                            android:contentDescription="@string/ignore"/>
+                    <View
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"/>
+                    <ImageView
+                            android:id="@+id/btnLike"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:background="@drawable/bg_like"
+                            android:src="@drawable/ic_like"
+                            android:scaleY="1.1"
+                            android:scaleX="1.1"
+                            android:padding="20dp"
+                            android:contentDescription="@string/like"/>
+                    <View
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"/>
+                    <ImageView
+                            android:id="@+id/btnGift"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_gift_ellipse"
+                            android:src="@drawable/ic_gift"
+                            android:padding="8dp"
+                            android:contentDescription="@string/gift"/>
+                </LinearLayout>
+            </FrameLayout>
+
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/matches_user_page_about"
+                    android:textSize="27sp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="?attr/colorTextGreyDarkOrWhite"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/matches_user_page_about_description_fake"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="?attr/colorTextGreyLightOrWhite"/>
+
+            <include layout="@layout/layout_user_page_preferences"/>
+
+            <ImageView
+                    android:id="@+id/image1"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    tools:visibility="visible"
+                    android:visibility="invisible"
+                    android:layout_marginTop="24dp"
+                    android:layout_gravity="start|center_vertical"
+                    tools:background="@drawable/ic_add_photo"
+                    android:scaleType="centerCrop"/>
+
+            <Button
+                    android:id="@+id/btnShare"
+                    android:enabled="true"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/avenir_next_regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginStart="34dp"
+                    android:layout_marginEnd="34dp"
+                    android:textAllCaps="true"
+                    android:background="@drawable/selector_btn_red"
+                    android:text="@string/share"/>
+
+            <TextView
+                    android:id="@+id/btnReport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    tools:text="Report Anna"
+                    android:textSize="15sp"
+                    android:padding="24dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="?attr/colorBlackOrWhite"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="?attr/colorBgToolbar"
+    />
+
+    <LinearLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorBgToolbar">
+
+        <ImageView
+                android:id="@+id/toolbarSearchSimpleBtnBack"
+                android:layout_width="46dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:paddingStart="27dp"
+                android:paddingEnd="0dp"
+                android:src="@drawable/ic_arrow_left"
+                android:tint="@color/colorWhite"
+                android:contentDescription="@string/back"/>
+
+        <EditText
+                android:id="@+id/etSearch"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:lines="1"
+                android:inputType="textShortMessage|textCapWords"
+                android:textSize="20sp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="0dp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/colorWhite"
+                android:textCursorDrawable="@drawable/cursor_color_white"
+                android:backgroundTint="@color/colorWhite"
+                android:background="@color/colorTransparent"
+                android:hint="@string/search_hint"
+                android:textColorHint="@color/colorWhite50"
+                android:gravity="center_vertical" tools:ignore="Autofill"/>
+
+    </LinearLayout>
+
+</LinearLayout>

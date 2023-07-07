@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/layoutChatPublicVoiceOpponentRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="100dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:layout_marginBottom="2dp"
+        android:orientation="vertical">
+
+    <ImageView
+            android:id="@+id/ivAvatarOpponentVideo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="bottom"
+            tools:background="@drawable/ic_tik_talk_logo"/>
+
+    <LinearLayout
+            android:id="@+id/opponentVoiceBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="76dp"
+            android:layout_gravity="start"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="10dp"
+            android:background="@drawable/bg_chat_single_opponent"
+            android:orientation="vertical" tools:ignore="UselessParent">
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+                <ImageView
+                        android:id="@+id/btnPlayVoiceOpponent"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_btn_play"
+                        android:padding="9dp"
+                        android:tint="@color/colorWhite"
+                        android:background="@drawable/bg_round_blue_5"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/play"/>
+            <rm.com.audiowave.AudioWaveView
+                    android:layout_weight="1"
+                    android:id="@+id/ivVoiceTrack"
+                    app:animateExpansion="false"
+                    android:layout_marginStart="8dp"
+                    android:layout_width="0dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_voice_track"
+                    android:layout_gravity="center"
+
+                    app:chunkHeight="24dp"
+                    app:chunkRadius="1dp"
+                    app:touchable="false"
+                    app:chunkSpacing="1dp"
+                    app:chunkWidth="1dp"
+                    app:minChunkHeight="2dp"
+                    app:waveColor="@android:color/black"/>
+            <TextView
+                    android:id="@+id/tvVoiceOpponentMessageTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="14dp"
+                    tools:text="16:26"
+                    android:textColor="@color/colorChatOpponentTime"
+                    android:textSize="11sp"
+                    android:fontFamily="@font/sf_pro_display_medium"
+                    tools:ignore="SmallSp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

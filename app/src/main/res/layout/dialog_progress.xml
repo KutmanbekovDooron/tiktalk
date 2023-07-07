@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:background="@color/colorTransparent">
+
+    <com.andyshon.tiktalk.ui.widget.circular.CircularProgressView
+        android:id="@+id/progressDialogView"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerInParent="true"
+        app:cpv_border_width="4dp"
+        app:cpv_progressColor="@color/colorBtnViolet" />
+
+    <TextView
+        android:id="@+id/progressDialogText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/progressDialogView"
+        android:gravity="center"
+        android:textSize="@dimen/font_size_very_big"
+        android:paddingBottom="8dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="8dp"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone"
+        tools:text="Loading" />
+
+</RelativeLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        android:layout_width="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="?attr/colorBgToolbar"
+    />
+
+    <FrameLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorBgToolbar">
+
+        <ImageView
+                android:id="@+id/toolbarUserAvatar"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="16dp"
+                android:visibility="invisible"
+                android:layout_gravity="start|center_vertical"
+                android:scaleType="centerCrop"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="64dp"
+                android:lines="1"
+                android:textSize="20sp"
+                android:fontFamily="@font/roboto_regular"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:gravity="center_vertical"
+                android:layout_gravity="start|center_vertical"
+                android:text="@string/app_name"/>
+
+        <ImageView
+                android:layout_width="40dp"
+                android:layout_height="33dp"
+                android:layout_gravity="center"
+                android:src="?attr/logoToolbar"
+                android:contentDescription="@string/logo"/>
+    </FrameLayout>
+
+</LinearLayout>

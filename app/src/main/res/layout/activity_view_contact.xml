@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.viewContact.ViewContactActivity">
+
+    <include layout="@layout/app_toolbar_view_contact"/>
+
+    <androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+                                           android:layout_height="match_parent"
+                                           android:layout_marginBottom="?attr/navigation_bar_height">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <ImageView
+                    android:id="@+id/avatar"
+                    android:visibility="visible"
+                    tools:visibility="visible"
+                    android:layout_width="212dp"
+                    android:layout_height="212dp"
+                    android:layout_marginTop="45dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    tools:background="@drawable/ic_tik_talk_logo"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+            
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_contact_info"
+                    android:textColor="?attr/colorBlackOrWhite"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:layout_marginStart="16dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="true"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textColorHint="?attr/colorBlackOrWhite"
+                    app:hintAnimationEnabled="true"
+                    app:errorTextAppearance="@style/MsgErrorText"
+                    app:errorEnabled="false">
+                <EditText
+                        android:id="@+id/etMobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:hint="@string/view_contact_mobile"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:layout_marginBottom="10dp"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:textSize="17sp"
+                        android:text="@string/view_contact_mobile_number_fake"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:background="@color/colorTransparent"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="?attr/colorTextGreyDarkOrWhite" tools:ignore="Autofill"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:background="?attr/colorLineGray"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp">
+
+                <FrameLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/view_contact_notifications"
+                            android:textColor="?attr/colorBlackOrWhite"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/roboto_regular"
+                            android:layout_marginStart="16dp"
+                            android:layout_gravity="top"/>
+                    <TextView
+                            android:id="@+id/tvNotificationText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/on"
+                            android:textColor="?attr/colorBlackOrWhite"
+                            android:textSize="17sp"
+                            android:fontFamily="@font/roboto_regular"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_gravity="bottom"/>
+                </FrameLayout>
+
+                <Switch android:id="@+id/switcherNotifications"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:theme="@style/SwitchThemeViolet"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginEnd="20dp"/>
+            </LinearLayout>
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="16dp"
+                    android:background="?attr/colorLineGray"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_contact_shared_media"
+                    android:textColor="?attr/colorBlackOrWhite"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:layout_marginTop="23dp"
+                    android:layout_marginStart="16dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/sharedMediaRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="16dp"
+                    android:scrollbars="none"/>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="16dp"
+                    android:background="?attr/colorLineGray"/>
+
+            <TextView
+                    android:id="@+id/btnShare"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_contact_share"
+                    android:textColor="?attr/colorBlackOrWhite"
+                    android:textSize="17sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:layout_marginStart="16dp"
+                    android:paddingTop="21dp"
+                    android:paddingBottom="21dp"
+                    android:layout_gravity="bottom"/>
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:background="?attr/colorLineGray"/>
+
+            <TextView
+                    android:id="@+id/btnBlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_contact_block"
+                    android:textColor="?attr/colorBlackOrWhite"
+                    android:textSize="17sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:layout_marginStart="16dp"
+                    android:paddingTop="21dp"
+                    android:paddingBottom="21dp"
+                    android:layout_gravity="bottom"/>
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:background="?attr/colorLineGray"/>
+
+            <TextView
+                    android:id="@+id/btnEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_contact_edit"
+                    android:textColor="?attr/colorBlackOrWhite"
+                    android:textSize="17sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:layout_marginStart="16dp"
+                    android:paddingTop="21dp"
+                    android:paddingBottom="21dp"
+                    android:layout_gravity="bottom"/>
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:background="?attr/colorLineGray"/>
+
+            <TextView
+                    android:id="@+id/btnDelete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_contact_delete"
+                    android:textColor="?attr/colorBlackOrWhite"
+                    android:textSize="17sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:layout_marginStart="16dp"
+                    android:paddingTop="21dp"
+                    android:paddingBottom="21dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_gravity="bottom"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

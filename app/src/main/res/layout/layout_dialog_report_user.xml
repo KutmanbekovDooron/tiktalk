@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorWhite">
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:orientation="vertical">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_user"
+                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginTop="21dp"
+                android:textColor="@color/colorGreyDark"
+                android:fontFamily="@font/roboto_regular"
+                app:layout_constraintTop_toBottomOf="@id/btnClose"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_user_subtitle"
+                android:layout_gravity="center"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginTop="21dp"
+                android:textColor="@color/colorGreyDark"
+                android:fontFamily="@font/roboto_regular"
+                app:layout_constraintTop_toBottomOf="@id/btnClose"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+                android:id="@+id/actionInappropriateProfile"
+                android:layout_marginTop="40dp"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/colorBlack50"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/report_user_inappropriate_profile"/>
+
+        <TextView
+                android:id="@+id/actionInappropriateMessages"
+                android:layout_marginTop="30dp"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/colorBlack50"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/report_user_inappropriate_messages"/>
+
+        <TextView
+                android:id="@+id/actionStolenPhoto"
+                android:layout_marginTop="30dp"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/colorBlack50"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/report_user_stolen_photo"/>
+
+        <TextView
+                android:id="@+id/actionScammer"
+                android:layout_marginTop="30dp"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/colorBlack50"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/report_user_scammer"/>
+
+        <TextView
+                android:id="@+id/actionBadOfflineBehavior"
+                android:layout_marginTop="30dp"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/colorBlack50"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/report_user_bad_offline_behavior"/>
+
+        <TextView
+                android:id="@+id/actionOther"
+                android:layout_marginTop="30dp"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/colorBlack50"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/report_user_other"/>
+    </LinearLayout>
+
+    <TextView
+            android:id="@+id/btnCancel"
+            android:paddingTop="34dp"
+            android:paddingBottom="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/cancel"
+            android:textAllCaps="true"/>
+
+</LinearLayout>

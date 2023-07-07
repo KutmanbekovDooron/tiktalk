@@ -1,0 +1,391 @@
+<resources>
+    <string name="app_name">TikTalk</string>
+
+    <!-- DIALOG MESSAGES -->
+    <string name="dialog_action_loading">Загрузка…</string>
+    <string name="dialog_action_ok">OK</string>
+    <string name="dialog_action_cancel">Отмена</string>
+
+    <string name="ok">OK</string>
+    <string name="no">NO</string>
+    <string name="yes">YES</string>
+    <string name="close">Close</string>
+    <string name="play">Play</string>
+    <string name="image">Image</string>
+    <string name="back">Back</string>
+    <string name="recording">Recording</string>
+    <string name="phone">Phone</string>
+    <string name="search">Search</string>
+    <string name="number_1">1</string>
+    <string name="logo">Logo</string>
+    <string name="photo">Photo</string>
+    <string name="pin">Pin</string>
+    <string name="visibility">Visibility</string>
+    <string name="sound">Sound</string>
+    <string name="delete">Delete</string>
+    <string name="matches_chat">Matches</string>
+    <string name="settings">Settings</string>
+    <string name="search_hint">Search…</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="secret">Secret</string>
+    <string name="message">Message</string>
+    <string name="finger">Finger</string>
+    <string name="cover">Cover</string>
+    <string name="continueE">Continue</string>
+    <string name="write_her_something">Write her something! :)</string>
+    <string name="send">Send</string>
+    <string name="send_a_message">Send a message</string>
+    <string name="smile">Smile</string>
+    <string name="microphone">Microphone</string>
+    <string name="attach_file">Attach File</string>
+    <string name="cancel">Cancel</string>
+    <string name="open">open</string>
+    <string name="clear">Clear</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="users">Users</string>
+    <string name="ignore">Ignore</string>
+    <string name="like">Like</string>
+    <string name="gift">Gift</string>
+    <string name="share">Share</string>
+    <string name="checkMark">CheckMark</string>
+    <string name="refresh">Refresh</string>
+    <string name="all_users">All Users</string>
+    <string name="remove">Remove</string>
+    <string name="add_photo">Add photo</string>
+    <string name="online_indicator">Online Indicator</string>
+    <string name="unread_messages">UNREAD MESSAGES</string>
+    <string name="add_to_contact">Add to contact</string>
+    <string name="music">Music</string>
+    <string name="media">Media</string>
+    <string name="enter">ENTER</string>
+    <string name="sad_smile">Sad smile</string>
+    <string name="match_no_fear">No fear! Let’s started!</string>
+    <string name="copy">Copy</string>
+    <string name="reply">Reply</string>
+    <string name="block">Block</string>
+    <string name="block_user">Block User</string>
+    <string name="change_name">Change Name</string>
+    <string name="delete_chat">You’ll lose all photos and media</string>
+    <string name="delete_contact">Delete Contact</string>
+    <string name="delete_message">Delete message</string>
+    <string name="delete_message_subtitle">Are you sure you want to delete this message?</string>
+    <string name="stop_streaming">Ready to stop streaming?</string>
+    <string name="stop_streaming_subtitle">Type \'Yes\' to exit the live stream or \'No\' to keep streaming</string>
+    <string name="stop_watching">Ready to stop watching?</string>
+    <string name="stop_watching_subtitle">Type \'Yes\' to exit the live stream or \'No\' to keep watching</string>
+    <string name="hide_chat_subtitle">Are you sure you want to hide chat?</string>
+    <string name="no_one_around_you">There\'s no one new around you.</string>
+    <string name="new_match">New Match</string>
+    <string name="voice_message">Voice message</string>
+    <string name="video">Video</string>
+    <string name="file">File</string>
+    <string name="no_messages_yet">No messages yet</string>
+    <string name="reply_">Reply:</string>
+    <string name="contact_">Contact:</string>
+    <string name="music_start_time_">0:00 /</string>
+    <string name="you_matched_with">You matched with %s</string>
+    <string name="n_mins_ago">%d mins ago</string>
+    <string name="gender">Gender</string>
+    <string name="height">Height</string>
+    <string name="height_">%d cm</string>
+    <string name="name">Name</string>
+    <string name="share_app">Share Tik Talk</string>
+    <string name="birthday">Birthday</string>
+    <string name="forward">Forward…</string>
+
+    <!-- Errors -->
+    <string name="error_internet_connection">Cannot load data. Please check your network connection.</string>
+
+    <!-- Splash -->
+    <string name="splash_tik_talk">Tik Talk</string>
+
+    <!-- Start wit -->
+    <string name="start_with_log_in">Log In</string>
+    <string name="start_with_btn_phone">Start with phone</string>
+    <string name="start_with_terms">By tapping Start, you agree with\nour Terms of Service and Privacy Policy</string>
+    <string name="start_with_terms_part1">Terms of Service</string>
+    <string name="start_with_terms_part2">Privacy Policy</string>
+
+    <!-- Auth -->
+    <string name="auth_sign_in_title">Sign In</string>
+    <string name="auth_sign_in_enter_mobile_number">Please enter your mobile number. We will send you a verification
+        message to confirm your account
+    </string>
+    <string name="auth_sign_in_verify_phone_number">Verify phone number</string>
+    <string name="auth_sign_in_hint_phone_number">Phone Number</string>
+    <string name="auth_sign_in_number_is_invalid">The number is invalid. Please check it once again.</string>
+
+    <!-- Choose a country -->
+    <string name="choose_country_title">Choose a country</string>
+
+    <!-- Code Verification -->
+    <string name="code_verification_title">Code Verification</string>
+    <string name="code_verification_send_to_phone">Please enter the 4 digit verification code that was sent to %s
+    </string>
+    <string name="code_verification_btn">VERIFY CODE</string>
+    <string name="code_verification_incorrect_code">Incorrect Code</string>
+
+    <!-- Blocked Account -->
+    <string name="blocked_account_text">Your account has been blocked. Fore more info Contact Support.</string>
+    <string name="blocked_account_contact_support">Contact Support</string>
+
+    <!-- Create Profile -->
+    <string name="create_profile_title">Create profile</string>
+    <string name="create_profile_I_am">I am:</string>
+    <string name="create_profile_male">Male</string>
+    <string name="create_profile_female">Female</string>
+    <string name="create_profile_name">Name</string>
+    <string name="create_profile_date_of_birth">Date Of Birth</string>
+    <string name="create_profile_email">E-mail</string>
+    <string name="create_profile_location">Location</string>
+    <string name="create_profile_next">Next</string>
+
+    <!-- Add Photos -->
+    <string name="profile_add_photos_title">Add Photos</string>
+    <string name="profile_add_photos_hold_and_drag">Hold, drag and drop to reorder</string>
+    <string name="profile_add_photos_btn_done">Done</string>
+
+    <string-array name="profile_photo_main_menu">
+        <item>Select From Camera</item>
+        <item>Select From Camera Roll</item>
+        <item>Cancel</item>
+    </string-array>
+
+
+    <!-- Navigation -->
+    <string name="navigation_bottom_messages">Messages</string>
+    <string name="navigation_bottom_places">Places</string>
+    <string name="navigation_bottom_matches">Matches</string>
+    <string name="navigation_bottom_live_stream">Live-stream</string>
+
+    <!-- Chat Single Menu -->
+    <string name="chat_single_menu_view_contact">View contact</string>
+    <string name="chat_single_menu_media">Media</string>
+    <string name="chat_single_menu_search">Search</string>
+    <string name="chat_single_menu_mute_notification">Mute notification</string>
+    <string name="chat_single_menu_visibility">Visibility</string>
+    <string name="chat_single_menu_clear_chat">Clear chat</string>
+    <string name="chat_single_menu_block">Block</string>
+
+    <string name="chat_single_send_message">Send a message</string>
+
+
+    <!-- Main Messages -->
+    <string name="main_messages_any_chats_title">Oops!</string>
+    <string name="main_messages_any_chats_subtitle">You don\'t have any conversation.\nLet send a message to your
+        contact
+    </string>
+    <string name="main_messages_start_a_chat">START A CHAT</string>
+
+
+    <!-- Places -->
+    <string name="places_any_chats_title">Oops!</string>
+    <string name="places_any_chats_subtitle">You don\'t have any places near\nLet\'s try to refresh again</string>
+
+    <!-- Attach files -->
+    <string name="attach_files_camera">Camera</string>
+    <string name="attach_files_gallery">Gallery</string>
+    <string name="attach_files_video">Video</string>
+    <string name="attach_files_music">Music</string>
+    <string name="attach_files_file">File</string>
+    <string name="attach_files_location">Location</string>
+    <string name="attach_files_contact">Contact</string>
+
+    <!-- Settings -->
+    <string name="settings_tap_to_edit">Tap to edit profile</string>
+    <string name="settings_looking_for">Looking for</string>
+    <string name="settings_show_ages">Show ages</string>
+    <string name="settings_location">Location</string>
+    <string name="settings_show_me_in_app">Show me in Tik Talk</string>
+    <string name="settings_show_me_in_places">Show me in Places</string>
+    <string name="settings_push_notifications">Push Notifications</string>
+    <string name="settings_night_theme_mode">Night Theme Mode</string>
+    <string name="settings_reset_dislikes">Reset Dislikes</string>
+    <string name="settings_payment_settings">Payment Settings</string>
+    <string name="settings_help">Help</string>
+    <string name="settings_share_tik_talk">Share Tik Talk</string>
+    <string name="settings_logout">LOGOUT</string>
+    <string name="settings_delete_account">Delete account</string>
+
+    <!-- Mathces -->
+    <string name="matches_title">Matches</string>
+
+    <!-- Select Contact -->
+    <string name="select_contact_title">Select Contact</string>
+
+    <!-- Lockers -->
+    <string name="locker_finger_title">Please set up your\nfingerprint</string>
+    <string name="locker_choose">Choose a lock</string>
+    <string name="locker_pattern">Pattern</string>
+    <string name="locker_pin">Pin</string>
+    <string name="locker_fingerprint">Fingerprint</string>
+
+    <!-- Share -->
+    <string name="share_with_friends">Share with friends</string>
+    <string name="share_whatsApp">WhatsApp</string>
+    <string name="share_telegram">Telegram</string>
+    <string name="share_twitter">Twitter</string>
+    <string name="share_copy_link">Copy Link</string>
+    <string name="share_sms">SMS</string>
+    <string name="share_skype">Skype</string>
+    <string name="share_mail">Mail</string>
+    <string name="share_messenger">Messenger</string>
+
+    <!-- View Contact -->
+    <string name="view_contact_info">Info</string>
+    <string name="view_contact_mobile">Mobile</string>
+    <string name="view_contact_mobile_number_fake">+1 512 555 622 62 58</string>
+    <string name="view_contact_notifications">Notifications</string>
+    <string name="view_contact_shared_media">Shared Media</string>
+    <string name="view_contact_share">Share</string>
+    <string name="view_contact_block">Block</string>
+    <string name="view_contact_edit">Edit contact</string>
+    <string name="view_contact_delete">Delete contact</string>
+
+    <!-- Matches User Page -->
+    <string name="matches_user_page_where_is_user_fake">in Coyote Bar now</string>
+    <string name="matches_user_page_about">About me</string>
+    <string name="matches_user_page_about_description_fake">A beautiful woman feels beautiful within, from the love she
+        gives to her ideas and the creative ways she expresses her soul.
+    </string>
+
+    <!-- Zone -->
+    <string name="zone_you_near">You near</string>
+
+    <!-- Chat Tips -->
+    <string name="chat_tips_1">you are hot!</string>
+    <string name="chat_tips_2">Whats up?</string>
+    <string name="chat_tips_3">Hi, cutie girl</string>
+
+    <!-- Mute Notifications -->
+    <string name="mute_notifications_for">Mute notifications for…</string>
+    <string name="mute_notifications_for_2_hours">2 hours</string>
+    <string name="mute_notifications_for_8_hours">8 hours</string>
+    <string name="mute_notifications_for_1_week">1 week</string>
+    <string name="mute_notifications_for_1_year">1 year</string>
+
+    <!-- Report User Popup -->
+    <string name="report_user">Report User?</string>
+    <string name="report_user_subtitle">Is the person bothering you?\nTell us what they did.</string>
+    <string name="report_user_inappropriate_profile">Inappropriate profile</string>
+    <string name="report_user_inappropriate_messages">Inappropriate message</string>
+    <string name="report_user_stolen_photo">Stolen photo</string>
+    <string name="report_user_scammer">Scammer</string>
+    <string name="report_user_bad_offline_behavior">Bad offline behavior</string>
+    <string name="report_user_other">Other</string>
+
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">Edit Profile</string>
+    <string name="edit_profile_basic_info">Basic Info</string>
+    <string name="edit_profile_work">Work</string>
+    <string name="edit_profile_write_about_you">Write a bit about you</string>
+    <string name="edit_profile_education">Education</string>
+    <string name="edit_profile_about_you">About You</string>
+    <string name="edit_profile_relationship">Relationship</string>
+    <string name="edit_profile_sexuality">Sexuality</string>
+    <string name="edit_profile_height">Height</string>
+    <string name="edit_profile_living">Living</string>
+    <string name="edit_profile_children">Children</string>
+    <string name="edit_profile_smoking">Smoking</string>
+    <string name="edit_profile_drinking">Drinking</string>
+    <string name="edit_profile_i_speak">I speak</string>
+    <string name="edit_profile_instagram">Instagram</string>
+    <string name="edit_profile_instagram_subtitle">Connecting Instagram will add your latest 24 photos to your profie.
+        Don’t worry, we won’t share your username
+    </string>
+    <string name="edit_profile_instagram_connect">CONNECT INSTAGRAM</string>
+
+    <!-- Edit Profile Basic Info -->
+    <string name="edit_profile_basic_info_title">Basic Info</string>
+
+    <!-- Living popup -->
+    <string name="living_popup_no_answer">No answer</string>
+    <string name="living_popup_by_myself">By myself</string>
+    <string name="living_popup_student_residence">Student residence</string>
+    <string name="living_popup_with_parents">With parents</string>
+    <string name="living_popup_with_partner">With partner</string>
+    <string name="living_popup_with_housemate">With housemate (s)</string>
+
+    <!-- Children popup -->
+    <string name="children_popup_no_answer">No answer</string>
+    <string name="children_popup_grown_up">Grown up</string>
+    <string name="children_popup_already_have">Already have</string>
+    <string name="children_popup_never">No, never</string>
+    <string name="children_popup_someday">Someday</string>
+
+    <!-- Smoking popup -->
+    <string name="smoking_popup_no_answer">No answer</string>
+    <string name="smoking_popup_heavy_smoker">I\'m heavy smoker</string>
+    <string name="smoking_popup_hate_smoking">I hate smoking</string>
+    <string name="smoking_popup_dont_like">I don\'t like it</string>
+    <string name="smoking_popup_social_smoker">I\'m a social smoker</string>
+    <string name="smoking_popup_smoke_occasionally">I smoke occasionally</string>
+
+    <!-- Drinking popup -->
+    <string name="drinking_popup_no_answer">No answer</string>
+    <string name="drinking_popup_drink_socially">I drink socially</string>
+    <string name="drinking_popup_dont_drink">I don’t drink</string>
+    <string name="drinking_popup_against_drinking">I’m against drinking</string>
+    <string name="drinking_popup_drink_a_lot">I drink a lot</string>
+
+    <!-- Relationship popup -->
+    <string name="relationship_no_answer">No answer</string>
+    <string name="relationship_single">Single</string>
+    <string name="relationship_taken">Taken</string>
+
+    <!-- Sexuality popup -->
+    <string name="sexuality_no_answer">No answer</string>
+    <string name="sexuality_bisexual">Bisexual</string>
+    <string name="sexuality_gay">Gay</string>
+    <string name="sexuality_ask_me">Ask me</string>
+    <string name="sexuality_straight">Straight</string>
+
+    <!-- Sagittarius popup -->
+    <string name="zodiac_title">Zodiac</string>
+    <string name="zodiac_no_answer">No answer</string>
+    <string name="zodiac_aries">aries</string>
+    <string name="zodiac_taurus">taurus</string>
+    <string name="zodiac_gemini">gemini</string>
+    <string name="zodiac_cancer">cancer</string>
+    <string name="zodiac_leo">leo</string>
+    <string name="zodiac_virgo">virgo</string>
+    <string name="zodiac_libra">libra</string>
+    <string name="zodiac_scorpio">scorpio</string>
+    <string name="zodiac_sagittarius">sagittarius</string>
+    <string name="zodiac_capricorn">capricorn</string>
+    <string name="zodiac_aquarius">aquarius</string>
+    <string name="zodiac_pisces">pisces</string>
+
+    <!-- Push Notifications -->
+    <string name="push_notifications_pause_all">Pause All</string>
+    <string name="push_notifications_messages">Messages</string>
+    <string name="push_notifications_new_matches">New Matches</string>
+    <string name="push_notifications_somebody_like_you">Somebody Like You</string>
+    <string name="push_notifications_new_msg_in_private_room">New Message In Private Room</string>
+    <string name="push_notifications_super_likes">Super Likes</string>
+
+    <!-- More languages -->
+    <string name="more_languages_title">More languages</string>
+
+    <!-- Payment Settings -->
+    <string name="payment_settings_title">Payment Settings</string>
+    <string name="payment_settings_tik_talk_plus">Tik Talk Plus</string>
+    <string name="payment_settings_get_tik_talk_plus">Get Tik Talk Plus</string>
+    <string name="payment_settings_turn_off_adds">Turn off Adds</string>
+
+    <string name="call_audio_title">TIK TALK AUDIO CALL</string>
+    <string name="call_video_title">TIK TALK VIDEO CALL</string>
+    <string name="turn_speaker_on">Speaker ON</string>
+    <string name="callee">client identity or phone number</string>
+    <string name="call_swipe_to_answer">Swipe up to answer</string>
+    <string name="callHint">Dial a client name or phone number. Leaving the field empty results in an automated
+        response.
+    </string>
+    
+    <!-- Calls -->
+    <string name="call_incoming">INCOMING</string>
+    <string name="call_calling">CALLING…</string>
+
+</resources>

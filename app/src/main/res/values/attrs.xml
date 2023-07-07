@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ErrorEditText">
+        <attr name="android:hint"/>
+        <attr name="android:inputType"/>
+    </declare-styleable>
+
+    <declare-styleable name="ErrorButton">
+        <attr name="android:hint"/>
+    </declare-styleable>
+
+    <declare-styleable name="CircularProgressView">
+        <attr name="cpv_progressColor" format="color"/>
+        <attr name="cpv_border_width" format="dimension"/>
+        <attr name="cpv_height_accent" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="ProgressButtonView">
+        <attr name="pbv_progressColor" format="color" />
+        <attr name="pbv_progressSize" format="dimension" />
+        <attr name="pbv_progressBorderWidth" format="dimension" />
+        <attr name="pbv_progressPadding" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="UserPagePreferencesView">
+        <attr name="titleText" format="string" localization="suggested" />
+        <attr name="myImage" format="reference" />
+        <attr name="isChecked" format="boolean" />
+    </declare-styleable>
+
+
+    <attr name="primaryTextColor" format="reference"/>
+    <attr name="colorBackground" format="reference"/>
+    <attr name="colorBgBottomBar" format="reference"/>
+    <attr name="colorBlackOrWhite50" format="reference"/>
+    <attr name="colorBlack50OrWhite" format="reference"/>
+    <attr name="colorBlack50OrWhite50" format="reference"/>
+    <attr name="colorBlackOrWhite" format="reference"/>
+    <attr name="colorBlack15OrWhite15" format="reference"/>
+    <attr name="colorWhiteOrBlackDark" format="reference"/>
+    <attr name="colorTextBlackOrGrey" format="reference"/>
+    <attr name="colorGreyOrWhite" format="reference"/>
+    <attr name="colorTextGreyDarkOrWhite" format="reference"/>
+    <attr name="colorTextGreyDarkOrGreyLight" format="reference"/>
+    <attr name="colorTextGreyDark50OrWhite" format="reference"/>
+    <attr name="colorTextGreyDark70OrWhite" format="reference"/>
+    <attr name="colorTextGreyDark80OrWhite" format="reference"/>
+    <attr name="colorTextGreyLightOrWhite" format="reference"/>
+    <attr name="colorBlack90OrWhite" format="reference"/>
+    <attr name="colorBgToolbar" format="reference"/>
+    <attr name="colorWhite80OrViolet" format="reference"/>
+    <attr name="logoSplash" format="reference"/>
+    <attr name="logoToolbar" format="reference"/>
+    <attr name="logoSecretToolbar" format="reference"/>
+    <attr name="messagesCounter" format="reference"/>
+    <attr name="preferencesViewDisable" format="reference"/>
+    <attr name="preferencesViewEnable" format="reference"/>
+    <attr name="colorLineGray" format="reference"/>
+    <attr name="colorLineGrayNotifications" format="reference"/>
+    <attr name="attachFilesBg" format="reference"/>
+    <attr name="navigation_bar_height" format="reference"/>
+    <attr name="colorEditProfileLine" format="reference"/>
+    <attr name="arrowLeft" format="reference"/>
+    <attr name="bg_pin_btn" format="reference"/>
+    <attr name="pin_cursor" format="reference"/>
+    <attr name="pin_text" format="reference"/>
+    <attr name="colorBadgeBorder" format="reference"/>
+
+</resources>

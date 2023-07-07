@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
+
+    <ImageView
+            android:id="@+id/userImage"
+            android:layout_width="114dp"
+            android:layout_height="136dp"
+            android:scaleType="centerCrop"
+            tools:background="@drawable/ic_tik_talk_logo"/>
+
+    <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            tools:text="Cindy, 18"
+            android:textColor="@color/colorBlack"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_regular"/>
+
+</LinearLayout>

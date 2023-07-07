@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+        <com.nex3z.flowlayout.FlowLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:flChildSpacingForLastRow="align"
+                app:itemSpacing="0dp"
+                app:flChildSpacing="4dp"
+                app:flMinChildSpacing="8dp"
+                app:flRowSpacing="16dp">
+        <com.andyshon.tiktalk.utils.views.UserPagePreferencesView
+                android:layout_weight="1"
+                android:id="@+id/view1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:selectableItemBackground"
+                app:titleText="157 cm"
+                app:myImage="@drawable/ic_ruler"/>
+        <com.andyshon.tiktalk.utils.views.UserPagePreferencesView
+                android:layout_weight="1"
+                android:id="@+id/view2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:selectableItemBackground"
+                app:titleText="Socially"
+                app:myImage="@drawable/ic_bottle"/>
+        <com.andyshon.tiktalk.utils.views.UserPagePreferencesView
+                android:layout_weight="1"
+                android:id="@+id/view3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:selectableItemBackground"
+                app:isChecked="true"
+                app:titleText="Men"
+                app:myImage="@drawable/ic_gender"/>
+        <com.andyshon.tiktalk.utils.views.UserPagePreferencesView
+                android:layout_weight="1"
+                android:id="@+id/view4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:selectableItemBackground"
+                app:titleText="Never"
+                app:isChecked="true"
+                app:myImage="@drawable/ic_smoking"/>
+        <com.andyshon.tiktalk.utils.views.UserPagePreferencesView
+                android:layout_weight="1"
+                android:id="@+id/view5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:selectableItemBackground"
+                app:titleText="Something casual"
+                app:myImage="@drawable/ic_search"/>
+        <com.andyshon.tiktalk.utils.views.UserPagePreferencesView
+                android:layout_weight="1"
+                android:id="@+id/view6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:selectableItemBackground"
+                app:titleText="Dog"
+                app:myImage="@drawable/ic_pet"/>
+        <com.andyshon.tiktalk.utils.views.UserPagePreferencesView
+                android:id="@+id/view7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:selectableItemBackground"
+                app:titleText="Sagittarius"
+                app:myImage="@drawable/ic_zodiac"/>
+        <com.andyshon.tiktalk.utils.views.UserPagePreferencesView
+                android:id="@+id/view8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:selectableItemBackground"
+                app:titleText="Want someday"
+                app:myImage="@drawable/ic_baby"
+                android:backgroundTint="@color/colorBlack"/>
+    </com.nex3z.flowlayout.FlowLayout>
+
+</LinearLayout>

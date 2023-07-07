@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingTop="20dp"
+              android:paddingBottom="20dp"
+              android:id="@+id/layoutCountryCodeRoot">
+
+        <TextView
+                android:id="@+id/tvIconWithCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Afghanistan"
+                android:textSize="20sp"
+                android:fontFamily="@font/family_avenir_next"
+                android:layout_marginStart="26dp"
+                android:textColor="?attr/colorBlackOrWhite"/>
+</LinearLayout>

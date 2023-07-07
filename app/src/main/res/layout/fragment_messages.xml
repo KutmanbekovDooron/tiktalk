@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.messages.MessagesFragment">
+
+    <include layout="@layout/app_toolbar_main_messages"
+             android:id="@+id/toolbarMainMessages"/>
+
+    <include layout="@layout/app_toolbar_main_messages_tap"
+             android:id="@+id/toolbarMainMessagesTap" android:visibility="gone"/>
+
+    <include layout="@layout/app_toolbar_search_simple"
+             android:id="@+id/toolbarMainMessagesSearch"
+             android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chatsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"/>
+
+    <include layout="@layout/layout_empty_chats"/>
+
+</LinearLayout>

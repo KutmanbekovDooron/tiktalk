@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical"
+              android:id="@+id/chatSingleRoot"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <include layout="@layout/app_toolbar_chat_single"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:id="@+id/toolbarChatSingle"/>
+
+    <include layout="@layout/app_toolbar_chat_single_tap"
+             android:id="@+id/toolbarChatSingleTap" android:visibility="gone"/>
+
+    <include layout="@layout/app_toolbar_search_single_chat"
+             android:id="@+id/toolbarChatSingleSearch" android:visibility="gone"/>
+
+    <include layout="@layout/app_toolbar_chat_single_match"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:visibility="gone"
+             android:id="@+id/toolbarChatSingleMatch"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_weight="1"
+            android:id="@+id/chatSingleRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scrollbars="none"
+            app:stackFromEnd="true"
+            android:transcriptMode="alwaysScroll"/>
+
+    <include layout="@layout/layout_chat_single_empty"
+             android:id="@+id/layoutChatSingleEmpty"
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+             android:layout_weight="1"
+             android:visibility="gone"/>
+    <include
+            android:id="@+id/layoutChatSingleMatchesTips"
+            layout="@layout/layout_chat_single_empty_tips"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="10dp"/>
+
+    <include layout="@layout/layout_chat_single_message_actions"
+             android:id="@+id/layoutChatSingleMessageActions"
+             android:visibility="gone"
+             tools:visibility="visible"/>
+
+    <include layout="@layout/layout_chat_single_message_reply"
+             android:id="@+id/layoutChatSingleMessageReply"
+             android:visibility="gone"
+             tools:visibility="visible"/>
+
+    <include layout="@layout/layout_chat_single_typing"
+             android:id="@+id/layoutChatSingleTyping"
+             android:visibility="gone"
+             tools:visibility="visible"/>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <include layout="@layout/layout_text_message"
+                 android:id="@+id/layoutWriteMessage"/>
+        <include layout="@layout/layout_voice_message"
+                 android:id="@+id/layoutVoice"
+                 android:visibility="gone"
+                 tools:visibility="gone"
+        />
+    </FrameLayout>
+
+</LinearLayout>

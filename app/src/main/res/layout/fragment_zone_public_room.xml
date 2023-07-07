@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.zoneSingle.publicRoom.ZonePublicRoomFragment">
+
+    <FrameLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/placePublicRoomListRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                android:scrollbars="none"/>
+        <ProgressBar
+                android:id="@+id/progressBar"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateDuration="2000"
+                android:indeterminate="true"
+                android:indeterminateDrawable="@drawable/progressbar_custom_grey"/>
+    </FrameLayout>
+
+    <include layout="@layout/layout_chat_single_message_actions"
+             android:id="@+id/layoutChatSingleMessageActions"
+             android:visibility="gone"
+             tools:visibility="visible"/>
+
+    <include layout="@layout/layout_chat_single_message_reply"
+             android:id="@+id/layoutChatSingleMessageReply"
+             android:visibility="gone"
+             tools:visibility="visible"/>
+
+    <include layout="@layout/layout_chat_single_typing"
+             android:id="@+id/layoutChatSingleTyping"
+             android:visibility="gone"
+             tools:visibility="visible"/>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <include layout="@layout/layout_text_message"
+                 android:id="@+id/layoutWriteMessage"/>
+        <include layout="@layout/layout_voice_message"
+                 android:id="@+id/layoutVoice"
+                 android:visibility="gone"
+                 tools:visibility="gone"
+        />
+    </FrameLayout>
+</LinearLayout>

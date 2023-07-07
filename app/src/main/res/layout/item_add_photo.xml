@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <ImageView
+            android:id="@+id/ivPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:visibility="visible"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            tools:background="@drawable/ic_launcher_background"
+            android:scaleType="centerCrop"/>
+
+    <ImageView
+            android:id="@+id/btnRemovePhoto"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_remove_photo"
+            android:layout_gravity="bottom|end"
+            android:contentDescription="@string/remove"/>
+
+    <ImageView
+            android:id="@+id/btnAddPhoto"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_add_photo"
+            android:layout_gravity="center"
+            android:contentDescription="@string/add_photo"/>
+
+</FrameLayout>

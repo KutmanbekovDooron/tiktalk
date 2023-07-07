@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorBgToolbar"
+        android:orientation="horizontal">
+
+    <ImageView
+            android:id="@+id/toolbarBtnBack"
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:paddingStart="27dp"
+            android:paddingEnd="0dp"
+            android:src="@drawable/ic_arrow_left"
+            android:tint="@color/colorWhite"
+            android:contentDescription="@string/back"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="64dp"
+            android:lines="1"
+            android:textSize="20sp"
+            android:fontFamily="@font/roboto_regular"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:layout_gravity="start|center_vertical"
+            android:text="@string/forward"/>
+
+    <ImageView
+            android:layout_width="40dp"
+            android:layout_height="33dp"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:src="?attr/logoToolbar"
+            android:contentDescription="@string/logo"/>
+
+    <ImageView
+            android:id="@+id/toolbarBtnSearch"
+            android:layout_width="64dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end|center_vertical"
+            android:src="@drawable/ic_search"
+            android:contentDescription="@string/search"/>
+
+</FrameLayout>

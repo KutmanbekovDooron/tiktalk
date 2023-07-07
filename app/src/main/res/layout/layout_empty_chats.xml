@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        android:id="@+id/layoutEmptyChats"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="100dp"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_empty_messages"
+            android:contentDescription="@string/logo"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="@string/main_messages_any_chats_title"
+            android:textSize="24sp"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/colorBlack50"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:gravity="center"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:text="@string/main_messages_any_chats_subtitle"
+            android:textSize="20sp"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/colorBlack50"/>
+
+    <Button
+            android:id="@+id/btnSelectContact"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:fontFamily="@font/avenir_next_regular"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginStart="34dp"
+            android:layout_marginEnd="34dp"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_btn_violet"
+            android:text="@string/main_messages_start_a_chat"
+            android:layout_marginTop="80dp"/>
+</LinearLayout>

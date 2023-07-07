@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.startWith.StartWithActivity">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_with_log_in"
+            android:textSize="40sp"
+            android:fontFamily="@font/montserrat_bold"
+            android:layout_marginTop="70dp"
+            android:layout_marginStart="50dp"
+            android:textColor="@color/colorGrey"/>
+    
+
+    <ImageView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_start_with"
+            android:layout_gravity="center"
+            android:contentDescription="@string/logo"/>
+
+    <Button
+            android:id="@+id/btnStartWithPhone"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:fontFamily="@font/avenir_next_regular"
+            android:layout_width="288dp"
+            android:layout_gravity="center"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_btn_violet"
+            android:text="@string/start_with_btn_phone"
+            android:layout_marginTop="80dp"/>
+
+    <TextView
+            android:id="@+id/tvTerms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_with_terms"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="@font/montserrat_regular"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="72dp"
+            android:textColor="@color/colorGrey"/>
+
+</LinearLayout>

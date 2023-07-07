@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        android:layout_width="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="?attr/colorBgToolbar"
+    />
+
+    <FrameLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="20dp"
+            android:background="?attr/colorBgToolbar">
+
+        <ImageView
+                android:id="@+id/toolbarBtnBack"
+                android:layout_width="46dp"
+                android:layout_height="match_parent"
+                android:paddingTop="18dp"
+                android:paddingBottom="18dp"
+                android:layout_gravity="start|center_vertical"
+                android:paddingStart="27dp"
+                android:paddingEnd="0dp"
+                android:src="@drawable/ic_arrow_left"
+                android:tint="@color/colorWhite"
+                android:contentDescription="@string/back"/>
+
+        <TextView
+                android:id="@+id/toolbarTvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:lines="1"
+                android:textSize="20sp"
+                android:fontFamily="@font/roboto_regular"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:gravity="center_vertical"
+                android:layout_gravity="center"
+                android:text="@string/settings"/>
+    </FrameLayout>
+
+</FrameLayout>

@@ -1,0 +1,27 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <dimen name="design_fab_image_size" tools:override="true">12dp</dimen>
+
+    <dimen name="base_progress_border_width">2dp</dimen>
+    <dimen name="button_height">42dp</dimen>
+
+    <dimen name="font_size_small">14sp</dimen>
+    <dimen name="font_size_medium">16sp</dimen>
+    <dimen name="font_size_big">18sp</dimen>
+    <dimen name="font_size_very_big">23sp</dimen>
+
+    <dimen name="grid_list_spacing">8dp</dimen>
+    <dimen name="longg">80dp</dimen>
+
+    <dimen name="navigation_bar_height">0dp</dimen>
+    <dimen name="navigation_bar_height_dark">48dp</dimen>
+
+    <dimen name="radius_0">0dp</dimen>
+    <dimen name="radius_8">8dp</dimen>
+    <dimen name="radius_10">10dp</dimen>
+    <dimen name="radius_15">10dp</dimen>
+    <dimen name="radius_20">10dp</dimen>
+    <dimen name="radius_100">100dp</dimen>
+    <dimen name="radius_120">120dp</dimen>
+
+</resources>

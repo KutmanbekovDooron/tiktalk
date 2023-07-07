@@ -1,0 +1,20 @@
+import java.text.SimpleDateFormat
+
+ext {
+    appName = "TikTalk"
+    generateName = this.&generateName
+}
+
+def generateName(appVariants) {
+    appVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName =  appName + "_v${variant.versionName}_" + getDate() + ".apk"
+        }
+    }
+}
+
+static def getDate() {
+    def df = new SimpleDateFormat("yyyy-MM-dd")
+    df.setTimeZone(TimeZone.getTimeZone("UTC"))
+    return df.format(new Date())
+}

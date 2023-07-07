@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.settings.pushNotifications.PushNotificationsActivity">
+
+    <include layout="@layout/app_toolbar_title_gradient"/>
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="?attr/navigation_bar_height"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/settings_push_notifications"
+                    android:textSize="22sp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="?attr/colorTextGreyDarkOrWhite"/>
+
+            <FrameLayout
+                    android:id="@+id/btnPauseAll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="22dp"
+                    android:paddingBottom="22dp">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/push_notifications_pause_all"
+                        android:textSize="17sp"
+                        android:layout_gravity="start|center_vertical"
+                        android:textColor="?attr/colorTextGreyDarkOrWhite"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                <Switch android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/switcherPauseAll"
+                        android:checked="false"
+                        android:theme="@style/SwitchThemeFemale"
+                        android:layout_gravity="end"/>
+            </FrameLayout>
+            <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorLineGrayNotifications"/>
+
+            <FrameLayout
+                    android:id="@+id/btnMessages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="22dp"
+                    android:paddingBottom="22dp">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/push_notifications_messages"
+                        android:textSize="17sp"
+                        android:layout_gravity="start|center_vertical"
+                        android:textColor="?attr/colorTextGreyDarkOrWhite"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                <Switch android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/switcherMessages"
+                        android:checked="false"
+                        android:theme="@style/SwitchThemeFemale"
+                        android:layout_gravity="end"/>
+            </FrameLayout>
+            <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorLineGrayNotifications"/>
+
+            <FrameLayout
+                    android:id="@+id/btnNewMatches"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="22dp"
+                    android:paddingBottom="22dp">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/push_notifications_new_matches"
+                        android:textSize="17sp"
+                        android:layout_gravity="start|center_vertical"
+                        android:textColor="?attr/colorTextGreyDarkOrWhite"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                <Switch android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/switcherNewMatches"
+                        android:checked="false"
+                        android:theme="@style/SwitchThemeFemale"
+                        android:layout_gravity="end"/>
+            </FrameLayout>
+            <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorLineGrayNotifications"/>
+
+            <FrameLayout
+                    android:id="@+id/btnSomebodyLikeYou"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="22dp"
+                    android:paddingBottom="22dp">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/push_notifications_somebody_like_you"
+                        android:textSize="17sp"
+                        android:layout_gravity="start|center_vertical"
+                        android:textColor="?attr/colorTextGreyDarkOrWhite"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                <Switch android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/switcherSomebodyLikeYou"
+                        android:checked="false"
+                        android:theme="@style/SwitchThemeFemale"
+                        android:layout_gravity="end"/>
+            </FrameLayout>
+            <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorLineGrayNotifications"/>
+
+            <FrameLayout
+                    android:id="@+id/btnNewMsgInPrivateRoom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="22dp"
+                    android:paddingBottom="22dp">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/push_notifications_new_msg_in_private_room"
+                        android:textSize="17sp"
+                        android:layout_gravity="start|center_vertical"
+                        android:textColor="?attr/colorTextGreyDarkOrWhite"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                <Switch android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/switcherNewMsgInPrivateRoom"
+                        android:checked="false"
+                        android:theme="@style/SwitchThemeFemale"
+                        android:layout_gravity="end"/>
+            </FrameLayout>
+            <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorLineGrayNotifications"/>
+
+            <FrameLayout
+                    android:id="@+id/btnSuperLikes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="22dp"
+                    android:paddingBottom="22dp">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/push_notifications_super_likes"
+                        android:textSize="17sp"
+                        android:layout_gravity="start|center_vertical"
+                        android:textColor="?attr/colorTextGreyDarkOrWhite"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                <Switch android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/switcherSuperLikes"
+                        android:checked="false"
+                        android:theme="@style/SwitchThemeFemale"
+                        android:layout_gravity="end"/>
+            </FrameLayout>
+            <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorLineGrayNotifications"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

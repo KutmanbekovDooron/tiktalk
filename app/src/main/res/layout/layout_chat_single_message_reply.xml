@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:id="@+id/layoutSendMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingStart="16dp"
+        tools:ignore="RtlSymmetry"
+        android:gravity="end"
+        android:background="@color/colorSelectedMessageBackground">
+
+    <ImageView
+            android:id="@+id/actionBtnReplyRight"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_message_reply_right"
+            android:tint="?attr/colorTextGreyDarkOrWhite"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/reply"/>
+
+    <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical">
+        <TextView
+                android:id="@+id/tvReplyAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Kim"
+                android:textSize="15sp"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="?attr/colorTextGreyDarkOrWhite"/>
+        <TextView
+                android:id="@+id/tvReplyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Hello, how are you?"
+                android:textSize="15sp"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="?attr/colorTextGreyDarkOrWhite"/>
+    </LinearLayout>
+
+    <ImageView
+            android:id="@+id/btnReplyClose"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="4dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_close"
+            android:tint="?attr/colorTextGreyDarkOrWhite"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/close"/>
+
+</LinearLayout>

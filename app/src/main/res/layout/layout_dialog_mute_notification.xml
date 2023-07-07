@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorWhite">
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mute_notifications_for"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginTop="21dp"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintTop_toBottomOf="@id/btnClose"
+                android:fontFamily="@font/roboto_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_gravity="start"
+                android:layout_marginTop="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <RadioButton
+                    android:id="@+id/radio_2_hours"
+                    android:buttonTint="@color/colorBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mute_notifications_for_2_hours"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/colorBlack90"
+                    android:paddingStart="24dp" tools:ignore="RtlSymmetry"/>
+            <RadioButton
+                    android:id="@+id/radio_8_hours"
+                    android:buttonTint="@color/colorBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mute_notifications_for_8_hours"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/colorBlack90"
+                    android:layout_marginTop="18dp"
+                    android:paddingStart="24dp" tools:ignore="RtlSymmetry"/>
+            <RadioButton
+                    android:id="@+id/radio_1_week"
+                    android:buttonTint="@color/colorBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mute_notifications_for_1_week"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/colorBlack90"
+                    android:layout_marginTop="18dp"
+                    android:paddingStart="24dp" tools:ignore="RtlSymmetry"/>
+            <RadioButton
+                    android:id="@+id/radio_1_year"
+                    android:buttonTint="@color/colorBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mute_notifications_for_1_year"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/colorBlack90"
+                    android:layout_marginTop="18dp"
+                    android:paddingStart="24dp" tools:ignore="RtlSymmetry"/>
+        </RadioGroup>
+    </LinearLayout>
+
+
+    <View
+            android:id="@+id/tvSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorBlack10"/>
+
+    <LinearLayout
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/btnCancel"
+                android:paddingTop="18dp"
+                android:paddingBottom="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/cancel"
+                android:textAllCaps="true"/>
+        <TextView
+                android:id="@+id/btnOk"
+                android:paddingTop="18dp"
+                android:paddingBottom="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="43dp"
+                android:layout_marginEnd="35dp"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/ok"/>
+    </LinearLayout>
+
+</LinearLayout>

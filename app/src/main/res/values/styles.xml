@@ -1,0 +1,286 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="ActionButtonStyle" parent="Widget.AppCompat.ActionButton">
+        <item name="android:minWidth">24dp</item>
+        <item name="android:maxWidth">40dp</item>
+        <item name="android:width">25dp</item>
+    </style>
+
+    <style name="DialogAnimationAlphaFast">
+        <item name="android:windowEnterAnimation">@anim/alpha_enter_fast</item>
+        <item name="android:windowExitAnimation">@anim/alpha_exit_fast</item>
+    </style>
+
+    <style name="SwitchThemeGreen" parent="Theme.AppCompat.Light">
+        <item name="android:colorControlActivated">@color/colorGreen</item>
+    </style>
+    <style name="SwitchThemeViolet" parent="Theme.AppCompat.Light">
+        <item name="android:colorControlActivated">@color/colorBtnViolet</item>
+    </style>
+    <style name="SwitchThemeFemale" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/colorBtnViolet</item>
+    </style>
+    <style name="SwitchGender" >
+        <item name="android:thumbTint">@color/switch_color_thumb</item>
+        <item name="android:trackTint" tools:targetApi="m">@color/switch_color_track</item>
+    </style>
+
+    <style name="TextInputLayoutAppearance" parent="Widget.Design.TextInputLayout">
+        <!-- reference our hint & error styles -->
+        <item name="hintTextAppearance">@drawable/bg_input_field_error</item>
+        <item name="errorTextAppearance">@style/ErrorText</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
+        <item name="colorControlActivated">@color/colorBlack</item>
+        <item name="colorControlHighlight">@color/colorOrange</item>
+    </style>
+
+    <style name="BottomTabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">#E97E78</item>
+    </style>
+
+
+    <style name="ErrorText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorAppRed</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="HintText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorAppRed</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!--Error label text style for TextInputLayout-->
+    <style name="MsgErrorText" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/colorAppRed</item>
+        <item name="android:fontFamily">@font/avenir_next_regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineSpacingMultiplier">1.0</item>
+        <item name="android:lineSpacingExtra">5dp</item>
+    </style>
+
+    <style name="MsgErrorTextWithMargin" parent="MsgErrorText">
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:paddingBottom">-15dp</item>
+    </style>
+
+    <!-- set the rounded drawable as background to your bottom sheet -->
+    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet_dialog_fragment</item>
+    </style>
+
+    <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog"/>
+
+
+    <!-- Base application theme. -->
+    <style name="AppTheme.Base">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:fontFamily">@font/family_avenir_next</item>
+        <item name="android:lineSpacingMultiplier">1.0</item>
+        <item name="android:lineSpacingExtra">5dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="AppTheme.Default" parent="AppTheme.Base">
+        <item name="android:windowBackground">@color/colorDefaultThemeBackground</item>
+        <item name="android:statusBarColor">@color/colorDefaultThemeBackground</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="primaryTextColor">@color/colorBlack</item>
+        <item name="colorBackground">@color/colorDefaultThemeBackground</item>
+        <item name="colorBgBottomBar">@color/colorDefaultThemeBgBottomBar</item>
+        <item name="colorBlackOrWhite50">@color/colorBlack50</item>
+        <item name="colorBlackOrWhite">@color/colorBlack</item>
+        <item name="colorBlack15OrWhite15">@color/colorBlack15</item>
+        <item name="colorBlack50OrWhite">@color/colorBlack50</item>
+        <item name="colorBlack50OrWhite50">@color/colorBlack50</item>
+        <item name="colorBlack90OrWhite">@color/colorBlack90</item>
+        <item name="colorWhiteOrBlackDark">@color/colorWhite</item>
+        <item name="colorTextBlackOrGrey">@color/colorBlack</item>
+        <item name="colorBgToolbar">@drawable/bg_toolbar_gradient</item>
+        <item name="logoSplash">@drawable/ic_tik_talk_logo</item>
+        <item name="logoToolbar">@drawable/ic_logo_white</item>
+        <item name="logoSecretToolbar">@drawable/ic_logo_secret_white</item>
+        <item name="messagesCounter">@drawable/bg_messages_counter</item>
+        <item name="colorGreyOrWhite">@color/colorGrey</item>
+        <item name="colorTextGreyDarkOrWhite">@color/colorGreyDark</item>
+        <item name="colorTextGreyDarkOrGreyLight">@color/colorGreyDark50</item>
+        <item name="colorTextGreyDark50OrWhite">@color/colorGreyDark50</item>
+        <item name="colorTextGreyDark70OrWhite">@color/colorGreyDark70</item>
+        <item name="colorTextGreyDark80OrWhite">@color/colorGreyDark80</item>
+        <item name="colorTextGreyLightOrWhite">@color/colorGreyLight</item>
+        <item name="colorWhite80OrViolet">@color/colorWhite80</item>
+        <item name="preferencesViewDisable">@drawable/bg_round_matches_about_disable</item>
+        <item name="preferencesViewEnable">@drawable/bg_round_matches_about_enable</item>
+        <item name="colorLineGray">@color/colorDefaultThemeLineGray</item>
+        <item name="colorLineGrayNotifications">@color/colorEditProfileLine</item>
+        <item name="attachFilesBg">@drawable/bg_round_bottom_sheet</item>
+        <item name="navigation_bar_height">@dimen/navigation_bar_height</item>
+        <item name="colorEditProfileLine">@color/colorEditProfileLine</item>
+        <item name="arrowLeft">@drawable/ic_arrow_left_40</item>
+        <item name="bg_pin_btn">@color/colorDefaultThemeBackground</item>
+        <item name="pin_cursor">@color/colorBtnViolet</item>
+        <item name="pin_text">@color/colorBlack</item>
+        <item name="colorBadgeBorder">@color/colorBadgeBorder</item>
+
+        <item name="android:textColorHint">@color/colorGreyDark</item>
+        <item name="colorControlNormal">@color/colorEditProfileLine</item>
+        <item name="colorControlActivated">@color/colorEditProfileLine</item>
+        <item name="colorControlHighlight">@color/colorEditProfileLine</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_color</item>
+    </style>
+
+    <style name="AppTheme.Dark" parent="AppTheme.Base">
+        <item name="android:windowBackground">@color/colorDarkThemeBackground</item>
+        <item name="android:statusBarColor">@color/colorDarkThemeBackground</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="primaryTextColor">@color/colorWhite</item>
+        <item name="colorBackground">@color/colorDarkThemeBackground</item>
+        <item name="colorBgBottomBar">@color/colorDarkThemeBgBottomBar</item>
+        <item name="colorBlackOrWhite50">@color/colorWhite50</item>
+        <item name="colorBlackOrWhite">@color/colorWhite</item>
+        <item name="colorBlack15OrWhite15">@color/colorWhite15</item>
+        <item name="colorBlack50OrWhite">@color/colorWhite</item>
+        <item name="colorBlack50OrWhite50">@color/colorWhite50</item>
+        <item name="colorBlack90OrWhite">@color/colorWhite</item>
+        <item name="colorWhiteOrBlackDark">@color/colorDarkThemeBgBottomBar</item>
+        <item name="colorTextBlackOrGrey">@color/colorWhite40</item>
+        <item name="colorBgToolbar">@drawable/bg_toolbar_gradient_dark</item>
+        <item name="logoSplash">@drawable/ic_tik_talk_logo_dark</item>
+        <item name="logoToolbar">@drawable/ic_logo_dark</item>
+        <item name="logoSecretToolbar">@drawable/ic_logo_secret_dark</item>
+        <item name="messagesCounter">@drawable/bg_messages_counter_dark</item>
+        <item name="colorGreyOrWhite">@color/colorWhite</item>
+        <item name="colorTextGreyDarkOrWhite">@color/colorWhite</item>
+        <item name="colorTextGreyDarkOrGreyLight">@color/colorWhite40</item>
+        <item name="colorTextGreyDark50OrWhite">@color/colorWhite</item>
+        <item name="colorTextGreyDark70OrWhite">@color/colorWhite</item>
+        <item name="colorTextGreyDark80OrWhite">@color/colorWhite</item>
+        <item name="colorTextGreyLightOrWhite">@color/colorWhite</item>
+        <item name="colorWhite80OrViolet">@color/colorBtnViolet</item>
+        <item name="preferencesViewDisable">@drawable/bg_round_matches_about_disable_dark</item>
+        <item name="preferencesViewEnable">@drawable/bg_round_matches_about_enable_dark</item>
+        <item name="colorLineGray">@color/colorDarkThemeLineGray</item>
+        <item name="colorLineGrayNotifications">@color/colorDarkThemeLineGray</item>
+        <item name="attachFilesBg">@drawable/bg_round_bottom_sheet_dark</item>
+        <item name="navigation_bar_height">@dimen/navigation_bar_height_dark</item>
+        <item name="colorEditProfileLine">@color/colorEditProfileLineDark</item>
+        <item name="arrowLeft">@drawable/ic_arrow_left_40_dark</item>
+        <item name="bg_pin_btn">@color/colorBlack40</item>
+        <item name="pin_cursor">@color/colorGreyDark</item>
+        <item name="pin_text">@color/colorBlack40</item>
+        <item name="colorBadgeBorder">@color/colorDarkThemeBackground</item>
+
+        <item name="android:textColorHint">@color/colorWhite</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
+        <item name="colorControlActivated">@color/colorWhite</item>
+        <item name="colorControlHighlight">@color/colorWhite</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_color_white</item>
+    </style>
+
+
+
+
+
+
+
+        <style name="Theme.Transparent" parent="Theme.AppCompat.Light.DarkActionBar">
+            <item name="android:windowIsTranslucent">true</item>
+            <item name="android:windowBackground">@android:color/transparent</item>
+            <item name="android:windowContentOverlay">@null</item>
+            <item name="android:windowNoTitle">true</item>
+            <item name="android:windowIsFloating">true</item>
+            <item name="android:backgroundDimEnabled">false</item>
+
+            <item name="windowActionBar">false</item>
+            <item name="windowNoTitle">true</item>
+        </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:fontFamily">@font/family_avenir_next</item>
+        <item name="android:lineSpacingMultiplier">1.0</item>
+        <item name="android:lineSpacingExtra">5dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="MyActionButtonOverflow" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_toolbar_dots</item>
+        <item name="android:scaleX">1.1</item>
+        <item name="android:scaleY">1.1</item>
+    </style>
+
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/bg_dialog_round</item>
+        <!--<item name="android:layout_marginStart">24dp</item>-->
+        <!--<item name="android:layout_marginEnd">24dp</item>-->
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+
+    <style name="LywActionMode" parent="Base.Widget.AppCompat.ActionMode">
+        <item name="background">@color/colorAccent</item>
+        <item name="backgroundSplit">@color/colorAccent</item>
+    </style>
+
+
+    <style name="CustomAlertDialogAnko" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="android:buttonBarPositiveButtonStyle">@style/btnStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/btnStyle</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="btnStyle" parent="Widget.AppCompat.ActionButton">
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+
+
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@color/colorRed</item>
+        <!--<item name="android:windowCloseOnTouchOutside">false</item>-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackground">     @android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+
+    <style name="ThemeTabLayout" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/colorBtnViolet</item>
+    </style>
+
+</resources>

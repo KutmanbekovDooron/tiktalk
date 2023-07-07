@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools" android:id="@+id/bottom_sheet"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+
+              android:layout_gravity="bottom"
+
+              app:behavior_hideable="true"
+              app:behavior_peekHeight="0dp"
+              app:layout_behavior="@string/bottom_sheet_behavior">
+
+
+    <LinearLayout android:id="@+id/bottom_shee222t"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+
+                  android:background="?attr/attachFilesBg"
+                  android:layout_gravity="bottom"
+                  android:paddingStart="16dp"
+                  android:paddingEnd="16dp"
+                  android:layout_marginBottom="?attr/navigation_bar_height"
+                  tools:ignore="UselessParent">
+
+        <LinearLayout
+                android:id="@+id/ggggg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/attachFilesBg"
+                android:layout_marginTop="26dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" tools:ignore="UseCompoundDrawables">
+                <ImageView
+                        android:id="@+id/btnAttachCamera"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/bg_round_attach_file"
+                        android:src="@drawable/ic_attach_file_camera"
+                        android:contentDescription="@string/attach_files_camera"
+                        android:padding="18dp"
+                        android:layout_gravity="top|center_vertical"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attach_files_camera"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        android:textColor="?attr/colorTextGreyDark80OrWhite"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/roboto_regular"/>
+            </LinearLayout>
+
+            <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"/>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" tools:ignore="UseCompoundDrawables">
+                <ImageView
+                        android:id="@+id/btnAttachGallery"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/bg_round_attach_file"
+                        android:src="@drawable/ic_attach_file_gallery"
+                        android:contentDescription="@string/attach_files_gallery"
+                        android:padding="18dp"
+                        android:layout_gravity="center_vertical"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attach_files_gallery"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        android:textColor="?attr/colorTextGreyDark80OrWhite"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/roboto_regular"/>
+            </LinearLayout>
+            <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"/>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" tools:ignore="UseCompoundDrawables">
+                <ImageView
+                        android:id="@+id/btnAttachVideo"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/bg_round_attach_file"
+                        android:src="@drawable/ic_attach_file_video"
+                        android:contentDescription="@string/attach_files_video"
+                        android:padding="18dp"
+                        android:layout_gravity="center_vertical"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attach_files_video"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        android:textColor="?attr/colorTextGreyDark80OrWhite"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/roboto_regular"/>
+            </LinearLayout>
+            <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"/>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" tools:ignore="UseCompoundDrawables">
+                <ImageView
+                        android:id="@+id/btnAttachMusic"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/bg_round_attach_file"
+                        android:src="@drawable/ic_attach_file_music"
+                        android:contentDescription="@string/attach_files_music"
+                        android:padding="18dp"
+                        android:layout_gravity="center_vertical"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attach_files_music"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        android:textColor="?attr/colorTextGreyDark80OrWhite"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/roboto_regular"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+
+
+        <LinearLayout
+                android:id="@+id/ggggg2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/attachFilesBg"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" tools:ignore="UseCompoundDrawables">
+                <ImageView
+                        android:id="@+id/btnAttachFile"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/bg_round_attach_file"
+                        android:src="@drawable/ic_attach_file_file"
+                        android:contentDescription="@string/attach_files_file"
+                        android:padding="18dp"
+                        android:layout_gravity="top|center_vertical"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attach_files_file"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        android:textColor="?attr/colorTextGreyDark80OrWhite"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/roboto_regular"/>
+            </LinearLayout>
+
+            <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"/>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" tools:ignore="UseCompoundDrawables">
+                <ImageView
+                        android:id="@+id/btnAttachLocation"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/bg_round_attach_file"
+                        android:src="@drawable/ic_attach_file_location"
+                        android:contentDescription="@string/attach_files_location"
+                        android:padding="18dp"
+                        android:layout_gravity="center_vertical"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attach_files_location"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        android:textColor="?attr/colorTextGreyDark80OrWhite"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/roboto_regular"/>
+            </LinearLayout>
+            <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"/>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" tools:ignore="UseCompoundDrawables">
+                <ImageView
+                        android:id="@+id/btnAttachContact"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/bg_round_attach_file"
+                        android:src="@drawable/ic_attach_file_contact"
+                        android:contentDescription="@string/attach_files_contact"
+                        android:padding="18dp"
+                        android:layout_gravity="center_vertical"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attach_files_contact"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        android:textColor="?attr/colorTextGreyDark80OrWhite"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/roboto_regular"/>
+            </LinearLayout>
+            <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"/>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:orientation="vertical">
+                <ImageView
+                        android:id="@+id/btnAttachClose"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/bg_round_attach_file"
+                        android:src="@drawable/ic_arrow_left50"
+                        android:rotation="-90"
+                        android:padding="18dp"
+                        android:contentDescription="@string/close"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

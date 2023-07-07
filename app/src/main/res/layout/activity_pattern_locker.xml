@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        tools:context=".ui.locker.PatternLockerActivity">
+
+    <include layout="@layout/app_toolbar_only_btn_back"/>
+
+    <ImageView
+            android:layout_width="80dp"
+            android:layout_height="65dp"
+            android:src="@drawable/ic_logo_secret_gradient"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
+            android:contentDescription="@string/logo"/>
+
+    <com.andrognito.patternlockview.PatternLockView
+            android:id="@+id/pattern_lock_view"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            app:pathWidth="4dp"
+            app:dotAnimationDuration="200"
+            app:pathEndAnimationDuration="100"
+            app:normalStateColor="@color/colorBtnViolet"
+            app:correctStateColor="@color/colorBtnViolet"
+            app:wrongStateColor="@color/colorRed"
+            android:layout_gravity="center"/>
+
+</LinearLayout>

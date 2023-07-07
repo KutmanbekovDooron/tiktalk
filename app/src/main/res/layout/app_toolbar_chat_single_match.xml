@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorBgToolbar">
+
+    <ImageView
+            android:id="@+id/toolbarMatchBtnBack"
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:paddingStart="27dp"
+            android:paddingEnd="0dp"
+            android:src="@drawable/ic_arrow_left"
+            android:tint="@color/colorWhite"
+            android:contentDescription="@string/back"/>
+
+    <ImageView
+            android:id="@+id/toolbarMatchUserAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="18dp"
+            tools:visibility="visible"
+            android:visibility="invisible"
+            android:layout_gravity="start|center_vertical"
+            tools:background="@drawable/ic_add_photo"
+            android:scaleType="centerCrop"/>
+
+    <TextView
+            android:layout_weight="1"
+            android:id="@+id/toolbarMatchUserName"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="20sp"
+            android:fontFamily="@font/roboto_regular"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:layout_gravity="start|center_vertical"
+            android:lines="1"
+            tools:text="Kim"/>
+
+    <ImageView
+            android:id="@+id/toolbarBtnSearch"
+            android:layout_width="64dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end|center_vertical"
+            android:src="@drawable/ic_search"
+            android:contentDescription="@string/search"/>
+</LinearLayout>

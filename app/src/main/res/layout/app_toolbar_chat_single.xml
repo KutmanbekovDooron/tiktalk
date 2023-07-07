@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarRoot"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorBgToolbar"
+            android:elevation="0dp"
+
+            android:contentInsetLeft="0dp"
+            android:contentInsetStart="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            android:contentInsetRight="0dp"
+            android:contentInsetEnd="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetEnd="0dp"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+            <ImageView
+                    android:id="@+id/toolbarBtnBack"
+                    android:layout_width="46dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:paddingStart="27dp"
+                    android:paddingEnd="0dp"
+                    android:src="@drawable/ic_arrow_left"
+                    android:tint="@color/colorWhite"
+                    android:contentDescription="@string/back"/>
+
+            <ImageView
+                    android:id="@+id/toolbarUserAvatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="18dp"
+                    tools:visibility="visible"
+                    android:visibility="invisible"
+                    android:layout_gravity="start|center_vertical"
+                    tools:background="@drawable/ic_add_photo"
+                    android:scaleType="centerCrop"/>
+
+            <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/toolbarUserName"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="start|center_vertical"
+                    android:lines="1"
+                    tools:text="Kim"/>
+
+            <ImageView
+                    android:id="@+id/toolbarBtnCamera"
+                    android:layout_width="38dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_toolbar_camera"
+                    android:contentDescription="@string/attach_files_camera"/>
+
+            <ImageView
+                    android:id="@+id/toolbarBtnPhone"
+                    android:layout_width="38dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end|center_vertical"
+                    android:src="@drawable/ic_toolbar_phone"
+                    android:contentDescription="@string/phone"/>
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+</FrameLayout>

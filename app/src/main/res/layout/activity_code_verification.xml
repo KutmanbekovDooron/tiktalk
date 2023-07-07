@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="?attr/navigation_bar_height"
+        tools:context=".ui.auth.verification.CodeVerificationActivity">
+
+    <include layout="@layout/app_toolbar_title"/>
+
+    <TextView
+            android:id="@+id/tvSendToPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="67dp"
+            android:gravity="center"
+            android:text="@string/code_verification_send_to_phone"
+            android:textSize="16sp"
+            android:textColor="?attr/colorTextGreyDarkOrWhite"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_marginStart="55dp"
+            android:layout_marginEnd="55dp"
+            android:lineHeight="27dp" tools:ignore="UnusedAttribute"/>
+
+
+    <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+        <com.chaos.view.PinView
+                android:id="@+id/codeEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/PinWidget.PinView"
+                android:layout_marginTop="60dp"
+                android:layout_gravity="center_horizontal"
+                android:cursorVisible="true"
+                android:inputType="number"
+                android:itemBackground="@drawable/bg_pin_btn"
+                android:padding="0dp"
+                android:textSize="18sp"
+                tools:text="1234"
+                android:textColor="?attr/colorBlackOrWhite"
+                android:fontFamily="@font/montserrat_semibold"
+                app:cursorColor="?attr/pin_cursor"
+                app:cursorWidth="2dp"
+                app:hideLineWhenFilled="false"
+                app:itemCount="4"
+                app:itemHeight="42dp"
+                app:itemSpacing="24dp"
+                app:itemWidth="42dp"
+                app:lineColor="@color/colorTransparent"
+                app:lineWidth="0dp"
+                app:viewType="rectangle"/>
+        <TextView
+                android:id="@+id/tvIncorrectCode"
+                tools:visibility="visible"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/code_verification_incorrect_code"
+                android:layout_marginTop="36dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="#E63950"
+                android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+
+    <Button
+            android:id="@+id/btnVerify"
+            android:enabled="false"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:fontFamily="@font/avenir_next_regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="160dp"
+            android:layout_marginStart="34dp"
+            android:layout_marginEnd="34dp"
+            android:textAllCaps="false"
+            android:background="@drawable/selector_btn_red"
+            android:text="@string/code_verification_btn"/>
+
+</LinearLayout>

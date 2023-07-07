@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatCheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?android:attr/spinnerDropDownItemStyle"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:ellipsize="marquee"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:singleLine="true"
+    android:textColor="@color/colorBlack"
+    android:textSize="24sp" />

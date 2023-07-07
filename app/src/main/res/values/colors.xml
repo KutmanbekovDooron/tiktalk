@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="colorPrimaryTransparent">#33F3F3F3</color>
+    <color name="colorTransparent">#00FFFFFF</color>
+
+    <color name="colorToolbarBackground">#FAFAFA</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorWhite15">#26FFFFFF</color>
+    <color name="colorWhite40">#66ffffff</color>
+    <color name="colorWhite50">#80ffffff</color>
+    <color name="colorWhite70">#B3ffffff</color>
+    <color name="colorWhite80">#CCffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorBlack80">#CC000000</color>
+    <color name="colorBlack70">#B3000000</color>
+    <color name="colorBlack10">#1A000000</color>
+    <color name="colorBlack15">#26000000</color>
+    <color name="colorBlack20">#33000000</color>
+    <color name="colorBlack40">#66000000</color>
+    <color name="colorBlack50">#80000000</color>
+    <color name="colorBlack90">#E6000000</color>
+
+    <color name="colorAppRed">#DD4927</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="colorRedRecording">#DD0000</color>
+    <color name="colorRedCall">#FF3737</color>
+    <color name="colorOrange">#F4921E</color>
+    <color name="colorGreen">#4ECA63</color>
+    <color name="colorGreenCall">#008C27</color>
+
+    <color name="colorBtnRed">#DD5357</color>
+    <color name="colorBtnViolet">#822D74</color>
+    <color name="colorVioletLight">#913982</color>
+    <color name="colorBtnViolet50">#80822D74</color>
+    <color name="colorBtnViolet20">#33822D74</color>
+    <color name="colorBtnMale">#6C63FF</color>
+    <color name="colorBtnMale50">#806C63FF</color>
+    <color name="colorBtnFemale">#F32CD2</color>
+    <color name="colorBtnFemale50">#80F32CD2</color>
+    <color name="colorBtnGrey">#C4C4C4</color>
+    <color name="colorGrey">#163355</color>
+    <color name="colorGreyDark">#333333</color>
+    <color name="colorGreyDark80">#CC333333</color>
+    <color name="colorGreyDark70">#B3333333</color>
+    <color name="colorGreyDark50">#80333333</color>
+    <color name="colorGreyLight">#787878</color>
+    <color name="colorGreyIndicator">#747474</color>
+
+    <color name="colorBottomBarGray">#929292</color>
+    <color name="colorGray">#8A8A8F</color>
+    <color name="colorGrayLight">#EBEBEB</color>
+
+    <color name="colorChatOwn">#1194AA</color>
+    <color name="colorChatOwn50">#801194AA</color>
+    <color name="colorChatOpponent">#E5E6EA</color>
+    <color name="colorChatOpponentTime">#858E99</color>
+    <color name="colorChatIndicatorGreen">#9BD04C</color>
+
+    <color name="colorLongClickBg">#C1C1C1</color>
+
+    <color name="colorZoneGreen">#479C73</color>
+    <color name="colorZonePurple">#5E6996</color>
+
+    <color name="colorLineGraySeekBar">#C7C7CC</color>
+
+    <color name="colorViewContactBackground">#A8D9E6</color>
+
+    <color name="colorShareTwitter">#55ACEE</color>
+    <color name="colorShareTelegram">#009DCF</color>
+    <color name="colorShareWatsUp">#7AD06D</color>
+
+    <color name="colorBadgeBorder">#F4F4F4</color>
+
+    <color name="colorSelectedMessageBackground">#4D1194aa</color>
+
+    <color name="colorEditProfileLine">#C8C7CC</color>
+    <color name="colorEditProfileLineDark">#474747</color>
+
+
+    <color name="colorOpponent1">#479C73</color>
+    <color name="colorOpponent2">#5E6996</color>
+    <color name="colorOpponent3">#CE5612</color>
+    <color name="colorOpponent4">#BF3EFF</color>
+    <color name="colorOpponent5">#68228B</color>
+    <color name="colorOpponent6">#414AC5</color>
+    <color name="colorOpponent7">#CE3F3F</color>
+    <color name="colorOpponent8">#5AC18E</color>
+    <color name="colorOpponent9">#008080</color>
+    <color name="colorOpponent10">#FFD700</color>
+    <color name="colorOpponent11">#FFA500</color>
+    <color name="colorOpponent12">#FFC3A0</color>
+    <color name="colorOpponent13">#A0DB8E</color>
+    <color name="colorOpponent14">#14F291</color>
+    <color name="colorOpponent15">#479C73</color>
+    <color name="colorOpponent16">#479C73</color>
+    <color name="colorOpponent17">#479C73</color>
+    <color name="colorOpponent18">#479C73</color>
+    <color name="colorOpponent19">#479C73</color>
+    <color name="colorOpponent20">#479C73</color>
+    <color name="colorOpponent21">#479C73</color>
+    <color name="colorOpponent22">#479C73</color>
+    <color name="colorOpponent23">#479C73</color>
+    <color name="colorOpponent24">#479C73</color>
+    <color name="colorOpponent25">#479C73</color>
+    <color name="colorOpponent26">#479C73</color>
+
+
+
+    <color name="colorDefaultThemeBackground">#E9F6FF</color>
+    <color name="colorDefaultThemeBgBottomBar">#F1F9FF</color>
+    <color name="colorDefaultThemeMessagesCounter">#822D74</color>
+    <color name="colorDefaultThemeLineGray">#817F83</color>
+
+
+    <color name="colorDarkThemeBackground">#1F2122</color>
+    <color name="colorDarkThemeBgBottomBar">#1A1C1D</color>
+    <color name="colorDarkThemeMessagesCounter">#71BFCC</color>
+    <color name="colorDarkThemePreferencesViewEnable">#8071BFCC</color>
+    <color name="colorDarkThemeLineGray">#474747</color>
+
+
+</resources>

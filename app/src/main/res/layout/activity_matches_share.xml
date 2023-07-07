@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.matches.share.MatchesShareActivity">
+
+    <ImageView
+            android:layout_width="80dp"
+            android:layout_height="65dp"
+            android:src="@drawable/ic_tik_talk_logo"
+            android:layout_gravity="center"
+            android:layout_marginTop="56dp"
+            android:contentDescription="@string/logo"/>
+
+    <ImageView
+            android:layout_weight="1"
+            android:id="@+id/avatar"
+            android:layout_width="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="top"
+            android:visibility="invisible"
+            android:scaleType="centerCrop"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center"
+            android:text="@string/share_with_friends"
+            android:textSize="20sp"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="?attr/colorBlack90OrWhite"/>
+
+    <LinearLayout
+            android:id="@+id/ggggg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" tools:ignore="UseCompoundDrawables">
+            <ImageView
+                    android:id="@+id/btnShareWhatsApp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/bg_round_share_whats_up"
+                    android:src="@drawable/ic_wats_up"
+                    android:padding="20dp"
+                    android:layout_gravity="top|center_vertical"
+                    android:contentDescription="@string/share_whatsApp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/share_whatsApp"
+                    android:layout_marginTop="8dp"
+                    android:layout_gravity="center"
+                    android:textColor="?attr/colorTextGreyDarkOrWhite"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/roboto_regular"/>
+        </LinearLayout>
+
+        <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"/>
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" tools:ignore="UseCompoundDrawables">
+            <ImageView
+                    android:id="@+id/btnShareTelegram"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/bg_round_share_telegram"
+                    android:src="@drawable/ic_telegram"
+                    android:padding="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/share_telegram"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/share_telegram"
+                    android:layout_marginTop="8dp"
+                    android:layout_gravity="center"
+                    android:textColor="?attr/colorTextGreyDarkOrWhite"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/roboto_regular"/>
+        </LinearLayout>
+        <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"/>
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" tools:ignore="UseCompoundDrawables">
+            <ImageView
+                    android:id="@+id/btnShareTwitter"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/bg_round_share_twitter"
+                    android:src="@drawable/ic_twitter"
+                    android:padding="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/share_twitter"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/share_twitter"
+                    android:layout_marginTop="8dp"
+                    android:layout_gravity="center"
+                    android:textColor="?attr/colorTextGreyDarkOrWhite"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/roboto_regular"/>
+        </LinearLayout>
+        <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"/>
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" tools:ignore="UseCompoundDrawables">
+            <ImageView
+                    android:id="@+id/btnShareCopyLink"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/bg_round_share_copy_link"
+                    android:src="@drawable/ic_copy_link"
+                    android:padding="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/share_copy_link"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/share_copy_link"
+                    android:layout_marginTop="8dp"
+                    android:layout_gravity="center"
+                    android:textColor="?attr/colorTextGreyDarkOrWhite"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/roboto_regular"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <TextView
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/cancel"
+            android:textColor="?attr/colorBlack90OrWhite"
+            android:textSize="20sp"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="22dp"
+            android:src="@drawable/ic_it_is_match_title"/>
+
+</LinearLayout>

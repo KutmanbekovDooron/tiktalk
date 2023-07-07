@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layoutSendMessage"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="end"
+        android:background="@color/colorSelectedMessageBackground">
+
+    <ImageView
+            android:id="@+id/actionBtnReplyLeft"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_message_reply"
+            android:layout_gravity="center_vertical"
+            android:tint="?attr/colorTextGreyDarkOrWhite"
+            android:layout_marginEnd="40dp"
+            android:contentDescription="@string/reply"/>
+
+    <ImageView
+            android:id="@+id/actionBtnCopy"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_message_copy"
+            android:tint="?attr/colorTextGreyDarkOrWhite"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="40dp"
+            android:contentDescription="@string/copy"/>
+
+    <ImageView
+            android:id="@+id/actionBtnDelete"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_trash"
+            android:tint="?attr/colorTextGreyDarkOrWhite"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="40dp"
+            android:contentDescription="@string/delete"/>
+
+    <ImageView
+            android:id="@+id/actionBtnReplyRight"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_message_reply_right"
+            android:tint="?attr/colorTextGreyDarkOrWhite"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/reply"/>
+
+</LinearLayout>

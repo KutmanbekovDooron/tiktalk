@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/bottom_sheet"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+
+              android:background="@drawable/bg_round_bottom_sheet"
+
+              android:orientation="vertical"
+              android:paddingStart="27dp"
+              android:paddingEnd="27dp"
+              app:behavior_hideable="true"
+              app:behavior_peekHeight="0dp"
+
+              android:layout_marginTop="100dp"
+
+              android:layout_gravity="bottom"
+              android:gravity="bottom"
+
+              app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <LinearLayout
+            android:id="@+id/ggggg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_round_bottom_sheet"
+            android:layout_marginTop="38dp"
+            android:orientation="vertical">
+
+        <FrameLayout
+                android:layout_weight="0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="@string/all_users"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_bold"/>
+            <ImageView
+                    android:id="@+id/btnHideUsersSheet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="1.2"
+                    android:scaleY="1.2"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_arrow_left"
+                    android:rotation="-90"
+                    android:tint="@color/colorBlack50"
+                    android:layout_marginTop="8dp"
+                    android:layout_gravity="end"
+                    android:contentDescription="@string/image"/>
+        </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_weight="1"
+                android:id="@+id/zoneUsersRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:verticalSpacing="10dp"
+                android:horizontalSpacing="10dp"
+                android:scrollbars="none"
+                android:numColumns="3"/>
+    </LinearLayout>
+
+</LinearLayout>

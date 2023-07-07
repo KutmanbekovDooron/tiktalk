@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/videoCallRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.calls.video.VideoCallActivity">
+
+    <com.twilio.video.VideoView
+            android:id="@+id/thumbnailVideoView"
+            app:overlaySurface="true"
+            app:mirror="true"
+            android:visibility="gone"
+            android:layout_width="118dp"
+            android:layout_height="182dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="100dp"
+            android:layout_gravity="bottom|end"/>
+
+    <com.twilio.video.VideoView
+            android:id="@+id/primaryVideoView"
+            app:mirror="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
+
+    <ProgressBar
+            android:id="@+id/reconnectingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            style="?android:attr/progressBarStyleLarge"
+            android:visibility="gone" />
+
+    <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="16dp"
+            android:textSize="13sp"
+            android:textColor="@color/colorBlack"
+            android:fontFamily="@font/roboto_regular"
+            android:visibility="gone"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="70dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_tik_talk_logo"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center_horizontal"
+                android:textSize="13sp"
+                android:text="@string/call_video_title"
+                android:textColor="@color/colorWhite"
+                android:fontFamily="@font/roboto_regular"/>
+
+        <FrameLayout
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp">
+            <ImageView
+                    android:id="@+id/bg_1"
+                    android:layout_width="156dp"
+                    android:layout_height="156dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_call_gradient_ellipse_1"/>
+            <ImageView
+                    android:id="@+id/bg_2"
+                    android:layout_width="172dp"
+                    android:layout_height="172dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_call_gradient_ellipse_2"/>
+            <ImageView
+                    android:id="@+id/bg_3"
+                    android:layout_width="188dp"
+                    android:layout_height="188dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_call_gradient_ellipse_3"/>
+            <ImageView
+                    android:id="@+id/bg_4"
+                    android:layout_width="204dp"
+                    android:layout_height="204dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_call_gradient_ellipse_4"/>
+            <ImageView
+                    android:id="@+id/callerAvatar"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"/>
+        </FrameLayout>
+
+
+
+        <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="48sp"
+                tools:text="Kim"
+                android:textColor="@color/colorWhite"
+                android:fontFamily="@font/roboto_regular"/>
+        <TextView
+                android:id="@+id/tvCallStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"
+                android:textSize="13sp"
+                tools:text="@string/call_incoming"
+                android:textColor="@color/colorWhite"
+                android:fontFamily="@font/roboto_regular"/>
+
+
+
+
+        <ImageView
+                android:visibility="gone"
+                android:id="@+id/arrow_1"
+                android:layout_width="43dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="14dp"
+                android:layout_gravity="center"
+                android:rotation="90"
+                android:alpha="0.1"
+                android:src="@drawable/ic_arrow_left"
+                android:tint="@color/colorWhite"/>
+        <ImageView
+                android:visibility="gone"
+                android:id="@+id/arrow_2"
+                android:layout_width="43dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:rotation="90"
+                android:alpha="0.25"
+                android:src="@drawable/ic_arrow_left"
+                android:tint="@color/colorWhite"/>
+        <ImageView
+                android:visibility="gone"
+                android:id="@+id/arrow_3"
+                android:layout_width="43dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:rotation="90"
+                android:alpha="0.5"
+                android:src="@drawable/ic_arrow_left"
+                android:tint="@color/colorWhite"/>
+        <ImageView
+                android:visibility="gone"
+                android:id="@+id/arrow_4"
+                android:layout_width="43dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:rotation="90"
+                android:alpha="0.7"
+                android:src="@drawable/ic_arrow_left"
+                android:tint="@color/colorWhite"/>
+
+
+
+
+        <FrameLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="0dp">
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="40dp"
+                android:layout_gravity="bottom">
+            <ImageView
+                    android:id="@+id/btnDeclineCall"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_gravity="start"
+                    android:scaleType="centerCrop"
+                    android:padding="12dp"
+                    android:background="@drawable/bg_round_red"
+                    android:src="@drawable/ic_call_decline"/>
+            <com.andyshon.tiktalk.ui.calls.voice.ImageTouchSlider
+                    android:id="@+id/btnAcceptCall2"
+                    android:visibility="gone"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_gravity="center_horizontal|bottom"/>
+            <ImageView
+                    android:id="@+id/btnAcceptCall"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:padding="27dp"
+                    android:background="@drawable/bg_round_green"
+                    android:src="@drawable/ic_video_camera"/>
+            <ImageView
+                    android:id="@+id/btnSendSms"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_gravity="end"
+                    android:scaleType="centerCrop"
+                    android:padding="22dp"
+                    android:background="@drawable/bg_round_gray_light"
+                    android:src="@drawable/ic_cloud"/>
+        </FrameLayout>
+
+
+
+        <ImageView
+                android:id="@+id/btnEndCall"
+                android:visibility="gone"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="40dp"
+                android:scaleType="centerCrop"
+                android:padding="12dp"
+                android:background="@drawable/bg_round_red"
+                android:src="@drawable/ic_call_decline"/>
+
+        <TextView
+                android:id="@+id/tvSwipeToAnswer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:textSize="13sp"
+                android:text="@string/call_swipe_to_answer"
+                android:textColor="@color/colorWhite"
+                android:fontFamily="@font/roboto_regular"/>
+    </FrameLayout>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical">
+        <ImageView
+                android:id="@+id/btnSoundOff"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="55dp"
+                android:layout_gravity="start|center_vertical"
+                android:src="@drawable/ic_rotate_camera"
+                android:tint="@color/colorBlack"/>
+        <ImageView
+                android:id="@+id/btnMicrophoneOfdf"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_video_camera"
+                android:tint="@color/colorWhite"/>
+        <ImageView
+                android:id="@+id/btnMicrophoneOff"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="55dp"
+                android:layout_gravity="end|center_vertical"
+                android:src="@drawable/ic_microphone"
+                android:tint="@color/colorWhite"/>
+    </FrameLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

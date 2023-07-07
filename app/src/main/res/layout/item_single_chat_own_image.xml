@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/layoutChatSingleOwnImageRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:layout_marginBottom="2dp"
+        android:paddingStart="100dp"
+        android:paddingEnd="16dp"
+        android:orientation="horizontal">
+
+    <FrameLayout
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="end"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_chat_single_own_image"
+            android:orientation="vertical" tools:ignore="UselessParent">
+
+        <ImageView
+                android:id="@+id/ivOwnImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:layout_margin="10dp"
+                android:contentDescription="@string/image"/>
+
+        <ProgressBar
+                android:id="@+id/ownProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateDuration="2000"
+                android:indeterminate="true"
+                android:indeterminateDrawable="@drawable/progressbar_custom"/>
+
+        <TextView
+                android:id="@+id/tvOwnImageMessageTimse"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="18:33"
+                android:textColor="@color/colorWhite"
+                android:textSize="11sp"
+                android:layout_gravity="end|bottom"
+                android:fontFamily="@font/sf_pro_display_medium"
+                android:layout_marginBottom="14dp"
+                android:layout_marginEnd="18dp"
+                tools:ignore="SmallSp"/>
+
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:layout_gravity="end|bottom"
+                android:layout_marginBottom="14dp"
+                android:layout_marginEnd="18dp" tools:ignore="UseCompoundDrawables">
+            <TextView
+                    android:id="@+id/tvOwnImageMessageTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="18:33"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="11sp"
+                    android:layout_gravity="end|bottom"
+                    android:fontFamily="@font/sf_pro_display_medium"
+                    tools:ignore="SmallSp"/>
+
+            <ImageView
+                    android:id="@+id/ivOwnImageVerification"
+                    android:layout_width="13dp"
+                    android:layout_height="10dp"
+                    android:layout_marginStart="4dp"
+                    android:src="@drawable/ic_message_unverification_mark"
+                    android:contentDescription="@string/checkMark"/>
+        </LinearLayout>
+    </FrameLayout>
+</FrameLayout>

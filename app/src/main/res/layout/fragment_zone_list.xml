@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.zones.ZoneListFragment">
+
+    <include layout="@layout/app_toolbar_zone_list"
+             android:id="@+id/toolbarMainMessages"/>
+
+    <FrameLayout
+            android:layout_width="match_parent" 
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/zone_you_near"
+                android:textSize="32sp"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="?attr/colorTextGreyDarkOrWhite"/>
+        
+        <ImageView
+                android:id="@+id/btnRefresh"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_refresh"
+                android:tint="?attr/colorTextGreyDarkOrWhite"
+                android:layout_gravity="end|center_vertical"
+                android:contentDescription="@string/refresh"/>
+    </FrameLayout>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <include layout="@layout/layout_empty_zones" android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/zoneListRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none"/>
+    </FrameLayout>
+
+</LinearLayout>

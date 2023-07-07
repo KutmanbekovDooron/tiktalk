@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        android:layout_width="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="?attr/colorBgToolbar"
+    />
+
+    <FrameLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorBgToolbar">
+
+        <ImageView
+                android:id="@+id/toolbarOnlyBtnBack"
+                android:layout_width="46dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:paddingStart="27dp"
+                android:paddingEnd="0dp"
+                android:src="@drawable/ic_arrow_left"
+                android:tint="@color/colorWhite"
+                android:contentDescription="@string/back"/>
+    </FrameLayout>
+
+</LinearLayout>
