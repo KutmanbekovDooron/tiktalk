@@ -35,7 +35,7 @@ inline fun Spannable?.addClickableSpannable(
             ds.bgColor = Color.TRANSPARENT
         }
 
-        override fun onClick(p0: View?) {
+        override fun onClick(widget: View) {
             onClick()
         }
 

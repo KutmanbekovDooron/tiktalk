@@ -101,7 +101,7 @@ class ZonePublicRoomPresenter @Inject constructor() : BasePresenter<ZonePublicRo
 
         val clipboard = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
         val clip = ClipData.newPlainText(label, sb.toString())
-        clipboard?.primaryClip = clip
+        clipboard?.setPrimaryClip(clip)
         context.longToast(label)
         view?.onCopied()
     }
@@ -261,7 +261,7 @@ class ZonePublicRoomPresenter @Inject constructor() : BasePresenter<ZonePublicRo
                                     Timber.e("MUSIC, musicUri = $musicUri")
 
                                     val projection = arrayOf(MediaStore.Audio.Media.DATA)
-                                    val cursor = getActivityContext().contentResolver.query(Uri.parse(musicUri), projection, null, null, null)
+                                    val cursor = getActivityContext().contentResolver.query(Uri.parse(musicUri), projection, null, null, null)!!
                                     Timber.e("MUSIC, cursor = $cursor, ${cursor.columnCount}, ${cursor.count}")
 
                                     try {
@@ -296,7 +296,7 @@ class ZonePublicRoomPresenter @Inject constructor() : BasePresenter<ZonePublicRo
                                     Timber.e("VIDEO, videoUri = $videoUri")
 
                                     val projection = arrayOf(MediaStore.Video.Media.DATA)
-                                    val cursor = getActivityContext().contentResolver.query(Uri.parse(videoUri), projection, null, null, null)
+                                    val cursor = getActivityContext().contentResolver.query(Uri.parse(videoUri), projection, null, null, null)!!
                                     Timber.e("VIDEO, cursor = $cursor, ${cursor.columnCount}, ${cursor.count}")
 
                                     try {

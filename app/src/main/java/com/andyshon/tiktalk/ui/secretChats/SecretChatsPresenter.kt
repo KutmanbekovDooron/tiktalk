@@ -27,7 +27,7 @@ class SecretChatsPresenter @Inject constructor(
     var checkedChats = 0
 
     fun setTwilioListener() {
-        TwilioSingleton.instance.chatClient.setListener(this@SecretChatsPresenter)
+        TwilioSingleton.instance.chatClient!!.setListener(this@SecretChatsPresenter)
     }
 
     fun listAllChannels() {
@@ -36,7 +36,7 @@ class SecretChatsPresenter @Inject constructor(
                 .request(Manifest.permission.READ_CONTACTS)
                 .subscribe ({ granted ->
                     if (granted) {
-                        TwilioSingleton.instance.chatClient.channels.getUserChannelsList(object: CallbackListener<Paginator<ChannelDescriptor>>() {
+                        TwilioSingleton.instance.chatClient!!.channels.getUserChannelsList(object: CallbackListener<Paginator<ChannelDescriptor>>() {
                             override fun onSuccess(channelPaginator: Paginator<ChannelDescriptor>?) {
                                 chats.clear()
                                 Timber.e("channels size = ${channelPaginator!!.items.size}")

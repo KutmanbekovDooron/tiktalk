@@ -31,7 +31,7 @@ class PaymentSlideFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let { image = it.getString("image") }
+        arguments?.let { image = it.getString("image")!! }
 
         if (image.isNotEmpty()) {
             imageView.loadRoundCornersImage(

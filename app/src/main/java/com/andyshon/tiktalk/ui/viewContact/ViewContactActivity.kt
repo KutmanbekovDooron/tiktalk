@@ -43,9 +43,9 @@ class ViewContactActivity : BaseInjectActivity(), ViewContactContract.View {
 
         if (intent != null) {
             presenter.channel = intent.getParcelableExtra<Channel>(Constants.EXTRA_CHANNEL)
-            name = intent.getStringExtra(Constants.EXTRA_CHANNEL_NAME)
-            photo = intent.getStringExtra(Constants.EXTRA_CHANNEL_PHOTO)
-            phone = intent.getStringExtra(Constants.EXTRA_CHANNEL_PHONE)
+            name = intent.getStringExtra(Constants.EXTRA_CHANNEL_NAME)!!
+            photo = intent.getStringExtra(Constants.EXTRA_CHANNEL_PHOTO)!!
+            phone = intent.getStringExtra(Constants.EXTRA_CHANNEL_PHONE)!!
         }
 
         initListeners()

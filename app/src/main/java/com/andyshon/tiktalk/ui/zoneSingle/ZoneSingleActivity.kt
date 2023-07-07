@@ -97,8 +97,8 @@ class ZoneSingleActivity : BaseInjectActivity(), ZoneSingleContract.View, ZoneSi
         setContentView(R.layout.activity_zone_single)
 
         intent?.let {
-            placeId = it.getStringExtra("placeId")
-            placeName = it.getStringExtra("name")
+            placeId = it.getStringExtra("placeId")!!
+            placeName = it.getStringExtra("name")!!
             userCount = it.getIntExtra("usersCount", 0)
             tvZoneName.text = placeName.plus(" (").plus(userCount).plus(")")
 
@@ -330,7 +330,7 @@ class ZoneSingleActivity : BaseInjectActivity(), ZoneSingleContract.View, ZoneSi
                             )
                         )
 
-                        val inputStream = contentResolver.openInputStream(uri)
+                        val inputStream = contentResolver.openInputStream(uri)!!
                         val bytesAvailable = inputStream.available()
                         val bufferSize = Math.min(bytesAvailable, maxBufferSize)
                         val buffers = ByteArray(bufferSize)

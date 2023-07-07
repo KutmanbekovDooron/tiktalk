@@ -170,7 +170,7 @@ class SettingsActivity : BaseInjectActivity(), SettingsContract.View, ShareAppDi
             presenter.showInPlaces = b
         }
 
-        val curTheme = sharedPref.getString(Preference.KEY_THEME, "default")
+        val curTheme = sharedPref.getString(Preference.KEY_THEME, "default")!!
         switcherNightThemeMode.isChecked = curTheme == "dark"
 
         btnChangeTheme.setOnClickListener {

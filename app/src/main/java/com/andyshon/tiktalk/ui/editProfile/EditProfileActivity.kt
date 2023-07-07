@@ -403,7 +403,7 @@ class EditProfileActivity : BaseInjectActivity(), EditProfileContract.View {
                     // create file
                     outputFileUri = Uri.fromFile(createFile())
 
-                    val inputStream = contentResolver.openInputStream(data?.data)
+                    val inputStream = contentResolver.openInputStream(data?.data!!)!!
                     val fileOutputStream = FileOutputStream(outputFileUri.path)
                     IOUtils.copyStream(inputStream, fileOutputStream)
                     fileOutputStream.close()
@@ -427,7 +427,7 @@ class EditProfileActivity : BaseInjectActivity(), EditProfileContract.View {
                     val maxBufferSize = 1 * 1024 * 1024
 
                     try {
-                        val inputStream = contentResolver.openInputStream(outputFileUri)
+                        val inputStream = contentResolver.openInputStream(outputFileUri)!!
                         val bytesAvailable = inputStream.available()
                         val bufferSize = Math.min(bytesAvailable, maxBufferSize)
                         val buffers = ByteArray(bufferSize)
