@@ -226,8 +226,8 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
                                     Timber.e("MUSIC, musicUri = $musicUri")
 
                                     val projection = arrayOf(MediaStore.Audio.Media.DATA)
-                                    val cursor = getActivityContext().contentResolver.query(Uri.parse(musicUri), projection, null, null, null)
-                                    Timber.e("MUSIC, cursor = $cursor, ${cursor.columnCount}, ${cursor.count}")
+                                    val cursor = getActivityContext().contentResolver.query(Uri.parse(musicUri), projection, null, null, null)!!
+                                    Timber.e("MUSIC, cursor = $cursor, ${cursor.columnCount}, ${cursor?.count}")
 
                                     try {
                                         if (cursor.moveToFirst()) {
@@ -261,7 +261,7 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
                                     Timber.e("VIDEO, videoUri = $videoUri")
 
                                     val projection = arrayOf(MediaStore.Video.Media.DATA)
-                                    val cursor = getActivityContext().contentResolver.query(Uri.parse(videoUri), projection, null, null, null)
+                                    val cursor = getActivityContext().contentResolver.query(Uri.parse(videoUri), projection, null, null, null)!!
                                     Timber.e("VIDEO, cursor = $cursor, ${cursor.columnCount}, ${cursor.count}")
 
                                     try {
@@ -528,7 +528,7 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
 
         val clipboard = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
         val clip = ClipData.newPlainText(label, sb.toString())
-        clipboard?.primaryClip = clip
+        clipboard?.setPrimaryClip(clip)
         context.longToast(label)
         view?.onCopied()
     }

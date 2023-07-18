@@ -111,9 +111,9 @@ class ChatSingleActivity : BaseInjectActivity(), ChatSingleContract.View, Attach
 
         if (intent != null) {
             presenter.isFromMatches = intent?.getBooleanExtra("isFromMatches", false) ?: false
-            presenter.opponentName = intent.getStringExtra(Constants.EXTRA_CHANNEL_OPPONENT_NAME)
-            presenter.opponentPhoto = intent.getStringExtra(Constants.EXTRA_CHANNEL_OPPONENT_PHOTO)
-            presenter.opponentPhone = intent.getStringExtra(Constants.EXTRA_CHANNEL_OPPONENT_PHONE)
+            presenter.opponentName = intent.getStringExtra(Constants.EXTRA_CHANNEL_OPPONENT_NAME)!!
+            presenter.opponentPhoto = intent.getStringExtra(Constants.EXTRA_CHANNEL_OPPONENT_PHOTO)!!
+            presenter.opponentPhone = intent.getStringExtra(Constants.EXTRA_CHANNEL_OPPONENT_PHONE)!!
             presenter.channel = intent.getParcelableExtra<Channel>(Constants.EXTRA_CHANNEL)
             presenter.channelSid = intent.getStringExtra(Constants.EXTRA_CHANNEL_SID) ?: ""
             if (presenter.channel != null) {
@@ -384,8 +384,8 @@ class ChatSingleActivity : BaseInjectActivity(), ChatSingleContract.View, Attach
             when (requestCode) {
                 RC_SELECT_CONTACT -> {
                     data?.let {
-                        val contactName = it.getStringExtra("name")
-                        val contactPhone = it.getStringExtra("phone")
+                        val contactName = it.getStringExtra("name")!!
+                        val contactPhone = it.getStringExtra("phone")!!
 //                        val contactPhoto = it.getParcelableExtra<Bitmap>("photo")
                         presenter.sendContactMessage(contactName, contactPhone/*, contactPhoto*/)
                     }
@@ -444,7 +444,7 @@ class ChatSingleActivity : BaseInjectActivity(), ChatSingleContract.View, Attach
                             )
                         )
 
-                        val inputStream = contentResolver.openInputStream(uri)
+                        val inputStream = contentResolver.openInputStream(uri)!!
                         val bytesAvailable = inputStream.available()
                         val bufferSize = Math.min(bytesAvailable, maxBufferSize)
                         val buffers = ByteArray(bufferSize)

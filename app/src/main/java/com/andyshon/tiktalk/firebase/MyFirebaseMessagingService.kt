@@ -42,10 +42,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private lateinit var notificationManager: NotificationManager
 
 
-    override fun onNewToken(token: String?) {
+    override fun onNewToken(token: String) {
         Timber.e("onNewToken $token")
 
-        token?.let{
+        token.let{
             PreferenceManager(applicationContext, Gson()).putObject(Preference.KEY_FIREBASE_ID, it, String::class.java)
             UserMetadata.firebaseToken = it
 
@@ -70,12 +70,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      *
      * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
      */
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-        Timber.e("Received remoteMessage = ${remoteMessage?.data?.toString()}")
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        Timber.e("Received remoteMessage = ${remoteMessage.data}")
         //Received remoteMessage = {caller_id=15, type=onCallInvite, caller_avatar=https://tik-talk.s3.eu-central-1.amazonaws.com/attachment/image/15/102385.jpg, only_audio=false, caller_name=Eva, caller_email=eva@gmail.com, caller_phone=+380957148782}
         //Received remoteMessage = {type=onCancelledCallInvite, declined_by_email=eva@gmail.com}
 
-        remoteMessage?.data?.let { data->
+        remoteMessage.data.let { data->
             // Check if message contains a data payload.
             if (data.isNotEmpty()) {
                 val notificationId = System.currentTimeMillis().toInt()
@@ -95,8 +95,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                             this@MyFirebaseMessagingService.notify(callInvite, notificationId)
                             if (onlyAudio) {
                                 this@MyFirebaseMessagingService.sendCallInviteToActivity(callInvite, notificationId)
-                            }
-                            else {
+                            } else {
                                 this@MyFirebaseMessagingService.sendVideoCallInviteToActivity(callInvite, notificationId)
                             }
                         }
@@ -111,15 +110,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                                 this@MyFirebaseMessagingService.cancelNotification(cancelledCallInvite)
                                 if (onlyAudio) {
                                     this@MyFirebaseMessagingService.sendCancelledCallInviteToActivity(cancelledCallInvite)
-                                }
-                                else {
+                                } else {
                                     this@MyFirebaseMessagingService.sendCancelledVideoCallInviteToActivity(cancelledCallInvite)
                                 }
                             }
                         }
                     }
-                }
-                else {
+                } else {
                     Timber.e("The message doesn't contain a key type: ${remoteMessage.data}")
                 }
             }

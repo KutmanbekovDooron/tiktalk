@@ -211,10 +211,10 @@ class MainActivity : BaseInjectActivity(), MainContract.View, MessagesListener, 
                     data?.let {
                         showProgress()
                         val id = it.getIntExtra("id", 0)
-                        val name = it.getStringExtra("name")
-                        val email = it.getStringExtra("email")
-                        val photo = it.getStringExtra("photo")
-                        val phone = it.getStringExtra("phone")
+                        val name = it.getStringExtra("name")!!
+                        val email = it.getStringExtra("email")!!
+                        val photo = it.getStringExtra("photo")!!
+                        val phone = it.getStringExtra("phone")!!
                         longToast(name.plus(", ").plus(phone))
 
                         TwilioSingleton.instance.createChannel(

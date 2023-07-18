@@ -2,6 +2,7 @@ package com.andyshon.tiktalk
 
 import android.app.Application
 import android.content.Context
+import com.andrognito.patternlockview.BuildConfig
 import com.andyshon.DaggerComponentProvider
 import com.google.firebase.FirebaseApp
 import timber.log.Timber

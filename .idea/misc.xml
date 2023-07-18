@@ -9,6 +9,21 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_it_is_match.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_basic_info.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/activity_chat_media.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_chat_single.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_choose_country.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/activity_code_verification.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_create_profile.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/activity_crop_my_image.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/activity_fingerprint_locker.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_it_is_match.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_start_with.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dialog_message.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/layout_auth_blocked.xml" value="0.1" />
       </map>
     </option>
   </component>

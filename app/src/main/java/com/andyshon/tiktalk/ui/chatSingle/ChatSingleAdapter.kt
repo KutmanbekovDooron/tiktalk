@@ -529,12 +529,14 @@ class ChatSingleAdapter(
                     }
                 }
             }
-            progressAnim.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationRepeat(p0: Animator?) {}
-                override fun onAnimationEnd(p0: Animator?) { isEnded = true }
-                override fun onAnimationCancel(p0: Animator?) {}
-                override fun onAnimationStart(p0: Animator?) { isEnded = false }
-            })
+            with(progressAnim) {
+                addListener(object : Animator.AnimatorListener {
+                        override fun onAnimationRepeat(animation: Animator) {}
+                        override fun onAnimationEnd(animation: Animator) { isEnded = true }
+                        override fun onAnimationCancel(animation: Animator) {}
+                        override fun onAnimationStart(animation: Animator) { isEnded = false }
+                    })
+            }
 
             if (message.playing) {
                 if (message.duration != 0) {
@@ -618,10 +620,10 @@ class ChatSingleAdapter(
                 }
             }
             progressAnim.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationRepeat(p0: Animator?) {}
-                override fun onAnimationEnd(p0: Animator?) { isEnded = true }
-                override fun onAnimationCancel(p0: Animator?) {}
-                override fun onAnimationStart(p0: Animator?) { isEnded = false }
+                override fun onAnimationRepeat(animation: Animator) {}
+                override fun onAnimationEnd(animation: Animator) { isEnded = true }
+                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationStart(animation: Animator) { isEnded = false }
             })
 
             if (message.playing) {
@@ -1150,11 +1152,11 @@ class ChatSingleAdapter(
             val mSurfaceHolder: SurfaceHolder? = itemView.surfaceOwnVideo.holder
 
             mSurfaceHolder?.addCallback(object: SurfaceHolder.Callback {
-                override fun surfaceChanged(p0: SurfaceHolder?, p1: Int, p2: Int, p3: Int) {}
-                override fun surfaceDestroyed(surfaceHolder: SurfaceHolder?) {
-                    surfaceHolder?.removeCallback(this)
+                override fun surfaceChanged(holder: SurfaceHolder, p1: Int, p2: Int, p3: Int) {}
+                override fun surfaceDestroyed(holder: SurfaceHolder) {
+                    holder.removeCallback(this)
                 }
-                override fun surfaceCreated(p0: SurfaceHolder?) {
+                override fun surfaceCreated(holder: SurfaceHolder) {
                     mMediaPlayer = MediaPlayer()
                     mMediaPlayer?.setDisplay(mSurfaceHolder)
                     mMediaPlayer?.setOnCompletionListener {
@@ -1200,11 +1202,11 @@ class ChatSingleAdapter(
             val mSurfaceHolder: SurfaceHolder? = itemView.surfaceOpponentVideo.holder
 
             mSurfaceHolder?.addCallback(object: SurfaceHolder.Callback {
-                override fun surfaceChanged(p0: SurfaceHolder?, p1: Int, p2: Int, p3: Int) {}
-                override fun surfaceDestroyed(surfaceHolder: SurfaceHolder?) {
-                    surfaceHolder?.removeCallback(this)
+                override fun surfaceChanged(holder: SurfaceHolder, p1: Int, p2: Int, p3: Int) {}
+                override fun surfaceDestroyed(holder: SurfaceHolder) {
+                    holder.removeCallback(this)
                 }
-                override fun surfaceCreated(p0: SurfaceHolder?) {
+                override fun surfaceCreated(holder: SurfaceHolder) {
                     mMediaPlayer = MediaPlayer()
                     mMediaPlayer?.setDisplay(mSurfaceHolder)
                     mMediaPlayer?.setOnCompletionListener {

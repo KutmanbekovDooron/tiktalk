@@ -26,8 +26,8 @@ fun showMuteNotificationsDialog(context: Context, muteFor: (msg:String) -> Unit)
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     val radioGroup = view.findViewById<RadioGroup>(R.id.radioGroup)
     view.findViewById<TextView>(R.id.btnCancel).setOnClickListener { alertDialog.dismiss() }
@@ -53,8 +53,8 @@ fun showVisibilityDialog(context: Context, name: String, choose:(msg: String) ->
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     view.findViewById<TextView>(R.id.tvHideChatWith).text = "Hide chat with ".plus(name).plus("?")
     view.findViewById<TextView>(R.id.btnCancel).setOnClickListener { alertDialog.dismiss() }
@@ -87,8 +87,8 @@ fun showChooseLockDialog(context: Context, choose: (msg:String) -> Unit) {
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     view.findViewById<TextView>(R.id.btnPattern).setOnClickListener { alertDialog.dismiss(); choose.invoke("Pattern") }
     view.findViewById<TextView>(R.id.btnPin).setOnClickListener { alertDialog.dismiss(); choose.invoke("PIN") }
@@ -106,8 +106,8 @@ fun showDeleteChatDialog(context: Context, name: String, delete: () -> Unit) {
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     view.findViewById<TextView>(R.id.tvDeleteChatWith).text = "Delete chat with ".plus(name).plus("?")
     view.findViewById<TextView>(R.id.btnCancel).setOnClickListener { alertDialog.dismiss() }
@@ -125,8 +125,8 @@ fun showBlockUserDialog(context: Context, name: String, block: () -> Unit) {
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     view.findViewById<TextView>(R.id.tvBlockUser).text = "Are you sure you want to block ".plus(name).plus("?")
     view.findViewById<TextView>(R.id.btnCancel).setOnClickListener { alertDialog.dismiss() }
@@ -144,8 +144,8 @@ fun showDeleteContactDialog(context: Context, name: String, delete: () -> Unit) 
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     view.findViewById<TextView>(R.id.tvDeleteContact).text = "Are you sure you want to delete contact ".plus(name).plus("?")
     view.findViewById<TextView>(R.id.btnCancel).setOnClickListener { alertDialog.dismiss() }
@@ -163,8 +163,8 @@ fun showDeleteMessageDialog(context: Context, delete: () -> Unit) {
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     view.findViewById<TextView>(R.id.btnCancel).setOnClickListener { alertDialog.dismiss() }
     view.findViewById<TextView>(R.id.btnDeleteMessage).setOnClickListener { alertDialog.dismiss(); delete.invoke() }
@@ -181,8 +181,8 @@ fun showChangeNameDialog(context: Context, name: String, setName: (name:String) 
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     val etName = view.findViewById<EditText>(R.id.etChangeName)
     etName.showKeyboard3()
@@ -203,8 +203,8 @@ fun showExitStreamStopWatchingDialog(context: Context, exit: () -> Unit) {
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     view.findViewById<TextView>(R.id.btnCancel).setOnClickListener { alertDialog.dismiss() }
     view.findViewById<TextView>(R.id.btnOk).setOnClickListener { alertDialog.dismiss(); exit.invoke() }
@@ -221,8 +221,8 @@ fun showExitStreamStopStreamingDialog(context: Context, exit: () -> Unit) {
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     view.findViewById<TextView>(R.id.btnCancel).setOnClickListener { alertDialog.dismiss() }
     view.findViewById<TextView>(R.id.btnOk).setOnClickListener { alertDialog.dismiss(); exit.invoke() }
@@ -239,8 +239,8 @@ fun showReportUserDialog(context: Context, report: (type:String) -> Unit) {
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     view.findViewById<TextView>(R.id.actionInappropriateProfile).setOnClickListener {
         alertDialog.dismiss()
@@ -281,8 +281,8 @@ fun showRelationshipDialog(context: Context, status: String, relationship: (msg:
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     val radioGroup = view.findViewById<RadioGroup>(R.id.radioGroup)
     when(status) {
@@ -317,8 +317,8 @@ fun showSexualityDialog(context: Context, status: String, sexuality: (msg:String
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     val radioGroup = view.findViewById<RadioGroup>(R.id.radioGroup)
     when(status) {
@@ -356,8 +356,8 @@ fun showHeightDialog(context: Context, curHeight: String, height: (h:Int) -> Uni
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
     var adapter: ProfileHeightAdapter? = null
@@ -413,8 +413,8 @@ fun showLivingDialog(context: Context, status: String, living: (msg:String) -> U
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     val radioGroup = view.findViewById<RadioGroup>(R.id.radioGroup)
     when(status) {
@@ -454,8 +454,8 @@ fun showChildrenDialog(context: Context, status: String, living: (msg:String) ->
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     val radioGroup = view.findViewById<RadioGroup>(R.id.radioGroup)
     when(status) {
@@ -493,8 +493,8 @@ fun showSmokingDialog(context: Context, status: String, living: (msg:String) -> 
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     val radioGroup = view.findViewById<RadioGroup>(R.id.radioGroup)
     when(status) {
@@ -534,8 +534,8 @@ fun showDrinkingDialog(context: Context, status: String, living: (msg:String) ->
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     val radioGroup = view.findViewById<RadioGroup>(R.id.radioGroup)
     when(status) {
@@ -573,8 +573,8 @@ fun showZodiacDialog(context: Context, status: String, living: (msg:String) -> U
     val alertDialog = alertDialogBuilderUserInput.create()
     alertDialog.setCanceledOnTouchOutside(true)
     alertDialog.show()
-    alertDialog.window.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-    alertDialog.window.setGravity(Gravity.CENTER)
+    alertDialog.window?.setLayout(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+    alertDialog.window?.setGravity(Gravity.CENTER)
 
     val radioGroup = view.findViewById<RadioGroup>(R.id.radioGroup)
     when(status) {
