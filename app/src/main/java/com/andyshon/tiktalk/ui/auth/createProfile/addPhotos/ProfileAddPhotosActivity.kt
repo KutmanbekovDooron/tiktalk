@@ -3,10 +3,8 @@ package com.andyshon.tiktalk.ui.auth.createProfile.addPhotos
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Instrumentation
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -31,13 +29,17 @@ import kotlinx.android.synthetic.main.activity_profile_add_photos.*
 import kotlinx.android.synthetic.main.app_toolbar_title.*
 import org.jetbrains.anko.alert
 import timber.log.Timber
-import java.io.*
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 import java.lang.Exception
 import javax.inject.Inject
 
 private const val CAMERA_REQUEST = 666
 private const val GALLERY_REQUEST = 777
 private const val CROP_REQUEST = 567
+
 
 class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
 
@@ -160,43 +162,17 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
         btnDone.isEnabled = UserMetadata.hasAtLeastOnePhoto()
     }
 
-    fun getFile(documentUri: Uri, context: Context): File {
-        val inputStream = context.contentResolver?.openInputStream(documentUri)
-        var file: File
-        inputStream.use { input ->
-            file = File(context.cacheDir, System.currentTimeMillis().toString() + ".jpeg")
-            FileOutputStream(file).use { output ->
-                val buffer = ByteArray(4 * 1024)
-                var read: Int = -1
-                while (input?.read(buffer).also {
-                        if (it != null) {
-                            read = it
-                        }
-                    } != -1) {
-                    output.write(buffer, 0, read)
-                }
-                output.flush()
-            }
-        }
-        return file
-    }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Timber.e("start file")
-
 
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 GALLERY_REQUEST -> {
                     // create file
+                    val file = getFile(data?.data) ?: return
+                    outputFileUri = Uri.fromFile(file)
 
-                    data?.data?.let { uri ->
-                        convertImageUriToByteArray(uri, this)
-                        outputFileUri = uri //Uri.fromFile(createFile())
-                        getFile(uri, this)
-                    }
 
                     try {
                         val bitmap =
@@ -211,6 +187,7 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
                         e.printStackTrace()
                     }
                 }
+
                 CAMERA_REQUEST -> {
                     val name = "IMG_" + System.currentTimeMillis() + ".JPG"
                     val file = File(cacheDir, name)
@@ -218,7 +195,7 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
                     val maxBufferSize = 1 * 1024 * 1024
 
                     try {
-                        val inputStream = contentResolver.openInputStream(outputFileUri)!!
+                        val inputStream = contentResolver.openInputStream(outputFileUri) ?: return
                         val bytesAvailable = inputStream.available()
                         val bufferSize = Math.min(bytesAvailable, maxBufferSize)
                         val buffers = ByteArray(bufferSize)
@@ -242,6 +219,7 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
                     gotoCropImage.data = Uri.fromFile(file)
                     startActivityForResult(gotoCropImage, CROP_REQUEST)
                 }
+
                 CROP_REQUEST -> {
                     data?.data?.path?.let {
                         Timber.e("path = $it")
@@ -254,13 +232,6 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
                 }
             }
         }
-    }
-
-    fun convertImageUriToByteArray(uri: Uri, context: Context): ByteArray {
-        val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-        return stream.toByteArray()
     }
 
     private fun deletePhoto(pos: Int) {
@@ -369,6 +340,29 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
         }
         return newfile
     }
+
+    private fun getFile(documentUri: Uri?): File? {
+        if (documentUri == null) return null
+        val inputStream = contentResolver?.openInputStream(documentUri)
+        var file: File? = null
+        inputStream.use { input ->
+            file = File(cacheDir, System.currentTimeMillis().toString() + ".png")
+            FileOutputStream(file).use { output ->
+                val buffer = ByteArray(4 * 1024)
+                var read: Int = -1
+                while (input?.read(buffer).also {
+                        if (it != null) {
+                            read = it
+                        }
+                    } != -1) {
+                    output.write(buffer, 0, read)
+                }
+                output.flush()
+            }
+        }
+        return file
+    }
+
 
     override fun onPhotosLoaded() {
 
