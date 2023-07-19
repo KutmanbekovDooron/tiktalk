@@ -20,9 +20,11 @@
         <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/activity_fingerprint_locker.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_it_is_match.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_places_auto_complete.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_start_with.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_message.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_profile_photo.xml" value="0.21458333333333332" />
         <entry key="app/src/main/res/layout/layout_auth_blocked.xml" value="0.1" />
       </map>
     </option>

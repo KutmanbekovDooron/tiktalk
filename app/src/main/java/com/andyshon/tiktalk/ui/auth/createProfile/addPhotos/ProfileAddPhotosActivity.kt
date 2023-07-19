@@ -3,8 +3,10 @@ package com.andyshon.tiktalk.ui.auth.createProfile.addPhotos
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Instrumentation
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -29,10 +31,7 @@ import kotlinx.android.synthetic.main.activity_profile_add_photos.*
 import kotlinx.android.synthetic.main.app_toolbar_title.*
 import org.jetbrains.anko.alert
 import timber.log.Timber
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -43,7 +42,16 @@ private const val CROP_REQUEST = 567
 class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
 
     companion object {
-        fun startActivity(context: Context, email: String, phone: String, codeCountry: String, name: String, dob: String, location: String, gender: String) {
+        fun startActivity(
+            context: Context,
+            email: String,
+            phone: String,
+            codeCountry: String,
+            name: String,
+            dob: String,
+            location: String,
+            gender: String
+        ) {
             val intent = Intent(context, ProfileAddPhotosActivity::class.java)
             intent.putExtra("email", email)
             intent.putExtra("phone", phone)
@@ -58,7 +66,8 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
 
     private lateinit var adapter: PhotoAdapter
 
-    @Inject lateinit var presenter: AddPhotosPresenter
+    @Inject
+    lateinit var presenter: AddPhotosPresenter
     override fun getPresenter(): BaseContract.Presenter<*>? = presenter
 
     private var email = ""
@@ -91,8 +100,15 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
 
     private fun setupList() {
         PhotoHolderMetadata.edit = false
-        gridview.layoutManager= GridLayoutManager(this@ProfileAddPhotosActivity, 3)
-        adapter = PhotoAdapter(this, R.layout.item_profile_photo, PhotoHolder::class.java, UserMetadata.photos, true, setClickListener())
+        gridview.layoutManager = GridLayoutManager(this@ProfileAddPhotosActivity, 3)
+        adapter = PhotoAdapter(
+            this,
+            R.layout.item_profile_photo,
+            PhotoHolder::class.java,
+            UserMetadata.photos,
+            true,
+            setClickListener()
+        )
 
         gridview.adapter = adapter
 
@@ -109,8 +125,7 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
                 Timber.e("Click on photo $item, type = $type")
                 if (item.url.isEmpty()) {
                     openSmallPhotoMenu()
-                }
-                else {
+                } else {
                     deletePhoto(pos)
                 }
             }
@@ -145,26 +160,50 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
         btnDone.isEnabled = UserMetadata.hasAtLeastOnePhoto()
     }
 
+    fun getFile(documentUri: Uri, context: Context): File {
+        val inputStream = context.contentResolver?.openInputStream(documentUri)
+        var file: File
+        inputStream.use { input ->
+            file = File(context.cacheDir, System.currentTimeMillis().toString() + ".jpeg")
+            FileOutputStream(file).use { output ->
+                val buffer = ByteArray(4 * 1024)
+                var read: Int = -1
+                while (input?.read(buffer).also {
+                        if (it != null) {
+                            read = it
+                        }
+                    } != -1) {
+                    output.write(buffer, 0, read)
+                }
+                output.flush()
+            }
+        }
+        return file
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Timber.e("start file")
+
 
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 GALLERY_REQUEST -> {
                     // create file
-                    outputFileUri = Uri.fromFile(createFile())
 
-                    val inputStream = contentResolver.openInputStream(data?.data!!)!!
-                    val fileOutputStream = FileOutputStream(outputFileUri.path)
-                    IOUtils.copyStream(inputStream, fileOutputStream)
-                    fileOutputStream.close()
-                    inputStream.close()
+                    data?.data?.let { uri ->
+                        convertImageUriToByteArray(uri, this)
+                        outputFileUri = uri //Uri.fromFile(createFile())
+                        getFile(uri, this)
+                    }
 
                     try {
-                        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, outputFileUri)
+                        val bitmap =
+                            MediaStore.Images.Media.getBitmap(contentResolver, outputFileUri)
                         if (bitmap != null) {
-                            val gotoCropImage = Intent(this@ProfileAddPhotosActivity, CropImageActivity::class.java)
+                            val gotoCropImage =
+                                Intent(this@ProfileAddPhotosActivity, CropImageActivity::class.java)
                             gotoCropImage.data = outputFileUri
                             startActivityForResult(gotoCropImage, CROP_REQUEST)
                         }
@@ -187,7 +226,7 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
                         val outputStream = FileOutputStream(file)
 
                         var bytesRead: Int
-                        while(inputStream.read(buffers).also { bytesRead = it } >=0) {
+                        while (inputStream.read(buffers).also { bytesRead = it } >= 0) {
                             outputStream.write(buffers, 0, bytesRead)
                         }
                         inputStream.close()
@@ -198,7 +237,8 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
                         e.printStackTrace()
                     }
 
-                    val gotoCropImage = Intent(this@ProfileAddPhotosActivity, CropImageActivity::class.java)
+                    val gotoCropImage =
+                        Intent(this@ProfileAddPhotosActivity, CropImageActivity::class.java)
                     gotoCropImage.data = Uri.fromFile(file)
                     startActivityForResult(gotoCropImage, CROP_REQUEST)
                 }
@@ -206,7 +246,7 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
                     data?.data?.path?.let {
                         Timber.e("path = $it")
                         val index = UserMetadata.getIndexToInsert()
-                        UserMetadata.photos.set(index, Image(0,it))
+                        UserMetadata.photos.set(index, Image(0, it))
                         adapter.updateObject(index, Image((100..10000).random(), it))
                         checkIfCanDone()
                     }
@@ -216,12 +256,19 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
         }
     }
 
+    fun convertImageUriToByteArray(uri: Uri, context: Context): ByteArray {
+        val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        return stream.toByteArray()
+    }
+
     private fun deletePhoto(pos: Int) {
         alert("Do you want to delete this photo?") {
             isCancelable = true
             positiveButton("Delete") {
                 adapter.removeObject(pos)
-                adapter.addObject(UserMetadata.photos.size, Image(0,""))
+                adapter.addObject(UserMetadata.photos.size, Image(0, ""))
                 adapter.notifyDataSetChanged()
                 checkIfCanDone()
             }
@@ -235,16 +282,19 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
 
         RxPermissions(this)
 //            .request(Manifest.permission.READ_EXTERNAL_STORAGE)
-            .requestEach(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            .subscribe ({ permission ->
+            .requestEach(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+            .subscribe({ permission ->
                 if (permission.granted) {
                     grantedPermCount++
                     if (grantedPermCount == 2) {
-                        val i = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                        val i =
+                            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                         startActivityForResult(i, GALLERY_REQUEST)
                     }
-                }
-                else if (permission.shouldShowRequestPermissionRationale) {
+                } else if (permission.shouldShowRequestPermissionRationale) {
                     alert("Чтобы продолжить необходимо разрешить доступ к хранилищу") {
                         isCancelable = false
                         positiveButton("OK") { }
@@ -267,7 +317,7 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
 
         RxPermissions(this)
             .requestEach(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            .subscribe ({ permission ->
+            .subscribe({ permission ->
                 if (permission.granted) {
                     grantedPermCount++
                     if (grantedPermCount == 2) {
@@ -277,12 +327,17 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
                             outputFileUri = Uri.fromFile(createFile())
 
                             cameraIntent.action = MediaStore.ACTION_IMAGE_CAPTURE
-                            cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, outputFileUri)
-                            this@ProfileAddPhotosActivity.startActivityForResult(cameraIntent, CAMERA_REQUEST)
+                            cameraIntent.putExtra(
+                                android.provider.MediaStore.EXTRA_OUTPUT,
+                                outputFileUri
+                            )
+                            this@ProfileAddPhotosActivity.startActivityForResult(
+                                cameraIntent,
+                                CAMERA_REQUEST
+                            )
                         }
                     }
-                }
-                else if (permission.shouldShowRequestPermissionRationale) {
+                } else if (permission.shouldShowRequestPermissionRationale) {
                     if (isShowAlready.not()) {
                         isShowAlready = true
                         alert("Чтобы продолжить необходимо разрешить доступ к камере и фото") {
@@ -293,7 +348,11 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
                 }
             }, {
                 Timber.e("onError = ${it.message}")
-                Toast.makeText(this@ProfileAddPhotosActivity, "error ${it.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@ProfileAddPhotosActivity,
+                    "error ${it.message}",
+                    Toast.LENGTH_LONG
+                ).show()
             }).addTo(getDestroyDisposable())
     }
 
@@ -306,7 +365,8 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
         val newfile = File(myDir, "IMG_" + System.currentTimeMillis() + ".JPG")
         try {
             newfile.createNewFile()
-        } catch (e: IOException) { }
+        } catch (e: IOException) {
+        }
         return newfile
     }
 

@@ -21,11 +21,12 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.android.synthetic.main.app_toolbar_title.*
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 class SignInActivity : BaseInjectActivity(), SignInContract.View {
 
-    override fun getPresenter(): BaseContract.Presenter<*>? = presenter
+    override fun getPresenter(): BaseContract.Presenter<*> = presenter
     @Inject lateinit var presenter: SignInPresenter
 
     private var mobilePhoneMaxLength = 0
@@ -52,7 +53,7 @@ class SignInActivity : BaseInjectActivity(), SignInContract.View {
         btnToolbarBack.setOnClickListener { finish() }
         etPhoneNumber.doAfterTextChanged {
             tvIncorrectNumber.hide()
-            btnVerifyPhone.isEnabled = it?.isNotEmpty() != false && it?.length ?: 0 == mobilePhoneMaxLength
+            btnVerifyPhone.isEnabled = it?.isNotEmpty() != false && (it?.length ?: 0) == mobilePhoneMaxLength
             if (it?.isNotEmpty() != false) {
                 btnClearNumber.show()
             } else btnClearNumber.hide()

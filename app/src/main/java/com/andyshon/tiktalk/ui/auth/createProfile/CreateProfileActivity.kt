@@ -59,9 +59,9 @@ class CreateProfileActivity : BaseInjectActivity(), CreateProfileContract.View, 
     private var isDateOfBirthValid = false
     private var isEmailValid = false
     private var isEmailUnique = false
-    private var isLocationValid = false
+    private var isLocationValid = true
 
-    private var location = ""
+    private var location = "Bishkek"
     private lateinit var etPlace: EditText
 
 
@@ -84,7 +84,7 @@ class CreateProfileActivity : BaseInjectActivity(), CreateProfileContract.View, 
 
         val btnClear = autocompleteFragment.view?.findViewById(R.id.places_autocomplete_clear_button) as ImageView
         btnClear.setOnClickListener {
-            etPlace.setText("Tap to choose")
+            etPlace.setText("Bishkek")
             isLocationValid = false
             checkIfCanCreateProfile()
         }

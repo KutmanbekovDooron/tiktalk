@@ -22,7 +22,7 @@ android {
     buildTypes {
         all {
             generateName(applicationVariants)
-            buildConfigField 'String', 'API_URL', "\"https://e860-178-217-169-178.ngrok-free.app/\""
+            buildConfigField 'String', 'API_URL', "\"https://730b-178-217-169-178.ngrok-free.app/\""
             buildConfigField 'String', 'API_URL_PLACES', "\"https://maps.googleapis.com/maps/api/place/nearbysearch/\""
             buildConfigField 'String', 'PLACES_KEY', "\"AIzaSyDDaFXm_E2Mr1hMIizCC465p9pL6DqFhWk\""
         }
