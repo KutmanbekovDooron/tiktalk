@@ -97,7 +97,7 @@ class ShareAppDialog : DialogFragment() {
         fun newInstance() = ShareAppDialog()
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
             shareAppClickListener = context as ShareAppClickListener
