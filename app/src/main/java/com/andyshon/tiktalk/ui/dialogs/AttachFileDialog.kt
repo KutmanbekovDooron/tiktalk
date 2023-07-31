@@ -105,7 +105,7 @@ class AttachFileDialog : DialogFragment() {
         fun newInstance() = AttachFileDialog()
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
             attachFileClickListener = context as AttachFileClickListener
