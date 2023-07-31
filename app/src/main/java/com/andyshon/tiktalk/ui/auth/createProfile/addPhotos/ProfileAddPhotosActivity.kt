@@ -285,8 +285,8 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
         private const val DATA = "data"
         private const val REQUEST_CODE_CAMERA_PERMISSION = 10
         private const val REQUEST_CODE_GALLERY_PERMISSION = 11
-        private const val GALLERY_INDEX = 1
-        private const val CAMERA_INDEX = 0
+        private const val GALLERY_INDEX = 0
+        private const val CAMERA_INDEX = 1
 
         private val ALL_PERMISSIONS =
             mutableListOf(
