@@ -7,6 +7,8 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply from: 'apks.gradle'
 apply from: 'version.gradle'
 
+def ACCESS_TOKEN_SERVICE_URL = project.hasProperty('ACCESS_TOKEN_SERVICE_URL') ? "\""+project.getProperty('ACCESS_TOKEN_SERVICE_URL')+"\"" : "\"http://example.com/token\""
+
 android {
     compileSdkVersion 33
     defaultConfig {
@@ -18,11 +20,12 @@ android {
         versionCode computeVersionCode()
         versionName computeVersionName()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "ACCESS_TOKEN_SERVICE_URL", ACCESS_TOKEN_SERVICE_URL
     }
     buildTypes {
         all {
             generateName(applicationVariants)
-            buildConfigField 'String', 'API_URL', "\"https://730b-178-217-169-178.ngrok-free.app/\""
+            buildConfigField 'String', 'API_URL', "\"https://tiktalk.balabanov.cc\""
             buildConfigField 'String', 'API_URL_PLACES', "\"https://maps.googleapis.com/maps/api/place/nearbysearch/\""
             buildConfigField 'String', 'PLACES_KEY', "\"AIzaSyDDaFXm_E2Mr1hMIizCC465p9pL6DqFhWk\""
         }
@@ -119,7 +122,9 @@ dependencies {
 
 
     // Twillio
-    implementation 'com.twilio:chat-android:4.0.2'
+    implementation 'com.twilio:chat-android:7.0.1'
+//    implementation 'com.twilio:chat-android-with-symbols:6.1.1'
+
     // The Video library resides on jcenter
     implementation 'com.twilio:video-android:4.3.0'
 

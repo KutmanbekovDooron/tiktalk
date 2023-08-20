@@ -16,6 +16,7 @@ import com.andyshon.tiktalk.ui.base.BaseContract
 import com.andyshon.tiktalk.ui.base.inject.BaseInjectFragment
 import com.andyshon.tiktalk.ui.matches.chat.MatchesChatListener
 import com.andyshon.tiktalk.utils.extensions.*
+import com.twilio.chat.Channel
 import kotlinx.android.synthetic.main.app_toolbar_matches_user_page.*
 import kotlinx.android.synthetic.main.fragment_mathces_user_page.*
 import kotlinx.android.synthetic.main.layout_empty_matches.*
@@ -117,7 +118,7 @@ class MatchesFragment: BaseInjectFragment(), MatchesContract.View, MatchesChatLi
         listener?.closeMatchesChat()
     }
 
-    override fun openMatchChat(chatUser: ChannelModel) {
+    override fun openMatchChat(channel: Channel, chatUser: ChannelModel) {
         listener?.openMatchesChat()
     }
 

@@ -11,8 +11,8 @@ import com.andyshon.tiktalk.ui.base.recycler.ItemChatClickListener
 import com.andyshon.tiktalk.utils.extensions.*
 import kotlinx.android.synthetic.main.item_main_messages.view.*
 import timber.log.Timber
-import kotlin.collections.ArrayList
 import ChatCallbackListener
+import android.util.Log
 import android.util.TypedValue
 import android.widget.ImageView
 import androidx.annotation.ColorInt
@@ -23,7 +23,7 @@ import com.andyshon.tiktalk.events.UpdateLessMessagesCounterEvent
 import com.twilio.chat.*
 
 class MessagesAdapter(
-    private var chats: ArrayList<ChannelModel>,
+    private var chats: MutableList<ChannelModel>,
     private val itemClicksListener: ItemChatClickListener<ChannelModel>,
     private val isSecret: Boolean,
     private val disableLongClick: Boolean = false,
@@ -34,7 +34,7 @@ class MessagesAdapter(
 
     fun setTempRealItems() {
         tempRealItems.clear()
-        tempRealItems.addAll(chats)
+        tempRealItems.addAll(chats.distinctBy { it.sid })
     }
 
     fun search(query: String) {
@@ -102,9 +102,19 @@ class MessagesAdapter(
             holder.itemView.setOnLongClickListener {
                 val position = holder.adapterPosition
                 selectedMode = true
-                names.add(ChatToDelete(chats[position].userData?.userName2?:"",chats[position].sid))
+                names.add(
+                    ChatToDelete(
+                        chats[position].userData?.userName2 ?: "",
+                        chats[position].sid
+                    )
+                )
                 chats[position].isChecked = chats[position].isChecked.not()
-                itemClicksListener.onItemLongClick(it, position, chats[position], chats[position].isChecked)
+                itemClicksListener.onItemLongClick(
+                    it,
+                    position,
+                    chats[position],
+                    chats[position].isChecked
+                )
                 true
             }
         }
@@ -112,12 +122,23 @@ class MessagesAdapter(
             val position = holder.adapterPosition
             if (selectedMode) {
 //                names.add(chats[position].userData?.userName2?:"")
-                names.add(ChatToDelete(chats[position].userData?.userName2?:"",chats[position].sid))
+                names.add(
+                    ChatToDelete(
+                        chats[position].userData?.userName2 ?: "",
+                        chats[position].sid
+                    )
+                )
                 chats[position].isChecked = chats[position].isChecked.not()
-                itemClicksListener.onItemLongClick(it, position, chats[position], chats[position].isChecked)
-            }
-            else {
-                itemClicksListener.onItemClick(it, position, chats[position])
+                itemClicksListener.onItemLongClick(
+                    it,
+                    position,
+                    chats[position],
+                    chats[position].isChecked
+                )
+            } else {
+                if (chats.size > position) {
+                    itemClicksListener.onItemClick(it, position, chats[position])
+                }
             }
         }
         return holder
@@ -133,39 +154,48 @@ class MessagesAdapter(
     class ChatsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         companion object {
             fun create(parent: ViewGroup?): ChatsViewHolder {
-                val v = LayoutInflater.from(parent?.context).inflate(R.layout.item_main_messages, parent, false)
+                val v = LayoutInflater.from(parent?.context)
+                    .inflate(R.layout.item_main_messages, parent, false)
                 return ChatsViewHolder(v)
             }
         }
 
         fun bind(channel: ChannelModel, secret: Boolean, rxEventBus: RxEventBus) {
 
-            channel.getUnconsumedMessagesCount(ChatCallbackListener { unread ->
-                Timber.e("$unread messages still unread, ss = ${channel.userData?.lastMessageAuthor}, ${UserMetadata.userEmail}")
-                if (unread >= 1) {
-                    if (channel.userData?.lastMessageAuthor?: "" != UserMetadata.userEmail) {
-                        itemView.tvMessageCounter.text = unread.toString()
-                        itemView.tvMessageCounter.show()
+            channel.getUnconsumedMessagesCount(
+                ChatCallbackListener { unread ->
+                    Log.e("Joseph", "$unread messages still unread")
+                    if (unread == null) {
+                        return@ChatCallbackListener
                     }
-                    else {
+                    Timber.e("$unread messages still unread, ss = ${channel.userData?.lastMessageAuthor}, ${UserMetadata.userEmail}")
+                    if (unread >= 1) {
+                        if (channel.userData?.lastMessageAuthor ?: "" != UserMetadata.userEmail) {
+                            itemView.tvMessageCounter.text = unread.toString()
+                            itemView.tvMessageCounter.show()
+                        } else {
+                            itemView.tvMessageCounter.hide()
+                        }
+                    } else {
+                        rxEventBus.post(UpdateLessMessagesCounterEvent(channel.sid))
                         itemView.tvMessageCounter.hide()
                     }
-                } else {
-                    rxEventBus.post(UpdateLessMessagesCounterEvent(channel.sid))
-                    itemView.tvMessageCounter.hide()
-                }
-            })
+                })
 
-            val me = TwilioSingleton.instance.chatClient?.myIdentity?:""
+            val me = TwilioSingleton.instance.chatClient?.myIdentity ?: ""
             Timber.e("ME = $me, userEmail1 = ${channel.userData?.userEmail1}, userEmail2 = ${channel.userData?.userEmail2}")
 
             if (me == channel.userData?.userEmail1) {
                 if (channel.userData?.userPhoto2?.isNotEmpty() != false) {
-                    itemView.ivAvatar.loadRoundCornersImageWithFallback(channel.userData?.userPhoto2?:"")
+                    itemView.ivAvatar.loadRoundCornersImageWithFallback(
+                        channel.userData?.userPhoto2 ?: ""
+                    )
                 }
             } else {
                 if (channel.userData?.userPhoto1?.isNotEmpty() != false) {
-                    itemView.ivAvatar.loadRoundCornersImageWithFallback(channel.userData?.userPhoto1?:"")
+                    itemView.ivAvatar.loadRoundCornersImageWithFallback(
+                        channel.userData?.userPhoto1 ?: ""
+                    )
                 }
             }
 
@@ -181,51 +211,79 @@ class MessagesAdapter(
                 @ColorInt val color = typedValue.data
                 itemView.tvUserMessage.setTextColor(color)
 
-                channel.getChannel(ChatCallbackListener { chan->
-                    chan.messages?.getLastMessages(1, ChatCallbackListener<List<Message>> { messages->
-                        if (messages.isNotEmpty()) {
-                            itemView.tvUserName.show()
-                            if (channel.userData?.userEmail1 == me/*messages.first().author*/) {
-                                itemView.tvUserName.text = channel.userData?.userName2 ?: "-"
-                            } else {
-                                itemView.tvUserName.text = channel.userData?.userName1 ?: "-"
-                            }
-                            if (messages[0].hasMedia()) {
-                                when {
-                                    messages[0].media.type == Constants.Chat.Media.TYPE_VOICE -> itemView.tvUserMessage.text = itemView.context string R.string.voice_message
-                                    messages[0].media.type == Constants.Chat.Media.TYPE_VIDEO -> itemView.tvUserMessage.text = itemView.context string R.string.video
-                                    messages[0].media.type == Constants.Chat.Media.TYPE_IMAGE -> itemView.tvUserMessage.text = itemView.context string R.string.photo
-                                    messages[0].media.type == Constants.Chat.Media.TYPE_FILE -> itemView.tvUserMessage.text = itemView.context string R.string.file
-                                    messages[0].media.type == Constants.Chat.Media.TYPE_MUSIC -> itemView.tvUserMessage.text = itemView.context string R.string.music
-                                    else -> itemView.tvUserMessage.text = itemView.context string R.string.media
+                channel.getChannel(ChatCallbackListener { chan ->
+                    chan.messages?.getLastMessages(
+                        1,
+                        ChatCallbackListener<List<Message>> { messages ->
+                            if (messages.isNotEmpty()) {
+                                itemView.tvUserName.show()
+                                if (channel.userData?.userEmail1 == me/*messages.first().author*/) {
+                                    itemView.tvUserName.text = channel.userData?.userName2 ?: "-"
+                                } else {
+                                    itemView.tvUserName.text = channel.userData?.userName1 ?: "-"
                                 }
-                            } else {
-                                if (messages[0].attributes != null) {
+                                if (messages[0].hasMedia()) {
                                     when {
-                                        messages[0].attributes.has("replyName") ->
-                                            itemView.tvUserMessage.text = (itemView.context string R.string.reply_).plus(messages[0].messageBody ?: "-")
-                                        messages[0].attributes.has("contactName") ->
-                                            itemView.tvUserMessage.text = (itemView.context string R.string.contact_).plus(messages[0].attributes.getString("contactName"))
-                                        messages[0].attributes.has("callStatus") -> itemView.tvUserMessage.text = messages[0].attributes.getString("callStatus")
-                                        else -> itemView.tvUserMessage.text = messages[0].messageBody ?: "-"
+                                        messages[0].media.type == Constants.Chat.Media.TYPE_VOICE -> itemView.tvUserMessage.text =
+                                            itemView.context string R.string.voice_message
+
+                                        messages[0].media.type == Constants.Chat.Media.TYPE_VIDEO -> itemView.tvUserMessage.text =
+                                            itemView.context string R.string.video
+
+                                        messages[0].media.type == Constants.Chat.Media.TYPE_IMAGE -> itemView.tvUserMessage.text =
+                                            itemView.context string R.string.photo
+
+                                        messages[0].media.type == Constants.Chat.Media.TYPE_FILE -> itemView.tvUserMessage.text =
+                                            itemView.context string R.string.file
+
+                                        messages[0].media.type == Constants.Chat.Media.TYPE_MUSIC -> itemView.tvUserMessage.text =
+                                            itemView.context string R.string.music
+
+                                        else -> itemView.tvUserMessage.text =
+                                            itemView.context string R.string.media
                                     }
                                 } else {
-                                    itemView.tvUserMessage.text = messages[0].messageBody ?: "-"
+                                    if (messages[0].attributes != null) {
+                                        when {
+                                            messages[0].attributes.jsonObject?.has("replyName") == true ->
+                                                itemView.tvUserMessage.text =
+                                                    (itemView.context string R.string.reply_).plus(
+                                                        messages[0].messageBody ?: "-"
+                                                    )
+
+                                            messages[0].attributes.jsonObject?.has("contactName") == true ->
+                                                itemView.tvUserMessage.text =
+                                                    (itemView.context string R.string.contact_).plus(
+                                                        messages[0].attributes.jsonObject?.getString(
+                                                            "contactName"
+                                                        )
+                                                    )
+
+                                            messages[0].attributes.jsonObject?.has("callStatus") == true -> itemView.tvUserMessage.text =
+                                                messages[0].attributes.jsonObject?.getString("callStatus")
+
+                                            else -> itemView.tvUserMessage.text =
+                                                messages[0].messageBody ?: "-"
+                                        }
+                                    } else {
+                                        itemView.tvUserMessage.text = messages[0].messageBody ?: "-"
+                                    }
                                 }
+                            } else {
+                                itemView.tvUserName.hide()
+                                itemView.tvUserMessage.text =
+                                    itemView.context string R.string.no_messages_yet
                             }
-                        } else {
-                            itemView.tvUserName.hide()
-                            itemView.tvUserMessage.text = itemView.context string R.string.no_messages_yet
-                        }
-                    })
+                        })
                 })
             }
 
             if (channel.lastMessageDate == null) {  // if channel was created and doesn't has any messages yet
-                itemView.tvMessageTime.text = getTimeForMessageDate(channel.dateCreatedAsDate.toString())
-            }
-            else {
-                itemView.tvMessageTime.text = getTimeForMessageDate(channel.lastMessageDate.toString())
+                itemView.tvMessageTime.text =
+                    getTimeForMessageDate(channel.dateCreatedAsDate.toString())
+            } else {
+                itemView.tvMessageTime.text =
+                    getTimeForMessageDate(channel.lastMessageDate.toString())
             }
 
             if (channel.isChecked) {
@@ -249,7 +307,7 @@ class MessagesAdapter(
             }
 
 
-            channel.getChannel(ChatCallbackListener { ch->
+            channel.getChannel(ChatCallbackListener { ch ->
                 ch.members?.membersList?.let {
                     for (member in it) {
                         Timber.e("member = ${member.identity}")
@@ -265,7 +323,7 @@ class MessagesAdapter(
             if (TwilioSingleton.instance.chatClient?.isReachabilityEnabled?.not() != false) {
                 reachabilityView.hide()
             } else {
-                member.getAndSubscribeUser(ChatCallbackListener<User> { user->
+                member.getAndSubscribeUser(ChatCallbackListener<User> { user ->
                     Timber.e("getAndSubscribeUser, user = ${user.identity}, isOnline = ${user.isOnline}, isNotifiable = ${user.isNotifiable}")
                     if (user.isOnline) {
                         reachabilityView.show()

@@ -56,11 +56,11 @@ class ZoneSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
     private fun fillUsersData() {
         channel?.let {
             Timber.e("atr = ${it.attributes}")
-            usersIds = it.attributes.getJSONArray("usersIds")
-            usersNames = it.attributes.getJSONArray("usersNames")
-            usersEmails = it.attributes.getJSONArray("usersEmails")
-            usersPhotos = it.attributes.getJSONArray("usersPhotos")
-            usersPhones = it.attributes.getJSONArray("usersPhones")
+            usersIds = it.attributes.jsonObject?.getJSONArray("usersIds")!!
+            usersNames = it.attributes.jsonObject?.getJSONArray("usersNames")!!
+            usersEmails = it.attributes.jsonObject?.getJSONArray("usersEmails")!!
+            usersPhotos = it.attributes.jsonObject?.getJSONArray("usersPhotos")!!
+            usersPhones = it.attributes.jsonObject?.getJSONArray("usersPhones")!!
 
             for(i in 0 until usersEmails.length()) {
                 val id = usersIds.getString(i)

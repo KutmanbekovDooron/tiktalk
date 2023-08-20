@@ -6,6 +6,7 @@ import com.andyshon.tiktalk.data.model.auth.AuthModel
 import com.andyshon.tiktalk.data.network.error.ApiException
 import com.andyshon.tiktalk.data.preference.Preference
 import com.andyshon.tiktalk.data.preference.PreferenceManager
+import com.andyshon.tiktalk.data.twilio.ClientSynchronization
 import com.andyshon.tiktalk.data.twilio.TwilioSingleton
 import com.andyshon.tiktalk.ui.base.BasePresenter
 import com.twilio.chat.Channel
@@ -26,7 +27,7 @@ class CodeVerificationPresenter @Inject constructor(
         view?.showProgress()
         model.sendSMS(code)
 //            .compose(applyProgressSingle())
-            .subscribe( {
+            .subscribe({
                 view?.hideProgress()
                 prefs.putObject(Preference.KEY_USER_PHONE_VERIFIED, true, Boolean::class.java)
                 val token = it.headers()["Auth-token"]
@@ -40,8 +41,7 @@ class CodeVerificationPresenter @Inject constructor(
 //                    view?.onUserReturn()
 //                    getTwilioUser(true)
                     getTwilioToken(true)
-                }
-                else {
+                } else {
 //                    Timber.e("Else, code = ${it.code()}, error = ${it.errorBody()?.string()}, ${it.message()}")
                     //  Else, code = 400, error = {"message":"Incorect code"}, Bad Request
                     if (it.code() == 400) {
@@ -50,20 +50,19 @@ class CodeVerificationPresenter @Inject constructor(
                         if (json.has("message")) {
                             val messageBody = json.getString("message")
                             view?.onIncorrectCode()
-                        }
-                        else {
+                        } else {
                             view?.onIncorrectCode()
                         }
-                    }
-                    else {
+                    } else {
                         prefs.putObject(Preference.KEY_USER_PHONE_NUMBER, phone, String::class.java)
 //                    view?.onPhoneVerified()
-                        val twilioUser = prefs.getObject(Preference.KEY_USER_TWILIO_USER_ID, String::class.java) ?: ""
+                        val twilioUser =
+                            prefs.getObject(Preference.KEY_USER_TWILIO_USER_ID, String::class.java)
+                                ?: ""
                         Timber.e("twilioUser = $twilioUser")
                         if (twilioUser.isNotEmpty()) {
                             getTwilioUser(false)
-                        }
-                        else {
+                        } else {
                             view?.onPhoneVerified()
                         }
                     }
@@ -75,11 +74,11 @@ class CodeVerificationPresenter @Inject constructor(
                     is ApiException -> {
                         if (it.mMessage.contains("blocked", true)) {
                             view?.onBlockedAccount()
-                        }
-                        else {
+                        } else {
                             view?.onIncorrectCode()
                         }
                     }
+
                     else -> defaultErrorConsumer
                 }
             })
@@ -87,10 +86,9 @@ class CodeVerificationPresenter @Inject constructor(
     }
 
     //TODO call only for the first sign up to application
-    private fun getTwilioUser(b:Boolean) {
+    private fun getTwilioUser(b: Boolean) {
 //        view?.showProgress()
-        model.getTwilioUser()
-            .subscribe({
+        model.getTwilioUser().subscribe({
                 Timber.e("Success get twilio user")
                 prefs.putObject(Preference.KEY_USER_TWILIO_USER_ID, it.sid, String::class.java)
                 getTwilioToken(b)
@@ -104,43 +102,23 @@ class CodeVerificationPresenter @Inject constructor(
             .addTo(destroyDisposable)
     }
 
-    private fun getTwilioToken(b:Boolean) {
+    private fun getTwilioToken(b: Boolean) {
         view?.showProgress()
         model.getTwilioToken()
 //            .compose(applyProgressSingle())
             .subscribe({
                 Timber.e("Get twilio token === ${it.token}")
-                TwilioSingleton.instance.connect(getActivityContext(), it.token, object: ChatClientListener {
-                    override fun onClientSynchronization(status: ChatClient.SynchronizationStatus?) {
-                        Timber.e("onClientSynchronization, status === $status, ${status?.value}")
-
-                        view?.hideProgress()
-                        if (b.not()) {
-                            view?.onPhoneVerified()
-                        } else {
-                            view?.onUserReturn()
+                TwilioSingleton.instance.connect(getActivityContext(), it.token,
+                    object : ClientSynchronization {
+                        override fun onSync() {
+                            view?.hideProgress()
+                            if (b.not()) {
+                                view?.onPhoneVerified()
+                            } else {
+                                view?.onUserReturn()
+                            }
                         }
-                    }
-                    override fun onChannelDeleted(p0: Channel?) {}
-                    override fun onInvitedToChannelNotification(p0: String?) {}
-                    override fun onNotificationSubscribed() {}
-                    override fun onUserSubscribed(p0: com.twilio.chat.User?) {}
-                    override fun onChannelUpdated(p0: Channel?, p1: Channel.UpdateReason?) {}
-                    override fun onRemovedFromChannelNotification(p0: String?) {}
-                    override fun onNotificationFailed(p0: ErrorInfo?) {}
-                    override fun onTokenExpired() {}
-                    override fun onChannelJoined(p0: Channel?) {}
-                    override fun onChannelAdded(p0: Channel?) {}
-                    override fun onChannelSynchronizationChange(p0: Channel?) {}
-                    override fun onUserUnsubscribed(p0: com.twilio.chat.User) {}
-                    override fun onAddedToChannelNotification(p0: String?) {}
-                    override fun onChannelInvited(p0: Channel?) {}
-                    override fun onNewMessageNotification(p0: String?, p1: String?, p2: Long) {}
-                    override fun onConnectionStateChange(p0: ChatClient.ConnectionState?) {}
-                    override fun onError(p0: ErrorInfo?) {}
-                    override fun onUserUpdated(p0: com.twilio.chat.User?, p1: com.twilio.chat.User.UpdateReason?) {}
-                    override fun onTokenAboutToExpire() {}
-                })
+                    })
             }, {
                 view?.hideProgress()
                 Timber.e("Error = ${it.message}")
@@ -153,27 +131,35 @@ class CodeVerificationPresenter @Inject constructor(
         prefs.putObject(Preference.KEY_USER_EMAIL, user.email, String::class.java)
         prefs.putObject(Preference.KEY_USER_ID, user.id, Int::class.java)
         prefs.putObject(Preference.KEY_USER_NAME, user.name, String::class.java)
-        prefs.putObject(Preference.KEY_USER_WORK, user.work?:"", String::class.java)
-        prefs.putObject(Preference.KEY_USER_ABOUT, user.aboutYou?:"", String::class.java)
+        prefs.putObject(Preference.KEY_USER_WORK, user.work ?: "", String::class.java)
+        prefs.putObject(Preference.KEY_USER_ABOUT, user.aboutYou ?: "", String::class.java)
         prefs.putObject(Preference.KEY_USER_GENDER, user.gender, String::class.java)
         prefs.putObject(Preference.KEY_USER_PHONE_NUMBER, user.phoneNumber, String::class.java)
         prefs.putObject(Preference.KEY_USER_CODE_COUNTRY, user.codeCountry, String::class.java)
         prefs.putObject(Preference.KEY_USER_BIRTH_DATE, user.birthDate, String::class.java)
         prefs.putObject(Preference.KEY_USER_COUNTRY, user.country, String::class.java)
         prefs.putObject(Preference.KEY_USER_CITY, user.city, String::class.java)
-        prefs.putObject(Preference.KEY_USER_IS_ACCOUNT_BLOCKED, user.accountBlock, Boolean::class.java)
+        prefs.putObject(
+            Preference.KEY_USER_IS_ACCOUNT_BLOCKED,
+            user.accountBlock,
+            Boolean::class.java
+        )
         prefs.putObject(Preference.KEY_USER_MAIN_PHOTO, user.images.first().url, String::class.java)
 
         prefs.putObject(Preference.KEY_USER_RELATIONSHIP, user.relationship, String::class.java)
         prefs.putObject(Preference.KEY_USER_SEXUALITY, user.sexuality, String::class.java)
-        prefs.putObject(Preference.KEY_USER_HEIGHT, user.height?:"", String::class.java)
+        prefs.putObject(Preference.KEY_USER_HEIGHT, user.height ?: "", String::class.java)
         prefs.putObject(Preference.KEY_USER_LIVING, user.living, String::class.java)
         prefs.putObject(Preference.KEY_USER_CHILDREN, user.children, String::class.java)
         prefs.putObject(Preference.KEY_USER_SMOKING, user.smoking, String::class.java)
         prefs.putObject(Preference.KEY_USER_DRINKING, user.drinking, String::class.java)
 //        prefs.putObject(Preference.KEY_USER_I_SPEAK, user.speak, String::class.java)
-        prefs.putObject(Preference.KEY_USER_LOCKER_TYPE, user.lockerType?:"", String::class.java)
-        prefs.putObject(Preference.KEY_USER_LOCKER_VALUE, user.lockerValue?:"", String::class.java)
+        prefs.putObject(Preference.KEY_USER_LOCKER_TYPE, user.lockerType ?: "", String::class.java)
+        prefs.putObject(
+            Preference.KEY_USER_LOCKER_VALUE,
+            user.lockerValue ?: "",
+            String::class.java
+        )
 
         UserMetadata.userId = user.id
         UserMetadata.userName = user.name
@@ -181,7 +167,7 @@ class CodeVerificationPresenter @Inject constructor(
         UserMetadata.photos = user.images
         UserMetadata.userPhone = user.phoneNumber
         UserMetadata.birthday = user.birthDate
-        UserMetadata.lockerType = user.lockerType?:""
-        UserMetadata.lockerValue = user.lockerValue?:""
+        UserMetadata.lockerType = user.lockerType ?: ""
+        UserMetadata.lockerValue = user.lockerValue ?: ""
     }
 }

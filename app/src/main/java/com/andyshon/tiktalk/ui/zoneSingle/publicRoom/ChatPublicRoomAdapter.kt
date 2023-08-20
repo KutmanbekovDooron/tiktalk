@@ -333,11 +333,12 @@ class ChatPublicRoomAdapter(
 
 
             val attrs = message.message.attributes
-            val id = attrs.getString("userId")
-            val name = attrs.getString("userName")
-            val email = attrs.getString("userEmail")
-            val photo = attrs.getString("userPhoto")
-            val phone = attrs.getString("userPhone")
+            val id = attrs.jsonObject?.getString("userId")?:""
+            val name = attrs.jsonObject?.getString("userName")?:""
+            val email = attrs.jsonObject?.getString("userEmail")?:""
+            val photo = attrs.jsonObject?.getString("userPhoto")?:""
+            val phone = attrs.jsonObject?.getString("userPhone")?:""
+
 
             val color: String
             PublicRoomMetadata.usersEmails?.let {
@@ -446,11 +447,12 @@ class ChatPublicRoomAdapter(
 
 
             val attrs = message.message.attributes
-            val id = attrs.getString("userId")
-            val name = attrs.getString("userName")
-            val email = attrs.getString("userEmail")
-            val photo = attrs.getString("userPhoto")
-            val phone = attrs.getString("userPhone")
+            val id = attrs.jsonObject?.getString("userId")?:""
+            val name = attrs.jsonObject?.getString("userName")?:""
+            val email = attrs.jsonObject?.getString("userEmail")?:""
+            val photo = attrs.jsonObject?.getString("userPhoto")?:""
+            val phone = attrs.jsonObject?.getString("userPhone")?:""
+
 
             val color: String
             PublicRoomMetadata.usersEmails?.let {
@@ -498,8 +500,8 @@ class ChatPublicRoomAdapter(
             else {
                 itemView.layoutChatSingleOwnReplyRoot.setBackgroundColor(itemView.context color R.color.colorTransparent)
             }
-            val replyName = message.message.attributes.getString("replyName")
-            val replyText = message.message.attributes.getString("replyText")
+            val replyName = message.message.attributes.jsonObject?.getString("replyName")
+            val replyText = message.message.attributes.jsonObject?.getString("replyText")
             itemView.tvOwnReplyUserName.text = replyName
             itemView.tvOwnReplyMessage.text = replyText
             itemView.tvOwnAfterReplyMessage.text = message.message.messageBody
@@ -522,8 +524,8 @@ class ChatPublicRoomAdapter(
             else {
                 itemView.layoutChatPublicOpponentReplyRoot.setBackgroundColor(itemView.context color R.color.colorTransparent)
             }
-            val replyName = message.message.attributes.getString("replyName")
-            val replyText = message.message.attributes.getString("replyText")
+            val replyName = message.message.attributes.jsonObject?.getString("replyName")
+            val replyText = message.message.attributes.jsonObject?.getString("replyText")
             itemView.tvOpponentReplyUserName.text = replyName
             itemView.tvOpponentReplyMessage.text = replyText
             itemView.tvOpponentAfterReplyMessage.text = message.message.messageBody
@@ -531,11 +533,12 @@ class ChatPublicRoomAdapter(
 
 
             val attrs = message.message.attributes
-            val id = attrs.getString("userId")
-            val name = attrs.getString("userName")
-            val email = attrs.getString("userEmail")
-            val photo = attrs.getString("userPhoto")
-            val phone = attrs.getString("userPhone")
+            val id = attrs.jsonObject?.getString("userId")?:""
+            val name = attrs.jsonObject?.getString("userName")?:""
+            val email = attrs.jsonObject?.getString("userEmail")?:""
+            val photo = attrs.jsonObject?.getString("userPhoto")?:""
+            val phone = attrs.jsonObject?.getString("userPhone")?:""
+
 
             val color: String
             PublicRoomMetadata.usersEmails?.let {
@@ -666,11 +669,11 @@ class ChatPublicRoomAdapter(
 
 
             val attrs = message.message.attributes
-            val id = attrs.getString("userId")
-            val name = attrs.getString("userName")
-            val email = attrs.getString("userEmail")
-            val photo = attrs.getString("userPhoto")
-            val phone = attrs.getString("userPhone")
+            val id = attrs.jsonObject?.getString("userId")?:""
+            val name = attrs.jsonObject?.getString("userName")?:""
+            val email = attrs.jsonObject?.getString("userEmail")?:""
+            val photo = attrs.jsonObject?.getString("userPhoto")?:""
+            val phone = attrs.jsonObject?.getString("userPhone")?:""
 
             val color: String
             PublicRoomMetadata.usersEmails?.let {
@@ -719,9 +722,9 @@ class ChatPublicRoomAdapter(
                 itemView.layoutChatSingleOwnFilePdfRoot.setBackgroundColor(itemView.context color R.color.colorTransparent)
             }
             if (message.message.attributes != null) {
-                if (message.message.attributes.has("fileUri")) {
-                    val fileUri = message.message.attributes?.getString("fileUri") ?: "-"
-                    val fileName = message.message.attributes?.getString("fileName") ?: "-"
+                if (message.message.attributes.jsonObject?.has("fileUri") == true) {
+                    val fileUri = message.message.attributes?.jsonObject?.getString("fileUri") ?: "-"
+                    val fileName = message.message.attributes?.jsonObject?.getString("fileName") ?: "-"
                     itemView.tvOwnFileName.text = fileName
                     Timber.e("FileUri = $fileUri")
                 }
@@ -746,9 +749,9 @@ class ChatPublicRoomAdapter(
                 itemView.layoutChatPublicOpponentFileRoot.setBackgroundColor(itemView.context color R.color.colorTransparent)
             }
             if (message.message.attributes != null) {
-                if (message.message.attributes.has("fileUri")) {
-                    val fileUri = message.message.attributes?.getString("fileUri") ?: "-"
-                    val fileName = message.message.attributes?.getString("fileName") ?: "-"
+                if (message.message.attributes.jsonObject?.has("fileUri") == true) {
+                    val fileUri = message.message.attributes?.jsonObject?.getString("fileUri") ?: "-"
+                    val fileName = message.message.attributes?.jsonObject?.getString("fileName") ?: "-"
                     itemView.tvOpponentFileName.text = fileName
                     Timber.e("FileUri = $fileUri")
                 }
@@ -756,11 +759,11 @@ class ChatPublicRoomAdapter(
 
 
             val attrs = message.message.attributes
-            val id = attrs.getString("userId")
-            val name = attrs.getString("userName")
-            val email = attrs.getString("userEmail")
-            val photo = attrs.getString("userPhoto")
-            val phone = attrs.getString("userPhone")
+            val id = attrs.jsonObject?.getString("userId")?:""
+            val name = attrs.jsonObject?.getString("userName")?:""
+            val email = attrs.jsonObject?.getString("userEmail")?:""
+            val photo = attrs.jsonObject?.getString("userPhoto")?:""
+            val phone = attrs.jsonObject?.getString("userPhone")?:""
 
             val color: String
             PublicRoomMetadata.usersEmails?.let {
@@ -809,9 +812,9 @@ class ChatPublicRoomAdapter(
                 itemView.layoutChatSingleOwnContactRoot.setBackgroundColor(itemView.context color R.color.colorTransparent)
             }
             if (message.message.attributes != null) {
-                if (message.message.attributes.has("contactName")) {
-                    val contactName = message.message.attributes?.getString("contactName") ?: "-"
-                    val contactPhone = message.message.attributes?.getString("contactPhone") ?: "-"
+                if (message.message.attributes.jsonObject?.has("contactName") == true) {
+                    val contactName = message.message.attributes?.jsonObject?.getString("contactName") ?: "-"
+                    val contactPhone = message.message.attributes?.jsonObject?.getString("contactPhone") ?: "-"
                     itemView.tvOwnContactUserName.text = contactName
 //                    itemView.ivOwnContactAvatar.
                     //todo: set contact user's avatar
@@ -842,9 +845,9 @@ class ChatPublicRoomAdapter(
                 itemView.layoutChatPublicOpponentContactRoot.setBackgroundColor(itemView.context color R.color.colorTransparent)
             }
             if (message.message.attributes != null) {
-                if (message.message.attributes.has("contactName")) {
-                    val contactName = message.message.attributes?.getString("contactName") ?: "-"
-                    val contactPhone = message.message.attributes?.getString("contactPhone") ?: "-"
+                if (message.message.attributes.jsonObject?.has("contactName") == true) {
+                    val contactName = message.message.attributes?.jsonObject?.getString("contactName") ?: "-"
+                    val contactPhone = message.message.attributes?.jsonObject?.getString("contactPhone") ?: "-"
                     itemView.tvOpponentContactUserName.text = contactName
                     //todo: set contact user's avatar
                     itemView.ivOpponentContactAvatar.loadRoundCornersImage(
@@ -857,11 +860,11 @@ class ChatPublicRoomAdapter(
 
 
             val attrs = message.message.attributes
-            val id = attrs.getString("userId")
-            val name = attrs.getString("userName")
-            val email = attrs.getString("userEmail")
-            val photo = attrs.getString("userPhoto")
-            val phone = attrs.getString("userPhone")
+            val id = attrs.jsonObject?.getString("userId")?:""
+            val name = attrs.jsonObject?.getString("userName")?:""
+            val email = attrs.jsonObject?.getString("userEmail")?:""
+            val photo = attrs.jsonObject?.getString("userPhoto")?:""
+            val phone = attrs.jsonObject?.getString("userPhone")?:""
 
             val color: String
             PublicRoomMetadata.usersEmails?.let {
@@ -1049,7 +1052,7 @@ class ChatPublicRoomAdapter(
                 }
             }
 
-            Timber.e("musicUri = ${message.message.attributes.getString("musicUri")}")
+            Timber.e("musicUri = ${message.message.attributes.jsonObject?.getString("musicUri")}")
             Timber.e("musicPath = ${message.path}")
         }
     }
@@ -1211,17 +1214,17 @@ class ChatPublicRoomAdapter(
                 }
             }
 
-            Timber.e("musicUri = ${message.message.attributes.getString("musicUri")}")
+            Timber.e("musicUri = ${message.message.attributes.jsonObject?.getString("musicUri")}")
             Timber.e("musicPath = ${message.path}")
 
 
 
             val attrs = message.message.attributes
-            val id = attrs.getString("userId")
-            val name = attrs.getString("userName")
-            val email = attrs.getString("userEmail")
-            val photo = attrs.getString("userPhoto")
-            val phone = attrs.getString("userPhone")
+            val id = attrs.jsonObject?.getString("userId")?:""
+            val name = attrs.jsonObject?.getString("userName")?:""
+            val email = attrs.jsonObject?.getString("userEmail")?:""
+            val photo = attrs.jsonObject?.getString("userPhoto")?:""
+            val phone = attrs.jsonObject?.getString("userPhone")?:""
 
             val color: String
             PublicRoomMetadata.usersEmails?.let {
@@ -1433,11 +1436,11 @@ class ChatPublicRoomAdapter(
 
 
             val attrs = message.message.attributes
-            val id = attrs.getString("userId")
-            val name = attrs.getString("userName")
-            val email = attrs.getString("userEmail")
-            val photo = attrs.getString("userPhoto")
-            val phone = attrs.getString("userPhone")
+            val id = attrs.jsonObject?.getString("userId")?:""
+            val name = attrs.jsonObject?.getString("userName")?:""
+            val email = attrs.jsonObject?.getString("userEmail")?:""
+            val photo = attrs.jsonObject?.getString("userPhoto")?:""
+            val phone = attrs.jsonObject?.getString("userPhone")?:""
 
             val color: String
             PublicRoomMetadata.usersEmails?.let {

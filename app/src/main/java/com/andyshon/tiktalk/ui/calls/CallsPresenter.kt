@@ -11,6 +11,7 @@ import com.andyshon.tiktalk.data.model.calls.CallModel
 import com.andyshon.tiktalk.data.preference.Preference
 import com.andyshon.tiktalk.data.preference.PreferenceManager
 import com.andyshon.tiktalk.utils.extensions.getVoiceCallDurationInFormat
+import com.twilio.chat.Attributes
 import io.reactivex.rxkotlin.addTo
 import org.jetbrains.anko.longToast
 
@@ -41,7 +42,7 @@ class CallsPresenter @Inject constructor(
             }
         }
 
-        options.withAttributes(json)
+        options.withAttributes(Attributes(json))
 //        view?.getActivityContext()?.longToast("json = $json, Twilio.chatClient = ${TwilioSingleton.instance.chatClient}")
 
         TwilioSingleton.instance.chatClient?.channels?.getChannel(channelSid, ChatCallbackListener { channel->

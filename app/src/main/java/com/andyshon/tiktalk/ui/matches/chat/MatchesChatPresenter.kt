@@ -4,21 +4,21 @@ import com.andyshon.tiktalk.data.entity.*
 import com.andyshon.tiktalk.data.twilio.TwilioSingleton
 import com.andyshon.tiktalk.ui.base.BasePresenter
 import com.andyshon.tiktalk.utils.extensions.*
-import com.andyshon.tiktalk.utils.phone.contactExists
 import timber.log.Timber
 import javax.inject.Inject
 import ChatCallbackListener
 import com.twilio.chat.*
 import com.twilio.chat.User
 
-class MatchesChatPresenter @Inject constructor() : BasePresenter<MatchesChatContract.View>(), ChatClientListener {
+class MatchesChatPresenter @Inject constructor() : BasePresenter<MatchesChatContract.View>(),
+    ChatClientListener {
 
     var chats: ArrayList<ChannelModel> = arrayListOf()
 
     var checkedChats = 0
 
     fun setTwilioListener() {
-        TwilioSingleton.instance.chatClient?.setListener(this@MatchesChatPresenter)
+        TwilioSingleton.instance.chatClient?.addListener(this@MatchesChatPresenter)
     }
 
     fun listAllChannels() {
@@ -27,20 +27,40 @@ class MatchesChatPresenter @Inject constructor() : BasePresenter<MatchesChatCont
             Timber.e("channels size = ${channelPaginator.items.size}")
             for (channelD in channelPaginator.items) {
                 channelD.getChannel(ChatCallbackListener<Channel> { channel ->
-                    if (channelD.attributes.length() != 0 && channelD.attributes.has("userId1")) {
-                        Timber.e("channelD.attributes size = ${channelD.attributes.length()}")
-                        val userId1 = channelD.attributes.getInt("userId1")
-                        val userName1 = channelD.attributes.getString("userName1")
-                        val userEmail = channelD.attributes.getString("userEmail1")
-                        val userPhoto1 = channelD.attributes.getString("userPhoto1")
-                        val userPhone1 = channelD.attributes.getString("userPhone1")
-                        val userId2 = channelD.attributes.getInt("userId2")
-                        val userName2 = channelD.attributes.getString("userName2") ?:""
-                        val userEmail2 = channelD.attributes.getString("userEmail2") ?:""
-                        val userPhoto2 = channelD.attributes.getString("userPhoto2")?:""
-                        val userPhone2 = channelD.attributes.getString("userPhone2")
+                    if (channelD.attributes.jsonObject?.length() != 0 && channelD.attributes.jsonObject?.has(
+                            "userId1"
+                        ) == true
+                    ) {
+                        Timber.e("channelD.attributes size = ${channelD.attributes.jsonObject?.length()}")
+                        val userId1 = channelD.attributes.jsonObject?.getInt("userId1") ?: 0
+                        val userName1 = channelD.attributes.jsonObject?.getString("userName1") ?: ""
+                        val userEmail =
+                            channelD.attributes.jsonObject?.getString("userEmail1") ?: ""
+                        val userEmail2 =
+                            channelD.attributes.jsonObject?.getString("userEmail2") ?: ""
+                        val userPhoto1 =
+                            channelD.attributes.jsonObject?.getString("userPhoto1") ?: ""
+                        val userPhone1 =
+                            channelD.attributes.jsonObject?.getString("userPhone1") ?: ""
+                        val userId2 = channelD.attributes.jsonObject?.getInt("userId2") ?: 0
+                        val userName2 = channelD.attributes.jsonObject?.getString("userName2") ?: ""
+                        val userPhoto2 =
+                            channelD.attributes.jsonObject?.getString("userPhoto2") ?: ""
+                        val userPhone2 =
+                            channelD.attributes.jsonObject?.getString("userPhone2") ?: ""
 
-                        val channelUserData = ChannelUserData(userId1, userName1, userEmail, userPhoto1, userPhone1, userId2, userName2, userEmail2, userPhoto2, userPhone2)
+                        val channelUserData = ChannelUserData(
+                            userId1,
+                            userName1,
+                            userEmail,
+                            userPhoto1,
+                            userPhone1,
+                            userId2,
+                            userName2,
+                            userEmail2,
+                            userPhoto2,
+                            userPhone2
+                        )
 
                         Timber.e("userId1 = $userId1, userName1 = $userName1, userEmail1 = $userEmail, userPhoto1 = $userPhoto1, userPhone1 = $userPhone1")
                         Timber.e("userId2 = $userId2, userName2 = $userName2, userEmail2 = $userEmail2, userPhoto2 = $userPhoto2, userPhone2 = $userPhone2")
@@ -60,7 +80,8 @@ class MatchesChatPresenter @Inject constructor() : BasePresenter<MatchesChatCont
                             })
                         }
 
-                        val opponentUserPhone = TwilioSingleton.instance.getOpponentPhone(channelUserData)
+                        val opponentUserPhone =
+                            TwilioSingleton.instance.getOpponentPhone(channelUserData)
 
                         if (channel.messages == null) {
                             //todo: in case to test on emulator
@@ -69,24 +90,25 @@ class MatchesChatPresenter @Inject constructor() : BasePresenter<MatchesChatCont
                             view?.updateAdapter()
                             view?.onChatsLoaded()
 //                        }
-                        }
-                        else {
+                        } else {
                             val messages = channel.messages
-                            messages?.getLastMessages(1, ChatCallbackListener<List<com.twilio.chat.Message>> { list ->
-                                Timber.e("messages size = ${list.size}")
+                            messages?.getLastMessages(
+                                1,
+                                ChatCallbackListener<List<com.twilio.chat.Message>> { list ->
+                                    Timber.e("messages size = ${list.size}")
 
-                                //todo: in case to test on emulator
+                                    //todo: in case to test on emulator
 //                            if (contactExists(getActivityContext(), opponentUserPhone).not()) {
-                                if (list.isNotEmpty()) {
-                                    val lastMessageAuthor = list.last().author
-                                    channelUserData.lastMessageAuthor = lastMessageAuthor
-                                }
-                                chats.add(ChannelModel(channel, channelUserData))
+                                    if (list.isNotEmpty()) {
+                                        val lastMessageAuthor = list.last().author
+                                        channelUserData.lastMessageAuthor = lastMessageAuthor
+                                    }
+                                    chats.add(ChannelModel(channel, channelUserData))
 //                            }
 
-                                view?.updateAdapter()
-                                view?.onChatsLoaded()
-                            })
+                                    view?.updateAdapter()
+                                    view?.onChatsLoaded()
+                                })
                         }
                     }
                 })
@@ -114,20 +136,31 @@ class MatchesChatPresenter @Inject constructor() : BasePresenter<MatchesChatCont
     override fun onChannelUpdated(channel: Channel?, p1: Channel.UpdateReason?) {
         Timber.e("onChannelUpdated, UpdateReason = ${p1?.value}, channel = ${channel?.friendlyName}, ${channel?.friendlyName}, ${channel?.members?.membersList?.size}, ${channel?.sid}, ${channel?.messages?.lastConsumedMessageIndex}")
 //                listAllChannels()
-        channel?.let { channel->
-            if (channel.attributes.length() != 0 && channel.attributes.has("userId1")) {
-                val userId1 = channel.attributes.getInt("userId1")
-                val userName1 = channel.attributes.getString("userName1")
-                val userEmail = channel.attributes.getString("userEmail1")
-                val userPhoto1 = channel.attributes.getString("userPhoto1")
-                val userPhone1 = channel.attributes.getString("userPhone1")
-                val userId2 = channel.attributes.getInt("userId2") ?:0
-                val userName2 = channel.attributes.getString("userName2") ?:""
-                val userEmail2 = channel.attributes.getString("userEmail2") ?:""
-                val userPhoto2 = channel.attributes.getString("userPhoto2")?:""
-                val userPhone2 = channel.attributes.getString("userPhone2")?:""
+        channel?.let { channel ->
+            if (channel.attributes.jsonObject?.length() != 0 && channel.attributes.jsonObject?.has("userId1") == true) {
+                val userId1 = channel.attributes.jsonObject?.getInt("userId1") ?: 0
+                val userName1 = channel.attributes.jsonObject?.getString("userName1") ?: ""
+                val userEmail = channel.attributes.jsonObject?.getString("userEmail1") ?: ""
+                val userPhoto1 = channel.attributes.jsonObject?.getString("userPhoto1") ?: ""
+                val userPhone1 = channel.attributes.jsonObject?.getString("userPhone1") ?: ""
+                val userId2 = channel.attributes.jsonObject?.getInt("userId2") ?: 0
+                val userName2 = channel.attributes.jsonObject?.getString("userName2") ?: ""
+                val userEmail2 = channel.attributes.jsonObject?.getString("userEmail2") ?: ""
+                val userPhoto2 = channel.attributes.jsonObject?.getString("userPhoto2") ?: ""
+                val userPhone2 = channel.attributes.jsonObject?.getString("userPhone2") ?: ""
 
-                val channelUserData = ChannelUserData(userId1, userName1, userEmail, userPhoto1, userPhone1, userId2, userName2, userEmail2, userPhoto2, userPhone2)
+                val channelUserData = ChannelUserData(
+                    userId1,
+                    userName1,
+                    userEmail,
+                    userPhoto1,
+                    userPhone1,
+                    userId2,
+                    userName2,
+                    userEmail2,
+                    userPhoto2,
+                    userPhone2
+                )
 
                 chats.forEach {
                     Timber.e("Sidd = ${it.sid} vs ${channel.sid}")
@@ -196,12 +229,15 @@ class MatchesChatPresenter @Inject constructor() : BasePresenter<MatchesChatCont
                     "2_hours" -> {
 
                     }
+
                     "8_hours" -> {
 
                     }
+
                     "1_week" -> {
 
                     }
+
                     "1_year" -> {
 
                     }
@@ -217,9 +253,11 @@ class MatchesChatPresenter @Inject constructor() : BasePresenter<MatchesChatCont
                     "Pattern" -> {
 
                     }
+
                     "PIN" -> {
 
                     }
+
                     "Fingerprint" -> {
 
                     }

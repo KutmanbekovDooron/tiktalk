@@ -61,9 +61,9 @@ class ZonePublicRoomPresenter @Inject constructor() : BasePresenter<ZonePublicRo
     fun getUsernameByEmail(email: String): String {
         val attrs = channel?.attributes
         Timber.e("attrs object 1 = $attrs")
-        if (attrs != null && attrs.has("usersIds")) {
-            val usersEmails = attrs.getJSONArray("usersEmails")
-            val usersNames = attrs.getJSONArray("usersNames")
+        if (attrs != null && attrs.jsonObject?.has("usersIds") == true) {
+            val usersEmails = attrs.jsonObject?.getJSONArray("usersEmails")!!
+            val usersNames = attrs.jsonObject?.getJSONArray("usersNames")!!
 
             for(i in 0 until usersEmails.length()) {
                 val email1 = usersEmails.getString(i)
@@ -84,7 +84,7 @@ class ZonePublicRoomPresenter @Inject constructor() : BasePresenter<ZonePublicRo
             if (it.isChecked) {
                 val attrs = it.message.attributes
                 Timber.e("atr = $attrs")
-                val userName = attrs.getString("userName")
+                val userName = attrs.jsonObject?.getString("userName")?:""
                 val timeStamp = getTimeForMessageDateClip(it.message.dateCreatedAsDate.toString())
                 val text = timeStamp.plus("\n")
                     .plus("$userName: ")
@@ -220,8 +220,8 @@ class ZonePublicRoomPresenter @Inject constructor() : BasePresenter<ZonePublicRo
         Timber.e("createTypeMessage called")
         if (msg != null) {
             when {
-                msg.attributes.has("replyName") -> chats.add(ReplyObject(msg = msg))
-                msg.attributes.has("contactName") -> chats.add(ContactObject(msg = msg))
+                msg.attributes.jsonObject?.has("replyName") == true -> chats.add(ReplyObject(msg = msg))
+                msg.attributes.jsonObject?.has("contactName") == true -> chats.add(ContactObject(msg = msg))
                 else -> {
                     if (msg.hasMedia().not()) {
                         chats.add(MessageObject(msg = msg))
@@ -241,9 +241,9 @@ class ZonePublicRoomPresenter @Inject constructor() : BasePresenter<ZonePublicRo
                         }
                         else if (msg.media.type == Constants.Chat.Media.TYPE_FILE) {
                             if (msg.attributes != null) {
-                                if (msg.attributes.has("fileUri")) {
+                                if (msg.attributes.jsonObject?.has("fileUri") == true) {
 //                                    val uri = msg.attributes?.getString("fileUri") ?: "-"
-                                    Timber.e("fileUri = ${msg.attributes?.getString("fileUri") ?: "-"}")
+                                    Timber.e("fileUri = ${msg.attributes?.jsonObject?.getString("fileUri") ?: "-"}")
                                 }
                             }
                             Timber.e("YEESSSS ${msg?.attributes}")
@@ -251,12 +251,12 @@ class ZonePublicRoomPresenter @Inject constructor() : BasePresenter<ZonePublicRo
                         }
                         else if (msg.media.type == Constants.Chat.Media.TYPE_MUSIC) {
                             if (msg.attributes != null) {
-                                if (msg.attributes.has("musicName")) {
-                                    val musicName = msg.attributes.getString("musicName") ?: "-"
-                                    val musicTitle = msg.attributes.getString("musicTitle") ?: "-"
-                                    val musicDuration = msg.attributes.getString("musicDuration") ?: "-"
-                                    val musicUri = msg.attributes.getString("musicUri") ?: "-"
-                                    val musicSizeInBytes = msg.attributes.getLong("musicSizeInBytes")
+                                if (msg.attributes.jsonObject?.has("musicName") == true) {
+                                    val musicName = msg.attributes.jsonObject?.getString("musicName") ?: "-"
+                                    val musicTitle = msg.attributes.jsonObject?.getString("musicTitle") ?: "-"
+                                    val musicDuration = msg.attributes.jsonObject?.getString("musicDuration") ?: "-"
+                                    val musicUri = msg.attributes.jsonObject?.getString("musicUri") ?: "-"
+                                    val musicSizeInBytes = msg.attributes.jsonObject?.getLong("musicSizeInBytes")!!
 
                                     Timber.e("MUSIC, musicUri = $musicUri")
 
@@ -286,12 +286,12 @@ class ZonePublicRoomPresenter @Inject constructor() : BasePresenter<ZonePublicRo
                         }
                         else if (msg.media.type == Constants.Chat.Media.TYPE_VIDEO) {
                             if (msg.attributes != null) {
-                                if (msg.attributes.has("videoName")) {
-                                    val videoName = msg.attributes.getString("videoName") ?: "-"
-                                    val videoTitle = msg.attributes.getString("videoTitle") ?: "-"
-                                    val videoDuration = msg.attributes.getString("videoDuration") ?: "-"
-                                    val videoUri = msg.attributes.getString("videoUri") ?: "-"
-                                    val videoSizeInBytes = msg.attributes.getLong("videoSizeInBytes")
+                                if (msg.attributes.jsonObject?.has("videoName") == true) {
+                                    val videoName = msg.attributes.jsonObject?.getString("videoName") ?: "-"
+                                    val videoTitle = msg.attributes.jsonObject?.getString("videoTitle") ?: "-"
+                                    val videoDuration = msg.attributes.jsonObject?.getString("videoDuration") ?: "-"
+                                    val videoUri = msg.attributes.jsonObject?.getString("videoUri") ?: "-"
+                                    val videoSizeInBytes = msg.attributes.jsonObject?.getLong("videoSizeInBytes")?:0L
 
                                     Timber.e("VIDEO, videoUri = $videoUri")
 
@@ -402,7 +402,7 @@ class ZonePublicRoomPresenter @Inject constructor() : BasePresenter<ZonePublicRo
             replyJson?.put("userEmail", UserMetadata.userEmail)
             replyJson?.put("userPhoto", UserMetadata.photos.first().url)
             replyJson?.put("userPhone", UserMetadata.userPhone)
-            options.withAttributes(replyJson)
+            options.withAttributes(Attributes(replyJson!!))
         }
         else {
             val json = JSONObject()
@@ -411,7 +411,7 @@ class ZonePublicRoomPresenter @Inject constructor() : BasePresenter<ZonePublicRo
             json.put("userEmail", UserMetadata.userEmail)
             json.put("userPhoto", UserMetadata.photos.first().url)
             json.put("userPhone", UserMetadata.userPhone)
-            options.withAttributes(json)
+            options.withAttributes(Attributes(json))
         }
 
 

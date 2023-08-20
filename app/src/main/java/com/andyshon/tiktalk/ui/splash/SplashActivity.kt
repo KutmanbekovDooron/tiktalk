@@ -13,6 +13,7 @@ import com.andyshon.tiktalk.data.model.calls.CallModel
 import com.andyshon.tiktalk.data.model.settings.SettingsModel
 import com.andyshon.tiktalk.data.preference.Preference
 import com.andyshon.tiktalk.data.preference.PreferenceManager
+import com.andyshon.tiktalk.data.twilio.ClientSynchronization
 import com.andyshon.tiktalk.data.twilio.TwilioSingleton
 import com.andyshon.tiktalk.firebase.MyFirebaseMessagingService
 import com.andyshon.tiktalk.ui.MainActivity
@@ -29,7 +30,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
-class SplashActivity : BaseInjectActivity() {
+class SplashActivity : BaseInjectActivity(), ClientSynchronization {
 
     override fun getPresenter(): BaseContract.Presenter<*>? = null
 
@@ -109,7 +110,8 @@ class SplashActivity : BaseInjectActivity() {
         }.addOnFailureListener { e: Exception? -> print("error" + e?.message) }
 
 
-        val twilioUserToken = prefs.getObject(Preference.KEY_USER_TWILIO_USER_ID, String::class.java) ?: ""
+        val twilioUserToken =
+            prefs.getObject(Preference.KEY_USER_TWILIO_USER_ID, String::class.java) ?: ""
         UserMetadata.twilioUserId = twilioUserToken
 
         val userToken = prefs.getObject(Preference.KEY_TOKEN, String::class.java) ?: ""
@@ -126,41 +128,11 @@ class SplashActivity : BaseInjectActivity() {
     }
 
     private fun getTokenTwilio() {
+        restoreUserMetadata()
         authModel.getTwilioToken()
             .subscribe({
-                Timber.e("Get twilio token === ${it.token}")
-                TwilioSingleton.instance.connect(this, it.token, object : ChatClientListener {
-                    override fun onClientSynchronization(status: ChatClient.SynchronizationStatus?) {
-                        Timber.e("onClientSynchronization, status === $status, ${status?.value}")
-
-                        if (status == ChatClient.SynchronizationStatus.COMPLETED) {
-                            restoreUserMetadata()
-                            val intent = Intent(this@SplashActivity, MainActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            startActivity(intent)
-                        }
-                    }
-
-                    override fun onChannelDeleted(p0: Channel?) {}
-                    override fun onInvitedToChannelNotification(p0: String?) {}
-                    override fun onNotificationSubscribed() {}
-                    override fun onUserSubscribed(p0: User?) {}
-                    override fun onChannelUpdated(p0: Channel?, p1: Channel.UpdateReason?) {}
-                    override fun onRemovedFromChannelNotification(p0: String?) {}
-                    override fun onNotificationFailed(p0: ErrorInfo?) {}
-                    override fun onTokenExpired() {}
-                    override fun onChannelJoined(p0: Channel?) {}
-                    override fun onChannelAdded(p0: Channel?) {}
-                    override fun onChannelSynchronizationChange(p0: Channel?) {}
-                    override fun onUserUnsubscribed(p0: User?) {}
-                    override fun onAddedToChannelNotification(p0: String?) {}
-                    override fun onChannelInvited(p0: Channel?) {}
-                    override fun onNewMessageNotification(p0: String?, p1: String?, p2: Long) {}
-                    override fun onConnectionStateChange(p0: ChatClient.ConnectionState?) {}
-                    override fun onError(p0: ErrorInfo?) {}
-                    override fun onUserUpdated(p0: User?, p1: User.UpdateReason?) {}
-                    override fun onTokenAboutToExpire() {}
-                })
+//                App.instance.basicClient.applyAccessToken(it.token)
+                TwilioSingleton.instance.connect(this, it.token, this)
             }, {
                 Timber.e("getTokenTwilio, Error = ${it.message}")
                 //todo: no network
@@ -190,5 +162,12 @@ class SplashActivity : BaseInjectActivity() {
         UserMetadata.birthday = userBirthday
         UserMetadata.lockerType = userLockerType
         UserMetadata.lockerValue = userLockerValue
+    }
+
+    override fun onSync() {
+        restoreUserMetadata()
+        val intent = Intent(this@SplashActivity, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
     }
 }

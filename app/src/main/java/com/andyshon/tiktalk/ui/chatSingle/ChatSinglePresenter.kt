@@ -1,39 +1,39 @@
 package com.andyshon.tiktalk.ui.chatSingle
 
-import com.andyshon.tiktalk.ui.base.BasePresenter
-import com.andyshon.tiktalk.data.twilio.TwilioSingleton
-import com.twilio.chat.*
-import timber.log.Timber
-import javax.inject.Inject
+import ChatCallbackListener
+import ChatStatusListener
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
-import android.os.Environment
-import com.andyshon.tiktalk.utils.extensions.*
-import org.jetbrains.anko.longToast
-import org.json.JSONObject
-import java.lang.StringBuilder
-import kotlin.collections.ArrayList
-import com.twilio.chat.ErrorInfo
-import com.twilio.chat.CallbackListener
-import io.reactivex.rxkotlin.addTo
-import ChatCallbackListener
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Environment
 import android.provider.MediaStore
 import com.andyshon.tiktalk.Constants
 import com.andyshon.tiktalk.data.UserMetadata
+import com.andyshon.tiktalk.data.twilio.TwilioSingleton
 import com.andyshon.tiktalk.events.MediaSidDownloadFinishedEvent
 import com.andyshon.tiktalk.events.RxEventBus
-import com.andyshon.tiktalk.ui.chatSingle.entity.*
-import java.io.*
-import ChatStatusListener
 import com.andyshon.tiktalk.events.UpdateLessMessagesCounterEvent
+import com.andyshon.tiktalk.ui.base.BasePresenter
+import com.andyshon.tiktalk.ui.chatSingle.entity.*
+import com.andyshon.tiktalk.utils.extensions.*
+import com.twilio.chat.*
+import io.reactivex.rxkotlin.addTo
+import org.jetbrains.anko.longToast
+import org.json.JSONObject
+import timber.log.Timber
+import java.io.*
+import java.security.AccessController.getContext
+import javax.inject.Inject
+
 
 private const val BATCH_SIZE = 500
 
-class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus) : BasePresenter<ChatSingleContract.View>(), ChannelListener {
+class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus) :
+    BasePresenter<ChatSingleContract.View>(), ChannelListener {
 
     var chats: ArrayList<CommonMessageObject> = arrayListOf()
 
@@ -57,6 +57,7 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
         replyJson?.put("replyName", name)
         replyJson?.put("replyText", text)
     }
+
     fun resetReplyJson() {
         replyJson = null
     }
@@ -69,7 +70,7 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
         rxEventBus.filteredObservable(MediaSidDownloadFinishedEvent::class.java)
             .subscribe({
                 Timber.e("Get media sid = ${it.mediaSid}")
-                chats.forEach { msg->
+                chats.forEach { msg ->
                     if (msg.message.hasMedia()) {
                         Timber.e("msg.message.media.type = ${msg.message.media.type}")
                         if (msg.message.media.type != Constants.Chat.Media.TYPE_VOICE) {
@@ -78,8 +79,7 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
                                 view?.notifyDataSetChanged()
                                 return@forEach
                             }
-                        }
-                        else {
+                        } else {
                             view?.notifyDataSetChanged()
                         }
                     }
@@ -93,153 +93,216 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
     private var lastDate = ""
 
     fun loadAndShowMessages() {
-        TwilioSingleton.instance.chatClient?.channels?.getChannel(channelSid, object: CallbackListener<Channel> () {
-            override fun onSuccess(ch: Channel?) {
+        TwilioSingleton.instance.chatClient?.channels?.getChannel(
+            channelSid,
+            object : CallbackListener<Channel>() {
+                override fun onSuccess(ch: Channel?) {
 
-                this@ChatSinglePresenter.channel = ch
-                channel?.addListener(this@ChatSinglePresenter)
+                    this@ChatSinglePresenter.channel = ch
+                    channel?.addListener(this@ChatSinglePresenter)
 
-                chats.clear()
+                    chats.clear()
 
-                val members = channel?.members?.membersList
-                Timber.e("Members = ${members?.size}, UserMetadata.userEmail = ${UserMetadata.userEmail}")
-                members?.forEach {
-                    Timber.e("Member = ${it.identity}, ${it.channel}, ${it.sid}, ${it.lastConsumedMessageIndex}, ${it.lastConsumptionTimestamp}")
-                    if (it.identity != UserMetadata.userEmail) {
-                        it.lastConsumedMessageIndex?.let {
-                            UserMetadata.lastCMI = it
+                    val members = channel?.members?.membersList
+                    Timber.e("Members = ${members?.size}, UserMetadata.userEmail = ${UserMetadata.userEmail}")
+                    members?.forEach {
+                        Timber.e("Member = ${it.identity}, ${it.channel}, ${it.sid}, ${it.lastConsumedMessageIndex}, ${it.lastConsumptionTimestamp}")
+                        if (it.identity != UserMetadata.userEmail) {
+                            it.lastConsumedMessageIndex?.let {
+                                UserMetadata.lastCMI = it
+                            }
                         }
                     }
-                }
 
-                members?.let {
-                    if (members.size >= 2) {
-                        opponentIdentity = if (members[0].identity == UserMetadata.userEmail) members[1].identity else members[0].identity
-                    }
-                }
-
-                val messages = channel?.messages
-                messages?.getLastMessages(BATCH_SIZE, object: CallbackListener<List<Message>> () {
-                    override fun onSuccess(list: List<Message>?) {
-                        Timber.e("messages size = ${list?.size}")
-
-                        if (list!!.isEmpty()) {
-                            view?.onEmptyMatchesLayout(1)
+                    members?.let {
+                        if (members.size >= 2) {
+                            opponentIdentity =
+                                if (members[0].identity == UserMetadata.userEmail) members[1].identity else members[0].identity
                         }
-                        else {
-                            channel?.getUnconsumedMessagesCount(object: CallbackListener<Long>() {
-                                override fun onSuccess(it: Long?) {
-                                    Timber.e("getUnconsumedMessagesCount = $it")
+                    }
 
-                                    messages.setAllMessagesConsumedWithResult(ChatCallbackListener<Long> { unread ->
-                                        Timber.e("$unread messages still unread")
-                                        if (unread == 0L) {
-                                            rxEventBus.post(UpdateLessMessagesCounterEvent(channel?.sid?:""))
-                                        }
-                                    })
+                    val messages = channel?.messages
+                    messages?.getLastMessages(
+                        BATCH_SIZE,
+                        object : CallbackListener<List<Message>>() {
+                            override fun onSuccess(list: List<Message>?) {
+                                Timber.e("messages size = ${list?.size}")
 
-                                    var num = it!!
-                                    list.forEach { msg ->
-                                        Timber.e("Message: ${msg.author}, ${msg.messageBody}, hasMedia = ${msg.hasMedia()}, ${msg.messageIndex}")
+                                if (list!!.isEmpty()) {
+                                    view?.onEmptyMatchesLayout(1)
+                                } else {
+                                    channel?.getUnconsumedMessagesCount(object :
+                                        CallbackListener<Long>() {
+                                        override fun onSuccess(it: Long?) {
+                                            Timber.e("getUnconsumedMessagesCount = $it")
 
-                                        if (num > 0) {
-                                            val pos = list.indexOf(msg)
-                                            if (pos == (list.size-num).toInt()) {
-                                                if (list[pos].author != UserMetadata.userEmail) {   // add horizon only if messages come from opponent
-                                                    chats.add(UnConsumedHorizonObject(msg))
+                                            messages.setAllMessagesConsumedWithResult(
+                                                ChatCallbackListener<Long> { unread ->
+                                                    Timber.e("$unread messages still unread")
+                                                    if (unread == 0L) {
+                                                        rxEventBus.post(
+                                                            UpdateLessMessagesCounterEvent(
+                                                                channel?.sid ?: ""
+                                                            )
+                                                        )
+                                                    }
+                                                })
+
+                                            var num = it ?: 0
+                                            list.forEach { msg ->
+                                                Timber.e("Message: ${msg.author}, ${msg.messageBody}, hasMedia = ${msg.hasMedia()}, ${msg.messageIndex}")
+
+                                                if (num > 0) {
+                                                    val pos = list.indexOf(msg)
+                                                    if (pos == (list.size - num).toInt()) {
+                                                        if (list[pos].author != UserMetadata.userEmail) {   // add horizon only if messages come from opponent
+                                                            chats.add(UnConsumedHorizonObject(msg))
+                                                        }
+                                                        num = 0
+                                                    }
                                                 }
-                                                num = 0
+
+                                                createTypeMessage(msg, list.indexOf(msg))
                                             }
+                                            view?.onMessagesLoaded()
                                         }
 
-                                        createTypeMessage(msg, list.indexOf(msg))
-                                    }
-                                    view?.onMessagesLoaded()
+                                        override fun onError(errorInfo: ErrorInfo?) {
+                                            Timber.e("OnError 1 = $errorInfo, ${errorInfo?.code}, ${errorInfo?.status}, ${errorInfo?.message}")
+                                        }
+
+                                    })
                                 }
+                            }
+                        })
+                }
 
-                                override fun onError(errorInfo: ErrorInfo?) {
-                                    Timber.e("OnError 1 = $errorInfo, ${errorInfo?.code}, ${errorInfo?.status}, ${errorInfo?.message}")
-                                }
+                override fun onError(errorInfo: ErrorInfo?) {
+                    Timber.e("OnError 2 = $errorInfo, ${errorInfo?.code}, ${errorInfo?.status}, ${errorInfo?.message}")
+                }
 
-                            })
-                        }
-                    }
-                })
-            }
-
-            override fun onError(errorInfo: ErrorInfo?) {
-                Timber.e("OnError 2 = $errorInfo, ${errorInfo?.code}, ${errorInfo?.status}, ${errorInfo?.message}")
-            }
-
-        })
+            })
     }
 
-    private fun createTypeMessage(msg: Message?, pos: Int=0) {
-        if (msg != null) {
+    private fun createTypeMessage(msg: Message?, pos: Int = 0) {
+        try {
+            if (msg != null) {
+                val full = msg.dateCreatedAsDate.toString().split(" ")
+                val created = full[0].plus("-").plus(full[1]).plus("-").plus(full[2])
+                if (created != lastDate) {
+                    chats.add(DateObject(msg))
+                    lastDate = created
+                }
 
-            val full = msg.dateCreatedAsDate.toString().split(" ")
-            val created = full[0].plus("-").plus(full[1]).plus("-").plus(full[2])
-            if (created != lastDate) {
-                chats.add(DateObject(msg))
-                lastDate = created
-            }
+                when {
+                    msg.attributes.jsonObject?.has("replyName") == true -> chats.add(ReplyObject(msg = msg))
+                    msg.attributes.jsonObject?.has("contactName") == true -> chats.add(
+                        ContactObject(
+                            msg = msg
+                        )
+                    )
 
-            when {
-                msg.attributes.has("replyName") -> chats.add(ReplyObject(msg = msg))
-                msg.attributes.has("contactName") -> chats.add(ContactObject(msg = msg))
-                msg.attributes.has("callStatus") -> chats.add(CallObject(msg = msg))
-                else -> {
-                    if (msg.hasMedia().not()) {
-                        chats.add(MessageObject(msg = msg))
-                    }
-                    else {
-                        Timber.e("Media type: ${msg.media.type}, msg.media.sid = ${msg.media.sid}, attributes = ${msg.attributes}")
-                        // Media type: application/pdf
+                    msg.attributes.jsonObject?.has("callStatus") == true -> chats.add(CallObject(msg = msg))
+                    else -> {
+                        if (msg.hasMedia().not()) {
+                            chats.add(MessageObject(msg = msg))
+                        } else {
+                            Timber.e("Media type: ${msg.media.type}, msg.media.sid = ${msg.media.sid}, attributes = ${msg.attributes}")
+                            // Media type: application/pdf
 
-                        if (msg.media.type == Constants.Chat.Media.TYPE_VOICE) {
-                            val p = Environment.getExternalStorageDirectory().absolutePath + "/" + msg.media.sid
-                            val file = File(p)
-                            var bytesArray = byteArrayOf()
-                            if (file.exists() && file.length() != 0L) {
-                                bytesArray = getByteArrayFromFile(file)
-                            }
-                            chats.add(VoiceObject(msg = msg, path = p, bytesArray = bytesArray, duration = 0, progress = 0f))
-                        }
-                        else if (msg.media.type == Constants.Chat.Media.TYPE_FILE) {
-                            if (msg.attributes != null) {
-                                if (msg.attributes.has("fileUri")) {
-//                                    val uri = msg.attributes?.getString("fileUri") ?: "-"
-                                    Timber.e("fileUri = ${msg.attributes?.getString("fileUri") ?: "-"}")
+                            if (msg.media.type == Constants.Chat.Media.TYPE_VOICE) {
+                                val p =
+                                    Environment.getExternalStorageDirectory().absolutePath + "/" + msg.media.sid
+                                val file = File(p)
+                                var bytesArray = byteArrayOf()
+                                if (file.exists() && file.length() != 0L) {
+                                    bytesArray = getByteArrayFromFile(file)
                                 }
-                            }
-                            chats.add(FileObject(msg = msg))
-                        }
-                        else if (msg.media.type == Constants.Chat.Media.TYPE_MUSIC) {
-                            if (msg.attributes != null) {
-                                if (msg.attributes.has("musicName")) {
-                                    val musicName = msg.attributes.getString("musicName") ?: "-"
-                                    val musicTitle = msg.attributes.getString("musicTitle") ?: "-"
-                                    val musicDuration = msg.attributes.getString("musicDuration") ?: "-"
-                                    val musicUri = msg.attributes.getString("musicUri") ?: "-"
-                                    val musicSizeInBytes = msg.attributes.getLong("musicSizeInBytes")
+                                chats.add(
+                                    VoiceObject(
+                                        msg = msg,
+                                        path = p,
+                                        bytesArray = bytesArray,
+                                        duration = 0,
+                                        progress = 0f
+                                    )
+                                )
+                            } else if (msg.media.type == Constants.Chat.Media.TYPE_FILE) {
+                                if (msg.attributes.jsonObject != null) {
+                                    if (msg.attributes.jsonObject?.has("fileUri") == true) {
+//                                    val uri = msg.attributes?.getString("fileUri") ?: "-"
+                                        Timber.e(
+                                            "fileUri = ${
+                                                msg.attributes?.jsonObject?.getString(
+                                                    "fileUri"
+                                                ) ?: "-"
+                                            }"
+                                        )
+                                    }
+                                }
+                                chats.add(FileObject(msg = msg))
+                            } else if (msg.media.type == Constants.Chat.Media.TYPE_MUSIC) {
+                                if (msg.attributes.jsonObject?.has("musicName") == true) {
+                                    val musicName =
+                                        msg.attributes.jsonObject?.getString("musicName") ?: "-"
+                                    val musicTitle =
+                                        msg.attributes.jsonObject?.getString("musicTitle")
+                                            ?: "-"
+                                    val musicDuration =
+                                        msg.attributes.jsonObject?.getString("musicDuration")
+                                            ?: "-"
+                                    val musicUri =
+                                        msg.attributes.jsonObject?.getString("musicUri") ?: "-"
+                                    val musicSizeInBytes =
+                                        msg.attributes.jsonObject?.getLong("musicSizeInBytes")
+                                            ?: 0L
 
                                     Timber.e("MUSIC, musicUri = $musicUri")
-
+                                    val uri = Uri.parse(musicUri)
                                     val projection = arrayOf(MediaStore.Audio.Media.DATA)
-                                    val cursor = getActivityContext().contentResolver.query(Uri.parse(musicUri), projection, null, null, null)!!
+                                    getActivityContext().grantUriPermission(
+                                        getActivityContext().application.packageName,
+                                        uri,
+                                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                    )
+
+                                    val cursor = getActivityContext().contentResolver.query(
+                                        uri, projection, null, null, null
+                                    )!!
+
                                     Timber.e("MUSIC, cursor = $cursor, ${cursor.columnCount}, ${cursor?.count}")
 
                                     try {
                                         if (cursor.moveToFirst()) {
                                             Timber.e("MUSIC, cursor.moveToFirst()")
-                                            val filePath = cursor.getString(cursor?.getColumnIndex(MediaStore.Audio.Media.DATA) ?: 0)
+                                            val filePath = cursor.getString(
+                                                cursor?.getColumnIndex(MediaStore.Audio.Media.DATA)
+                                                    ?: 0
+                                            )
                                             Timber.e("filePath === $filePath")
-                                            chats.add(MusicObject(filePath, musicName, musicTitle, musicDuration, musicSizeInBytes = musicSizeInBytes, msg = msg))
-                                        }
-                                        else {
+                                            chats.add(
+                                                MusicObject(
+                                                    filePath,
+                                                    musicName,
+                                                    musicTitle,
+                                                    musicDuration,
+                                                    musicSizeInBytes = musicSizeInBytes,
+                                                    msg = msg
+                                                )
+                                            )
+                                        } else {
                                             Timber.e("MUSIC, Else 1")
 //                                                Timber.e("filePath === $filePath")
-                                            chats.add(MusicObject("", musicName, musicTitle, musicDuration, musicSizeInBytes = musicSizeInBytes, msg = msg))
+                                            chats.add(
+                                                MusicObject(
+                                                    "",
+                                                    musicName,
+                                                    musicTitle,
+                                                    musicDuration,
+                                                    musicSizeInBytes = musicSizeInBytes,
+                                                    msg = msg
+                                                )
+                                            )
                                         }
                                     } catch (e: Exception) {
                                         Timber.e("Failed to upload media -> error: ${e.message}")
@@ -247,33 +310,69 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
                                         cursor.close()
                                     }
                                 }
-                            }
-                        }
-                        else if (msg.media.type == Constants.Chat.Media.TYPE_VIDEO) {
-                            if (msg.attributes != null) {
-                                if (msg.attributes.has("videoName")) {
-                                    val videoName = msg.attributes.getString("videoName") ?: "-"
-                                    val videoTitle = msg.attributes.getString("videoTitle") ?: "-"
-                                    val videoDuration = msg.attributes.getString("videoDuration") ?: "-"
-                                    val videoUri = msg.attributes.getString("videoUri") ?: "-"
-                                    val videoSizeInBytes = msg.attributes.getLong("videoSizeInBytes")
+                            } else if (msg.media.type == Constants.Chat.Media.TYPE_VIDEO) {
+                                if (msg.attributes.jsonObject?.has("videoName") == true) {
+                                    val videoName =
+                                        msg.attributes.jsonObject?.getString("videoName") ?: "-"
+                                    val videoTitle =
+                                        msg.attributes.jsonObject?.getString("videoTitle") ?: "-"
+                                    val videoDuration =
+                                        msg.attributes.jsonObject?.getString("videoDuration") ?: "-"
+                                    val videoUri =
+                                        msg.attributes.jsonObject?.getString("videoUri") ?: "-"
+                                    val videoSizeInBytes =
+                                        msg.attributes.jsonObject?.getLong("videoSizeInBytes") ?: 0L
 
                                     Timber.e("VIDEO, videoUri = $videoUri")
 
+                                    val uri = Uri.parse(videoUri)
+                                    obtainDurablePermission(uri)
+//                                    getActivityContext().grantUriPermission(
+//                                        getActivityContext().application.packageName,
+//                                        uri,
+//                                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+//                                    )
+
+
                                     val projection = arrayOf(MediaStore.Video.Media.DATA)
-                                    val cursor = getActivityContext().contentResolver.query(Uri.parse(videoUri), projection, null, null, null)!!
-                                    Timber.e("VIDEO, cursor = $cursor, ${cursor.columnCount}, ${cursor.count}")
+                                    val cursor =
+                                        getActivityContext().contentResolver.query(
+                                            Uri.parse(videoUri), projection, null, null, null
+                                        ) ?: return
 
                                     try {
+
+                                        Timber.e("VIDEO, cursor = $cursor, ${cursor.columnCount}, ${cursor.count}")
+
                                         if (cursor.moveToFirst()) {
                                             Timber.e("VIDEO, cursor.moveToFirst()")
-                                            val filePath = cursor.getString(cursor?.getColumnIndex(MediaStore.Video.Media.DATA) ?: 0)
+                                            val filePath = cursor.getString(
+                                                cursor?.getColumnIndex(MediaStore.Video.Media.DATA)
+                                                    ?: 0
+                                            )
                                             Timber.e("filePath === $filePath")
-                                            chats.add(VideoObject(filePath, videoName, videoTitle, videoDuration, musicSizeInBytes = videoSizeInBytes, msg = msg))
-                                        }
-                                        else {
+                                            chats.add(
+                                                VideoObject(
+                                                    filePath,
+                                                    videoName,
+                                                    videoTitle,
+                                                    videoDuration,
+                                                    musicSizeInBytes = videoSizeInBytes,
+                                                    msg = msg
+                                                )
+                                            )
+                                        } else {
                                             Timber.e("VIDEO, Else 1")
-                                            chats.add(VideoObject("", videoName, videoTitle, videoDuration, musicSizeInBytes = videoSizeInBytes, msg = msg))
+                                            chats.add(
+                                                VideoObject(
+                                                    "",
+                                                    videoName,
+                                                    videoTitle,
+                                                    videoDuration,
+                                                    musicSizeInBytes = videoSizeInBytes,
+                                                    msg = msg
+                                                )
+                                            )
                                         }
                                     } catch (e: Exception) {
                                         Timber.e("Failed to upload media -> error: ${e.message}")
@@ -281,63 +380,95 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
                                         cursor.close()
                                     }
                                 }
+                            } else {
+                                val file = File(getActivityContext().cacheDir, msg.media.sid)
+                                if (file.exists().not() || file.length() == 0L) {
+                                    chats.add(ImageObject(msg = msg, hideProgress = false))
+                                } else {
+                                    chats.add(ImageObject(msg = msg, hideProgress = true))
+                                }
                             }
-                        }
-                        else {
-                            val file = File(getActivityContext().cacheDir, msg.media.sid)
-                            if (file.exists().not() || file.length() == 0L) {
-                                chats.add(ImageObject(msg = msg, hideProgress = false))
-                            }
-                            else {
-                                chats.add(ImageObject(msg = msg, hideProgress = true))
-                            }
-                        }
 
 
-                        if (msg.media.type == Constants.Chat.Media.TYPE_VOICE ||
-                            msg.media.type == Constants.Chat.Media.TYPE_IMAGE ||
-                            msg.media.type == Constants.Chat.Media.TYPE_CAMERA) {
+                            if (msg.media.type == Constants.Chat.Media.TYPE_VOICE ||
+                                msg.media.type == Constants.Chat.Media.TYPE_IMAGE ||
+                                msg.media.type == Constants.Chat.Media.TYPE_CAMERA
+                            ) {
 
-                            val file = File(getActivityContext().cacheDir, msg.media.sid)
-                            Timber.e("is file exist = $file, ${file.exists()}, length = ${file.length()}")
+                                val file = File(getActivityContext().cacheDir, msg.media.sid)
+                                Timber.e("is file exist = $file, ${file.exists()}, length = ${file.length()}")
 
-                            if (file.exists().not() || file.length() == 0L) {
-                                val outStream = FileOutputStream(file)
-                                msg.media.download(outStream, object: StatusListener() {
-                                    override fun onSuccess() {}
-                                    override fun onError(errorInfo: ErrorInfo?) { Timber.e("download, onError = $errorInfo") }
-                                }, object: ProgressListener() {
-                                    override fun onStarted() {}
-                                    override fun onProgress(p0: Long) { Timber.e("onProgress, $p0") }
-                                    override fun onCompleted(p0: String?) {
-                                        Timber.e("onCompleted, pos = $pos, p0 = $p0")
-
-                                        val p = Environment.getExternalStorageDirectory().absolutePath + "/" + msg.media.sid
-                                        val file2 = File(p)
-                                        var bytesArray = byteArrayOf()
-                                        if (file2.exists() && file2.length() != 0L) {
-                                            bytesArray = getByteArrayFromFile(file2)
+                                if (file.exists().not() || file.length() == 0L) {
+                                    val outStream = FileOutputStream(file)
+                                    msg.media.download(outStream, object : StatusListener() {
+                                        override fun onSuccess() {}
+                                        override fun onError(errorInfo: ErrorInfo?) {
+                                            Timber.e("download, onError = $errorInfo")
                                         }
-                                        if (msg.media.type == Constants.Chat.Media.TYPE_VOICE) {
-                                            val voice = VoiceObject(msg = msg, path = p, bytesArray = bytesArray, duration = 0, progress = 0f)
-                                            chats.set(/*pos*/chats.size-1, voice)
-                                        }
-                                        else {
-                                            val obj = ImageObject(msg = msg, hideProgress = true)
-                                            chats.set(/*pos*/chats.size-1, obj)
+                                    }, object : ProgressListener() {
+                                        override fun onStarted() {}
+                                        override fun onProgress(p0: Long) {
+                                            Timber.e("onProgress, $p0")
                                         }
 
+                                        override fun onCompleted(p0: String?) {
+                                            Timber.e("onCompleted, pos = $pos, p0 = $p0")
 
-                                        view?.notifyItem(/*pos*/chats.size-1)
-                                    }
-                                })
+                                            val p =
+                                                Environment.getExternalStorageDirectory().absolutePath + "/" + msg.media.sid
+                                            val file2 = File(p)
+                                            var bytesArray = byteArrayOf()
+                                            if (file2.exists() && file2.length() != 0L) {
+                                                bytesArray = getByteArrayFromFile(file2)
+                                            }
+                                            if (msg.media.type == Constants.Chat.Media.TYPE_VOICE) {
+                                                val voice = VoiceObject(
+                                                    msg = msg,
+                                                    path = p,
+                                                    bytesArray = bytesArray,
+                                                    duration = 0,
+                                                    progress = 0f
+                                                )
+                                                chats.set(/*pos*/chats.size - 1, voice)
+                                            } else {
+                                                val obj =
+                                                    ImageObject(msg = msg, hideProgress = true)
+                                                chats.set(/*pos*/chats.size - 1, obj)
+                                            }
+
+
+                                            view?.notifyItem(/*pos*/chats.size - 1)
+                                        }
+                                    })
+                                }
                             }
                         }
                     }
                 }
+                view?.onMessageAdded(msg)
             }
-            view?.onMessageAdded(msg)
+        } catch (e: Exception) {
+            Timber.e(e)
         }
+    }
+
+    private fun obtainDurablePermission(document: Uri): Boolean {
+        var weHaveDurablePermission = false
+        val perms =    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+
+        getActivityContext().contentResolver.releasePersistableUriPermission(document, perms)
+
+        try {
+            getActivityContext().contentResolver.takePersistableUriPermission(document, perms)
+            for (perm in getActivityContext().contentResolver.persistedUriPermissions) {
+                if (perm.uri == document) {
+                    weHaveDurablePermission = true
+                }
+            }
+        } catch (e: SecurityException) {
+            // OK, we were not offered any persistable permissions
+        }
+        return weHaveDurablePermission
     }
 
     /**
@@ -425,12 +556,6 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
     }
 
 
-
-
-
-
-
-
     var searchResultIndexes = arrayListOf<Int>()
 
 
@@ -454,12 +579,11 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
     var searchPointer = 0
 
 
-
-
-
-
-
-    fun sendContactMessage(contactName: String, contactPhone: String, contactPhoto: Bitmap?=null) {
+    fun sendContactMessage(
+        contactName: String,
+        contactPhone: String,
+        contactPhoto: Bitmap? = null
+    ) {
         val options = Message.options()
         options.withBody(contactName)
         val json = JSONObject()
@@ -468,12 +592,13 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
         //todo: also need to put into attributes or even into media photo of contact if that photo exists
         //todo: уточнить насчет данного функционала, нужно ли показывать фотку контакта вообще
         Timber.e("contactJson $json")
-        options.withAttributes(json)
+        options.withAttributes(Attributes(json))
 
         channel?.messages?.sendMessage(options, object : CallbackListener<Message>() {
             override fun onSuccess(p0: Message?) {
                 Timber.e("sendMessage, onSuccess: ${p0?.messageBody}, author = ${p0?.author}, ${p0?.channel?.friendlyName}, ${p0?.channelSid}, ${p0?.dateCreated}, ${p0?.dateCreatedAsDate}")
             }
+
             override fun onError(errorInfo: ErrorInfo?) {
                 Timber.e("sendMessage, onError: ${errorInfo?.status}, ${errorInfo?.message}, ${errorInfo?.code}")
             }
@@ -486,7 +611,7 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
         options.withBody(text)
         Timber.e("replyJson $replyJson")
         replyJson?.let {
-            options.withAttributes(it)
+            options.withAttributes(Attributes(it))
         }
 
 
@@ -494,6 +619,7 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
             override fun onSuccess(p0: Message?) {
                 Timber.e("sendMessage, onSuccess: ${p0?.messageBody}, author = ${p0?.author}, ${p0?.channel?.friendlyName}, ${p0?.channelSid}, ${p0?.dateCreated}, ${p0?.dateCreatedAsDate}")
             }
+
             override fun onError(errorInfo: ErrorInfo?) {
                 Timber.e("sendMessage, onError: ${errorInfo?.status}, ${errorInfo?.message}, ${errorInfo?.code}")
             }
@@ -539,11 +665,13 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
 
                 if (chats[i].message.hasMedia()) {
                     val file = File(getActivityContext().cacheDir, chats[i].message.media.sid)
-                    if (file.exists()) { file.delete() }
+                    if (file.exists()) {
+                        file.delete()
+                    }
                 }
 
                 if (i > 0) {
-                    val index = i-1
+                    val index = i - 1
                     Timber.e("index 2 = $index, ${chats[index]}, ${chats[index].message.messageBody}")
                     if (chats[index] is DateObject) {
                         channel?.messages?.removeMessage(chats[index].message, ChatStatusListener {
@@ -566,12 +694,15 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
                     "2_hours" -> {
 
                     }
+
                     "8_hours" -> {
 
                     }
+
                     "1_week" -> {
 
                     }
+
                     "1_year" -> {
 
                     }
@@ -586,21 +717,26 @@ class ChatSinglePresenter @Inject constructor(private val rxEventBus: RxEventBus
                 "pattern" -> {
                     view.openPattern(viaVisibility = true)
                 }
+
                 "pin" -> {
                     view.openPIN(viaVisibility = true)
                 }
+
                 "fingerprint" -> {
                     view.openFingerprint(viaVisibility = true)
                 }
+
                 else -> {
                     showVisibilityDialog(view.getActivityContext(), name) {
                         when (it) {
                             "Pattern" -> {
                                 view.openPattern()
                             }
+
                             "PIN" -> {
                                 view.openPIN()
                             }
+
                             "Fingerprint" -> {
                                 view.openFingerprint()
                             }

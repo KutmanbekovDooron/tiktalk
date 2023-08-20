@@ -39,12 +39,12 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.rxkotlin.addTo
 import org.jetbrains.anko.support.v4.longToast
 
-class SelectFragment: BaseInjectFragment(), SelectContract.View, MessagesContract.View {
+class SelectFragment : BaseInjectFragment(), SelectContract.View, MessagesContract.View {
 
     companion object {
         fun newInstance(message: CommonMessageObject): SelectFragment {
             val bundle = Bundle()
-            bundle.putString("messageText", message.message.messageBody?:"")
+            bundle.putString("messageText", message.message.messageBody ?: "")
             bundle.putBoolean("messageHasMedia", message.message.hasMedia())
 //            bundle.putString("channelSid", message.message.channelSid)
 //            bundle.putParcelable("channel", message.message.channel)
@@ -54,36 +54,44 @@ class SelectFragment: BaseInjectFragment(), SelectContract.View, MessagesContrac
                     message.message.media.type?.let { type ->
                         when (type) {
                             Constants.Chat.Media.TYPE_MUSIC -> {
-                                if (attrs.has("musicName")) {
+                                if (attrs.jsonObject?.has("musicName") == true) {
 
                                 }
                             }
+
                             Constants.Chat.Media.TYPE_VIDEO -> {
 
                             }
+
                             Constants.Chat.Media.TYPE_VOICE -> {
 
                             }
+
                             Constants.Chat.Media.TYPE_IMAGE -> {
                                 Timber.e("TYPE IMAGE -> media sid = ${message.message.media.sid}")
                                 bundle.putString("mediaSid", message.message.media.sid)
-                                bundle.putString("fileUri", message.message.attributes.getString("fileUri"))
+                                bundle.putString(
+                                    "fileUri",
+                                    message.message.attributes.jsonObject?.getString("fileUri")
+                                )
                             }
+
                             Constants.Chat.Media.TYPE_FILE -> {
 
                             }
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 when {
-                    message.message.attributes.has("replyName") -> {
+                    message.message.attributes.jsonObject?.has("replyName") == true -> {
 //                        chats.add(ReplyObject(msg = msg))
                     }
-                    message.message.attributes.has("contactName") -> {
+
+                    message.message.attributes.jsonObject?.has("contactName") == true -> {
 //                        chats.add(ContactObject(msg = msg))
                     }
+
                     else -> {   // text message
                         Timber.e("mess = $message")
                         if (message is MessageObject) {
@@ -101,25 +109,29 @@ class SelectFragment: BaseInjectFragment(), SelectContract.View, MessagesContrac
         }
     }
 
-    @Inject lateinit var presenter: MessagesPresenter
+    @Inject
+    lateinit var presenter: MessagesPresenter
 
     override fun getPresenter(): BaseContract.Presenter<*>? = presenter
     private var adapter: MessagesAdapter? = null
-    @Inject lateinit var rxEventBus: RxEventBus
+    @Inject
+    lateinit var rxEventBus: RxEventBus
 
     private var listener: SelectListener? = null
 
 
     private var messageText = ""
     private var messageHasMedia = false
-//    private var channel: Channel? = null
+
+    //    private var channel: Channel? = null
     private var messageType = ""
     private var mediaSid = ""
     private var fileUri = ""
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_select, container, false)
     }
 
@@ -149,7 +161,12 @@ class SelectFragment: BaseInjectFragment(), SelectContract.View, MessagesContrac
 
     private fun setupList() {
         chatsRecyclerView?.let { it.layoutManager = LinearLayoutManager(getActivityContext()) }
-        adapter = MessagesAdapter(presenter.chats, setClickListener(), isSecret = false, rxEventBus = rxEventBus)
+        adapter = MessagesAdapter(
+            presenter.chats,
+            setClickListener(),
+            isSecret = false,
+            rxEventBus = rxEventBus
+        )
         chatsRecyclerView.adapter = adapter
         adapter?.notifyDataSetChanged()
     }
@@ -167,7 +184,13 @@ class SelectFragment: BaseInjectFragment(), SelectContract.View, MessagesContrac
                 })
             }
 
-            override fun onItemLongClick(view: View, pos: Int, item: ChannelModel, plusOrMinus: Boolean) {}
+            override fun onItemLongClick(
+                view: View,
+                pos: Int,
+                item: ChannelModel,
+                plusOrMinus: Boolean
+            ) {
+            }
         }
     }
 
@@ -189,8 +212,9 @@ class SelectFragment: BaseInjectFragment(), SelectContract.View, MessagesContrac
                     )
 
                     Timber.e("sendMessage, uri = ${Uri.parse(file.path)}, ${getImageContentUri(file)}")
+                } else {
+                    longToast("Write permission wasn't granted!")
                 }
-                else { longToast("Write permission wasn't granted!") }
             }, {
                 Timber.e("Error Write ==== ${it.message} $it, ${it.localizedMessage}, ${it.cause}")
             })
@@ -230,7 +254,7 @@ class SelectFragment: BaseInjectFragment(), SelectContract.View, MessagesContrac
             arrayOf(filePath), null
         )
         if (cursor != null && cursor.moveToFirst()) {
-            val id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID))
+            val id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID) ?: 0)
             cursor.close()
             return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + id)
         } else {

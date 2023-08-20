@@ -1,50 +1,82 @@
 package com.andyshon.tiktalk.ui.chatSingle
 
+import ChatCallbackListener
+import android.content.Context
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import com.andyshon.tiktalk.Constants
+import com.andyshon.tiktalk.data.UserMetadata
+import com.andyshon.tiktalk.data.entity.Media
 import com.andyshon.tiktalk.data.twilio.TwilioSingleton
+import com.twilio.chat.*
+import org.json.JSONObject
 import timber.log.Timber
 import java.io.File
 import java.io.FileInputStream
-import java.io.IOException
-import ChatCallbackListener
-import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import com.andyshon.tiktalk.data.UserMetadata
-import com.andyshon.tiktalk.data.entity.Media
-import com.twilio.chat.*
-import org.json.JSONObject
 import java.io.FileOutputStream
-import java.nio.file.Files.delete
+import java.io.IOException
+import java.io.InputStream
+import java.util.Date
 
 
+class VoiceMessageHelper(
+    private val context: Context,
+    val listener: VoiceMessageListener
+) {
 
-class VoiceMessageHelper(val listener: VoiceMessageListener) {
+    private var recorder: MediaRecorder? = null
+    var file: File? = null
 
-     private var recorder: MediaRecorder? = null
-     var path :String = ""
-
-    init {
-        this.path = sanitizePath(path)
-        Timber.e("this.path = ${this.path}")
+    fun init() {
+        this.file = sanitizeFile()
+        Timber.e("this.path = ${this.file}")
     }
 
-    private fun sanitizePath(path:String):String {
-        var path = path
-        if (!path.startsWith("/")) {
-            path = "/$path"
-        }
-        path = "/MyMessageVoice_01"
-        return Environment.getExternalStorageDirectory().absolutePath + path
+    private fun sanitizeFile(): File {
+//        var path = path
+//        if (!path.startsWith("/")) {
+//            path = "/$path"
+//        }
+        return File(context.cacheDir, "audio_recording.3gpp")
     }
+
 
     private var name = ""
     private var channelSid = ""
 
-    fun start(name: String, channelSid: String) {
+    private fun startRecording() {
+        recorder = MediaRecorder()
+        val mediaRecorder = recorder ?: return
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+
+        // make sure the directory we plan to store the recording in exists
+        val directory = file?.parentFile
+        Log.e("Joseph", "directory: ${directory}")
+
+        if (directory?.exists() == false && directory.mkdirs()) {
+            throw IOException("Path to file could not be created.")
+        }
+
+
+        mediaRecorder.setOutputFile(file?.absolutePath)
+        mediaRecorder.setMaxDuration(300000)
+        try {
+            mediaRecorder.prepare()
+        } catch (e: IOException) {
+            Log.e("Joseph", "startRecording: ", e)
+        }
+        mediaRecorder.start()
+    }
+
+    fun start(
+        name: String, channelSid: String,
+    ) {
         this.name = name
         this.channelSid = channelSid
         val state = Environment.getExternalStorageState()
@@ -52,20 +84,8 @@ class VoiceMessageHelper(val listener: VoiceMessageListener) {
             throw IOException("SD Card is not mounted.  It is $state.")
         }
 
-         // make sure the directory we plan to store the recording in exists
-        val directory = File(path).parentFile
-        if (!directory.exists() && !directory.mkdirs()) {
-            throw IOException("Path to file could not be created.")
-        }
-
-        Timber.e("recorder = $recorder")
-        recorder = MediaRecorder()
-        recorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
-        recorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-        recorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-        recorder?.setOutputFile(path)
-        recorder?.prepare()
-        recorder?.start()
+        // make sure the directory we plan to store the recording in exists
+        startRecording()
 
 
         /*val*/ mainHandler = Handler(Looper.getMainLooper())
@@ -77,7 +97,7 @@ class VoiceMessageHelper(val listener: VoiceMessageListener) {
                 Timber.e("Time = $time")
                 listener.updateTime(time)
 //                tvRecordingTime.text = time.toString()
-                mainHandler?.postDelayed(this, 10)
+                mainHandler?.postDelayed(this, 100)
             }
         })
     }
@@ -92,21 +112,22 @@ class VoiceMessageHelper(val listener: VoiceMessageListener) {
         } catch (e: RuntimeException) {
             Timber.e("must delete the outputfile when the recorder stop failed")
 
-            File(path).delete()  //you must delete the outputfile when the recorder stop failed.
+            file?.delete()  //you must delete the outputfile when the recorder stop failed.
         } finally {
             recorder?.release()
             recorder = null
         }
 
-        Timber.e("Path ====== $path")
+//        Timber.e("Path ====== $path")
     }
 
     fun send(context: Context) {
-        val file2 = File(path)
-        Timber.e("Voice message file2 = $file2, media name = $name")
-        val fileInputStream = FileInputStream(file2)
+        val inputStream: InputStream =
+            if (file?.exists() == true) FileInputStream(file)
+            else return
 
-        val media = Media(name, Constants.Chat.Media.TYPE_VOICE, fileInputStream)
+        val media = Media(name, Constants.Chat.Media.TYPE_VOICE, inputStream)
+
 
         val json = JSONObject()
         json.put("userId", UserMetadata.userId)
@@ -116,47 +137,55 @@ class VoiceMessageHelper(val listener: VoiceMessageListener) {
         json.put("userPhone", UserMetadata.userPhone)
 
         val options = Message.options()
-            .withAttributes(json)
+            .withAttributes(Attributes(json))
             .withMediaFileName(media.name)
             .withMedia(media.stream, media.type)
             .withMediaProgressListener(object : ProgressListener() {
                 override fun onStarted() = Timber.e("Start voice media upload")
-                override fun onProgress(bytes: Long) = Timber.e("Voice Media upload progress - bytes done: $bytes")
-                override fun onCompleted(mediaSid: String) = Timber.e("Voice Media upload completed")
+                override fun onProgress(bytes: Long) =
+                    Timber.e("Voice Media upload progress - bytes done: $bytes")
+
+                override fun onCompleted(mediaSid: String) =
+                    Timber.e("Voice Media upload completed")
             })
 
-        TwilioSingleton.instance.chatClient?.channels?.getChannel(channelSid, ChatCallbackListener<Channel> {
-            it.messages.sendMessage(options, ChatCallbackListener<Message> {
-                Timber.e("Voice Media message sent - sid: ${it.sid}, type: ${it.type}")
+        TwilioSingleton.instance.chatClient?.channels?.getChannel(
+            channelSid,
+            ChatCallbackListener<Channel> {
+                it.messages.sendMessage(options, ChatCallbackListener<Message> {
+                    Timber.e("Voice Media message sent - sid: ${it.sid}, type: ${it.type}")
 
-                val file = File(context.cacheDir, it.media.sid)
-                if (file.exists().not() || file.length() == 0L) {
-                    val outStream = FileOutputStream(file)
-                    it.media.download(outStream, object: StatusListener() {
-                        override fun onSuccess() {
-                            Timber.e("download after sent, onSuccess")
-                        }
-                        override fun onError(errorInfo: ErrorInfo?) {
-                            Timber.e("download after sent, onError = $errorInfo")
-                        }
-                    }, object: ProgressListener() {
-                        override fun onStarted() {
-                            Timber.e("onStarted after sent")
-                        }
-                        override fun onProgress(p0: Long) {
-                            Timber.e("onProgress after sent, $p0")
-                        }
-                        override fun onCompleted(p0: String?) {
-                            Timber.e("onCompleted after sent = $p0")
+                    val file = File(context.cacheDir, it.media.sid)
+                    if (file.exists().not() || file.length() == 0L) {
+                        val outStream = FileOutputStream(file)
+                        it.media.download(outStream, object : StatusListener() {
+                            override fun onSuccess() {
+                                Timber.e("download after sent, onSuccess")
+                            }
+
+                            override fun onError(errorInfo: ErrorInfo?) {
+                                Timber.e("download after sent, onError = $errorInfo")
+                            }
+                        }, object : ProgressListener() {
+                            override fun onStarted() {
+                                Timber.e("onStarted after sent")
+                            }
+
+                            override fun onProgress(p0: Long) {
+                                Timber.e("onProgress after sent, $p0")
+                            }
+
+                            override fun onCompleted(p0: String?) {
+                                Timber.e("onCompleted after sent = $p0")
 //                            view?.notifyItem(pos)
-                        }
-                    })
-                }
+                            }
+                        })
+                    }
+                })
             })
-        })
     }
 
-    private fun pauseOrResume(pos:Int) {
+    private fun pauseOrResume(pos: Int) {
         mediaPlayer?.let {
             if (it.isPlaying) {
                 isRunning = false
@@ -185,7 +214,7 @@ class VoiceMessageHelper(val listener: VoiceMessageListener) {
     var currentDuration = 0
     var isRunning = true
 
-    fun playFromPath(path:String, pos:Int) {
+    fun playFromPath(path: String, pos: Int) {
         Timber.e("Path = $path")
 
         if (currentAudio != path) {
@@ -215,8 +244,7 @@ class VoiceMessageHelper(val listener: VoiceMessageListener) {
                     mediaPlayer?.prepare()
                     mediaPlayer?.start()
                     isRunning = true
-                }
-                catch (e: IOException) {
+                } catch (e: IOException) {
                     Timber.e("java.lang.RuntimeException: java.lang.reflect.InvocationTargetException, Caused by: java.io.IOException: Prepare failed.: status=0x1")
                 }
 
@@ -229,12 +257,10 @@ class VoiceMessageHelper(val listener: VoiceMessageListener) {
                     listener.setDuration(pos, it.duration)
                     Timber.e("Seconds of audio = ${it.duration}") //9340
                 }
-            }
-            else {
+            } else {
                 Timber.e("File doesn't exists $path")
             }
-        }
-        else {
+        } else {
             pauseOrResume(pos)
         }
     }
@@ -244,8 +270,7 @@ class VoiceMessageHelper(val listener: VoiceMessageListener) {
         try {
             mediaPlayer?.stop()
             mediaPlayer?.release()
-        }
-        catch (il: IllegalStateException) {
+        } catch (il: IllegalStateException) {
             Timber.e("IllegalStateException stopPlay called in an invalid state: 1")
         }
     }
@@ -260,10 +285,10 @@ class VoiceMessageHelper(val listener: VoiceMessageListener) {
                     /*val*/ totalDuration = mediaPlayer?.duration ?: 0
                     /*val*/ currentDuration = mediaPlayer?.currentPosition ?: 0
 
-                Timber.e("totalDuration = $totalDuration")
-                Timber.e("currentDuration = $currentDuration")
+                    Timber.e("totalDuration = $totalDuration")
+                    Timber.e("currentDuration = $currentDuration")
 
-                // Call this thread again after 15 milliseconds => ~ 1000/60fps
+                    // Call this thread again after 15 milliseconds => ~ 1000/60fps
                     seekHandler.postDelayed(this, /*15*/150)
                 }
             }

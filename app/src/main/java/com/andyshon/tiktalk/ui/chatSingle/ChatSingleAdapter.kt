@@ -440,8 +440,8 @@ class ChatSingleAdapter(
             else {
                 itemView.layoutChatSingleOwnReplyRoot.setBackgroundColor(itemView.context color R.color.colorTransparent)
             }
-            val replyName = message.message.attributes.getString("replyName")
-            val replyText = message.message.attributes.getString("replyText")
+            val replyName = message.message.attributes.jsonObject?.getString("replyName")
+            val replyText = message.message.attributes.jsonObject?.getString("replyText")
             itemView.tvOwnReplyUserName.text = replyName
             itemView.tvOwnReplyMessage.text = replyText
             itemView.tvOwnAfterReplyMessage.text = message.message.messageBody
@@ -464,8 +464,8 @@ class ChatSingleAdapter(
             else {
                 itemView.layoutChatSingleOpponentReplyRoot.setBackgroundColor(itemView.context color R.color.colorTransparent)
             }
-            val replyName = message.message.attributes.getString("replyName")
-            val replyText = message.message.attributes.getString("replyText")
+            val replyName = message.message.attributes.jsonObject?.getString("replyName")
+            val replyText = message.message.attributes.jsonObject?.getString("replyText")
             itemView.tvOpponentReplyUserName.text = replyName
             itemView.tvOpponentReplyMessage.text = replyText
             itemView.tvOpponentAfterReplyMessage.text = message.message.messageBody
@@ -681,9 +681,9 @@ class ChatSingleAdapter(
                 itemView.layoutChatSingleOwnFilePdfRoot.setBackgroundColor(itemView.context color R.color.colorTransparent)
             }
             if (message.message.attributes != null) {
-                if (message.message.attributes.has("fileUri")) {
-                    val fileUri = message.message.attributes?.getString("fileUri") ?: "-"
-                    val fileName = message.message.attributes?.getString("fileName") ?: "-"
+                if (message.message.attributes.jsonObject?.has("fileUri") == true) {
+                    val fileUri = message.message.attributes?.jsonObject?.getString("fileUri") ?: "-"
+                    val fileName = message.message.attributes?.jsonObject?.getString("fileName") ?: "-"
                     itemView.tvOwnFileName.text = fileName
                     Timber.e("FileUri = $fileUri")
                 }
@@ -708,9 +708,9 @@ class ChatSingleAdapter(
                 itemView.layoutChatSingleOpponentFilePdfRoot.setBackgroundColor(itemView.context color R.color.colorTransparent)
             }
             if (message.message.attributes != null) {
-                if (message.message.attributes.has("fileUri")) {
-                    val fileUri = message.message.attributes?.getString("fileUri") ?: "-"
-                    val fileName = message.message.attributes?.getString("fileName") ?: "-"
+                if (message.message.attributes.jsonObject?.has("fileUri") == true) {
+                    val fileUri = message.message.attributes?.jsonObject?.getString("fileUri") ?: "-"
+                    val fileName = message.message.attributes?.jsonObject?.getString("fileName") ?: "-"
                     itemView.tvOpponentFileName.text = fileName
                     Timber.e("FileUri = $fileUri")
                 }
@@ -741,16 +741,21 @@ class ChatSingleAdapter(
                 itemView.layoutChatSingleOwnContactRoot.setBackgroundColor(itemView.context color R.color.colorTransparent)
             }
             if (message.message.attributes != null) {
-                if (message.message.attributes.has("contactName")) {
-                    val contactName = message.message.attributes?.getString("contactName") ?: "-"
-                    val contactPhone = message.message.attributes?.getString("contactPhone") ?: "-"
+                if (message.message.attributes.jsonObject?.has("contactName") == true) {
+                    val contactName = message.message.attributes?.jsonObject?.getString("contactName") ?: "-"
+                    val contactPhone = message.message.attributes?.jsonObject?.getString("contactPhone") ?: "-"
                     itemView.tvOwnContactUserName.text = contactName
 //                    itemView.ivOwnContactAvatar.
                     //todo: set contact user's avatar
+                    val sid = if (message.message.media != null) {
+                        message.message.media.sid ?: ""
+                    } else {
+                        ""
+                    }
                     itemView.ivOwnContactAvatar.loadRoundCornersImage(
                         radius = itemView.context.resources.getDimensionPixelSize(R.dimen.radius_100),
                         onError = R.drawable.ic_profile_placeholder,
-                        uri = Uri.fromFile(File(itemView.context.cacheDir, message.message.media.sid))
+                        uri = Uri.fromFile(File(itemView.context.cacheDir, sid))
                     )
                 }
             }
@@ -774,9 +779,9 @@ class ChatSingleAdapter(
                 itemView.layoutChatSingleOpponentContactRoot.setBackgroundColor(itemView.context color R.color.colorTransparent)
             }
             if (message.message.attributes != null) {
-                if (message.message.attributes.has("contactName")) {
-                    val contactName = message.message.attributes?.getString("contactName") ?: "-"
-                    val contactPhone = message.message.attributes?.getString("contactPhone") ?: "-"
+                if (message.message.attributes.jsonObject?.has("contactName") == true) {
+                    val contactName = message.message.attributes?.jsonObject?.getString("contactName") ?: "-"
+                    val contactPhone = message.message.attributes?.jsonObject?.getString("contactPhone") ?: "-"
                     itemView.tvOpponentContactUserName.text = contactName
                     //todo: set contact user's avatar
                     itemView.ivOpponentContactAvatar.loadRoundCornersImage(
@@ -952,7 +957,7 @@ class ChatSingleAdapter(
                 }
             }
 
-            Timber.e("musicUri = ${message.message.attributes.getString("musicUri")}")
+            Timber.e("musicUri = ${message.message.attributes.jsonObject?.getString("musicUri")}")
             Timber.e("musicPath = ${message.path}")
         }
     }
@@ -1114,7 +1119,7 @@ class ChatSingleAdapter(
                 }
             }
 
-            Timber.e("musicUri = ${message.message.attributes.getString("musicUri")}")
+            Timber.e("musicUri = ${message.message.attributes.jsonObject?.getString("musicUri")}")
             Timber.e("musicPath = ${message.path}")
         }
     }
@@ -1238,10 +1243,10 @@ class ChatSingleAdapter(
         fun bind(message: CommonMessageObject) {
             itemView.tvMessageTime.text = getTimeForMessageDate(message.message.dateCreatedAsDate.toString())
             val attrs = message.message.attributes
-            val status = attrs.getString("callStatus")
+            val status = attrs.jsonObject?.getString("callStatus")
             itemView.tvCallStatus.text = status
-            val duration = attrs.getString("callDuration")
-            if (duration.isEmpty()) {
+            val duration = attrs.jsonObject?.getString("callDuration")
+            if (duration?.isEmpty() == true) {
                 itemView.tvCallDuration.hide()
             }
             else {

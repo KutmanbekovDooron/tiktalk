@@ -68,12 +68,15 @@ private const val MUSIC_REQUEST = 104
 private const val VIDEO_REQUEST = 105
 private const val RC_SELECT_CONTACT = 111
 
-class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View, AttachFileDialog.AttachFileClickListener {
+class ZonePublicRoomFragment : BaseInjectFragment(), ZonePublicRoomContract.View,
+    AttachFileDialog.AttachFileClickListener {
 
-    @Inject lateinit var presenter: ZonePublicRoomPresenter
+    @Inject
+    lateinit var presenter: ZonePublicRoomPresenter
     override fun getPresenter(): BaseContract.Presenter<*>? = presenter
 
-    @Inject lateinit var rxEventBus: RxEventBus
+    @Inject
+    lateinit var rxEventBus: RxEventBus
 
     private var adapter: ChatPublicRoomAdapter? = null
 
@@ -82,7 +85,8 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
     private var attachFileDialog = AttachFileDialog.newInstance()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_zone_public_room, container, false)
     }
 
@@ -137,8 +141,7 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
                     presenter.typing()
                     btnSendMessage.show()
                     btnMicrophone.hide()
-                }
-                else {
+                } else {
                     btnSendMessage.hide()
                     btnMicrophone.show()
                 }
@@ -176,7 +179,7 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
             var b = false
             for (i in (0..presenter.chats.lastIndex).reversed()) {
                 if (presenter.chats[i].isChecked) {
-                    if (presenter.chats[i].message.attributes.getString("userEmail") != UserMetadata.userEmail) {
+                    if (presenter.chats[i].message.attributes.jsonObject?.getString("userEmail") != UserMetadata.userEmail) {
                         b = true
                     }
                 }
@@ -223,24 +226,33 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
                 MotionEvent.ACTION_DOWN -> {
                     Timber.e("ACTION_DOWN")
                     context?.let {
-                        if (ContextCompat.checkSelfPermission(it, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                        if (ContextCompat.checkSelfPermission(
+                                it,
+                                Manifest.permission.RECORD_AUDIO
+                            ) != PackageManager.PERMISSION_GRANTED
+                        ) {
                             requestMicPermission {}
-                        }
-                        else {
-                            btnSendVoiceMessage.background = this drawable R.drawable.bg_round_violet
+                        } else {
+                            btnSendVoiceMessage.background =
+                                this drawable R.drawable.bg_round_violet
                             layoutVoice.startAnimation(showRecordingLayoutAnimation(200))
-                            voiceMessageHelper.start(/*presenter.opponentName*/"default media name", presenter.channel?.sid ?: presenter.channelSid)
+                            voiceMessageHelper.init()
+                            voiceMessageHelper.start(/*presenter.opponentName*/"default media name",
+                                presenter.channel?.sid ?: presenter.channelSid,
+                            )
                         }
                         true
                     }
                     false
                 }
+
                 MotionEvent.ACTION_UP -> {
                     Timber.e("ACTION_UP")
                     voiceMessageHelper.stopRecord()
                     btnSendVoiceMessage.background = this drawable R.drawable.bg_round_6
                     true
                 }
+
                 else -> false
             }
         }
@@ -310,8 +322,7 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
         if (b) {
             progressBar.show()
             placePublicRoomListRecyclerView.invisible()
-        }
-        else {
+        } else {
             progressBar.hide()
             placePublicRoomListRecyclerView.show()
         }
@@ -323,7 +334,7 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
 
     override fun onMessageAdded(message: Message?) {
 //        onEmptyMatchesLayout(/*false*/2)
-        adapter?.notifyItemInserted(presenter.chats.size-1)
+        adapter?.notifyItemInserted(presenter.chats.size - 1)
         placePublicRoomListRecyclerView.scrollToPosition(presenter.chats.size - 1)
 
         if (message != null) {
@@ -390,7 +401,7 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
     }
 
     private fun changeToolbarState(state: Int) {
-        when(state) {
+        when (state) {
             TOOLBAR_STATE_SIMPLE -> {
                 presenter.checkedItems = 0
                 presenter.resetReplyJson()
@@ -398,6 +409,7 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
                 layoutChatSingleMessageActions.hide()
                 layoutChatSingleMessageReply.hide()
             }
+
             TOOLBAR_STATE_TAPPED -> {
                 listener?.setToolbarStateTapped()
                 layoutChatSingleMessageActions.show()
@@ -444,7 +456,7 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
 
         RxPermissions(getActivityContext())
             .requestEach(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            .subscribe ({ permission ->
+            .subscribe({ permission ->
                 if (permission.granted) {
                     grantedPermCount++
                     if (grantedPermCount == 2) {
@@ -456,11 +468,13 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
 
                             cameraIntent.action = MediaStore.ACTION_IMAGE_CAPTURE
                             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri)
-                            getActivityContext().startActivityForResult(cameraIntent, CAMERA_REQUEST)
+                            getActivityContext().startActivityForResult(
+                                cameraIntent,
+                                CAMERA_REQUEST
+                            )
                         }
                     }
-                }
-                else if (permission.shouldShowRequestPermissionRationale) {
+                } else if (permission.shouldShowRequestPermissionRationale) {
                     if (isShowAlready.not()) {
                         isShowAlready = true
                         getActivityContext().alert("Чтобы продолжить необходимо разрешить доступ к камере и фото") {
@@ -471,7 +485,8 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
                 }
             }, {
                 Timber.e("onError = ${it.message}")
-                Toast.makeText(getActivityContext(), "error ${it.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(getActivityContext(), "error ${it.message}", Toast.LENGTH_LONG)
+                    .show()
             }).addTo(getDestroyDisposable())
     }
 
@@ -485,7 +500,8 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
 //        val newfile = File(cacheDir, presenter.channel?.)
         try {
             newfile.createNewFile()
-        } catch (e: IOException) { }
+        } catch (e: IOException) {
+        }
         return newfile
     }
 
@@ -510,7 +526,7 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
         sIntent.addCategory(Intent.CATEGORY_DEFAULT)
 
         val chooserIntent: Intent?
-        if (getActivityContext().packageManager.resolveActivity(sIntent, 0) != null){
+        if (getActivityContext().packageManager.resolveActivity(sIntent, 0) != null) {
             // it is device with Samsung file manager
             chooserIntent = Intent.createChooser(sIntent, "Open file")
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayListOf(intent))
@@ -521,7 +537,11 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
         try {
             startActivityForResult(chooserIntent, FILE_REQUEST)
         } catch (ex: android.content.ActivityNotFoundException) {
-            Toast.makeText(getActivityContext(), "No suitable File Manager was found.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                getActivityContext(),
+                "No suitable File Manager was found.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -557,12 +577,11 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
     private fun openSelectContact() {
         RxPermissions(getActivityContext())
             .request(Manifest.permission.READ_CONTACTS)
-            .subscribe ({ granted ->
+            .subscribe({ granted ->
                 if (granted) {
                     val intent = Intent(getActivityContext(), SelectContactActivity::class.java)
                     startActivityForResult(intent, RC_SELECT_CONTACT)
-                }
-                else {
+                } else {
                     longToast("You should give access to your contacts")
                 }
             }, {
@@ -614,8 +633,9 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
                     requestWritePermission {
                         granted.invoke()
                     }
+                } else {
+                    longToast("Record permission wasn't granted!")
                 }
-                else { longToast("Record permission wasn't granted!") }
             }, {
                 Timber.e("Error Record ==== ${it.message}")
                 //E/ChatSingleActivity$requestMicPermission: Error = /storage/emulated/0: open failed: EACCES (Permission denied)
@@ -628,8 +648,9 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
             .subscribe({
                 if (it) {
                     granted.invoke()
+                } else {
+                    longToast("Write permission wasn't granted!")
                 }
-                else { longToast("Write permission wasn't granted!") }
             }, {
                 Timber.e("Error Write ==== ${it.message} $it, ${it.localizedMessage}, ${it.cause}")
             })
@@ -648,40 +669,48 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
         adapter?.notifyDataSetChanged()
     }
 
-    val voiceMessageHelper = VoiceMessageHelper(object: VoiceMessageListener {
-        override fun recorded(path: String) {}
-        override fun onEnded(pos: Int) {
-            val item = presenter.chats[pos]
-            ((item)as? VoiceObject)?.progress=0f
-            ((item)as? VoiceObject)?.duration=0
-            ((item)as? VoiceObject)?.playing=false
-            adapter?.notifyItemChanged(pos)
-        }
-        override fun newAudioSetted(pos: Int) {
-            ((presenter.chats[pos])as? VoiceObject)?.playing=true
-            adapter?.notifyItemChanged(pos)
-        }
-        override fun paused(pos: Int) {
-            ((presenter.chats[pos])as? VoiceObject)?.playing=false
-            adapter?.notifyItemChanged(pos)
-        }
-        override fun resumed(pos: Int) {
-            ((presenter.chats[pos])as? VoiceObject)?.playing=true
-            adapter?.notifyItemChanged(pos)
-        }
-        override fun updateTime(time: Float) {
-            tvRecordingTime.text = time.toString()
-        }
-        override fun setDuration(pos: Int, seconds: Int) {
-            ((presenter.chats[pos])as? VoiceObject)?.duration=seconds
-            adapter?.notifyItemChanged(pos)
-        }
-        override fun setProgress(pos: Int, progress: Float) {
-            Timber.e("setProgress, pos = $pos, progress = $progress")
-            ((presenter.chats[pos])as? VoiceObject)?.progress=progress
-            adapter?.notifyItemChanged(pos)
-        }
-    })
+    val voiceMessageHelper = VoiceMessageHelper(
+        requireContext(),
+        object : VoiceMessageListener {
+            override fun recorded(path: String) {}
+            override fun onEnded(pos: Int) {
+                val item = presenter.chats[pos]
+                ((item) as? VoiceObject)?.progress = 0f
+                ((item) as? VoiceObject)?.duration = 0
+                ((item) as? VoiceObject)?.playing = false
+                adapter?.notifyItemChanged(pos)
+            }
+
+            override fun newAudioSetted(pos: Int) {
+                ((presenter.chats[pos]) as? VoiceObject)?.playing = true
+                adapter?.notifyItemChanged(pos)
+            }
+
+            override fun paused(pos: Int) {
+                ((presenter.chats[pos]) as? VoiceObject)?.playing = false
+                adapter?.notifyItemChanged(pos)
+            }
+
+            override fun resumed(pos: Int) {
+                ((presenter.chats[pos]) as? VoiceObject)?.playing = true
+                adapter?.notifyItemChanged(pos)
+            }
+
+            override fun updateTime(time: Float) {
+                tvRecordingTime.text = time.toString()
+            }
+
+            override fun setDuration(pos: Int, seconds: Int) {
+                ((presenter.chats[pos]) as? VoiceObject)?.duration = seconds
+                adapter?.notifyItemChanged(pos)
+            }
+
+            override fun setProgress(pos: Int, progress: Float) {
+                Timber.e("setProgress, pos = $pos, progress = $progress")
+                ((presenter.chats[pos]) as? VoiceObject)?.progress = progress
+                adapter?.notifyItemChanged(pos)
+            }
+        })
 
     private fun setClickListener(): ItemChatClickListener<CommonMessageObject> {
         return object : ItemChatClickListener<CommonMessageObject> {
@@ -694,7 +723,8 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
                 if (item is VoiceObject) {
                     //todo: play voice
 
-                    val voiceFile = getActivityContext().cacheDir.absolutePath.plus("/").plus(item.message.media.sid)
+                    val voiceFile = getActivityContext().cacheDir.absolutePath.plus("/")
+                        .plus(item.message.media.sid)
                     Timber.e("voiceFile = $voiceFile")
 
                     voiceMessageHelper.playFromPath(voiceFile, pos)
@@ -711,17 +741,27 @@ class ZonePublicRoomFragment: BaseInjectFragment(), ZonePublicRoomContract.View,
                                 it.notifyItemChanged(pos)
                             }
                         }
-                    }
-                    else {
+                    } else {
                         //todo: need to download music in download folder and then to play
 
                     }
                 }
                 if (item is VideoObject) {
-                    ChatMediaActivity.startActivity(getActivityContext(), "", item.path, item.duration)
+                    ChatMediaActivity.startActivity(
+                        getActivityContext(),
+                        "",
+                        item.path,
+                        item.duration
+                    )
                 }
             }
-            override fun onItemLongClick(view: View, pos: Int, item: CommonMessageObject, plusOrMinus: Boolean) {
+
+            override fun onItemLongClick(
+                view: View,
+                pos: Int,
+                item: CommonMessageObject,
+                plusOrMinus: Boolean
+            ) {
                 presenter.currentSelectedMessage = item
                 if (plusOrMinus) {
                     presenter.checkedItems++

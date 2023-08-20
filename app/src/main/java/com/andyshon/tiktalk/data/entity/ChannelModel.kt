@@ -82,13 +82,13 @@ class ChannelModel {
             throw IllegalStateException("Invalid state")
         }
 
-    fun getUnconsumedMessagesCount(listener: CallbackListener<Long>) {
+    fun getUnconsumedMessagesCount(listener: CallbackListener<Long?>) {
         if (channel != null) {
             channel!!.getUnconsumedMessagesCount(listener)
             return
         }
         if (channelDescriptor != null) {
-            listener.onSuccess(channelDescriptor!!.unconsumedMessagesCount)
+            listener.onSuccess(channelDescriptor?.unconsumedMessagesCount)
             return
         }
         listener.onError(ErrorInfo(-10001, "No channel in model"))
@@ -156,4 +156,6 @@ class ChannelModel {
             if (channelDescriptor != null) return ChannelType.PUBLIC
             throw IllegalStateException("Invalid state")
         }
+
+
 }

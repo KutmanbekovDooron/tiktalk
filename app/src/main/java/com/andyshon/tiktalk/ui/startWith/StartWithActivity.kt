@@ -7,7 +7,6 @@ import android.os.SystemClock
 import android.text.SpannableStringBuilder
 import android.text.method.LinkMovementMethod
 import android.text.style.UnderlineSpan
-import android.util.Log
 import com.andyshon.tiktalk.R
 import com.andyshon.tiktalk.ui.auth.signIn.SignInActivity
 import com.andyshon.tiktalk.utils.extensions.addClickableSpannable
@@ -46,7 +45,7 @@ class StartWithActivity : AppCompatActivity() {
             props,
             object : CallbackListener<ChatClient>() {
                 override fun onSuccess(client: ChatClient) {
-                    client.setListener(object : ChatClientListener {
+                    client.addListener(object : ChatClientListener {
                         // save client for future use here
                         override fun onClientSynchronization(status: ChatClient.SynchronizationStatus) {
                             Timber.e("onClientSynchronization, status = $status, value = ${status.value}, client = ${client}, ${client.channels}, ${client.users}")

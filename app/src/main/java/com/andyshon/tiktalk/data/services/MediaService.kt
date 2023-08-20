@@ -11,10 +11,11 @@ import android.provider.MediaStore
 import android.provider.OpenableColumns
 import com.andyshon.tiktalk.Constants
 import com.andyshon.tiktalk.data.UserMetadata
+import com.andyshon.tiktalk.data.entity.Media
 import com.andyshon.tiktalk.data.twilio.TwilioSingleton
 import com.andyshon.tiktalk.events.MediaSidDownloadFinishedEvent
 import com.andyshon.tiktalk.events.RxEventBus
-import com.andyshon.tiktalk.data.entity.Media
+import com.twilio.chat.Attributes
 import com.twilio.chat.Channel
 import com.twilio.chat.Message
 import com.twilio.chat.ProgressListener
@@ -27,7 +28,7 @@ import org.json.JSONObject
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
-import kotlin.math.min
+import java.io.OutputStream
 
 class MediaService : IntentService(MediaService::class.java.simpleName) {
 
@@ -65,8 +66,10 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
     }
 
     private fun upload(intent: Intent) {
-        val uriString = intent.getStringExtra(EXTRA_MEDIA_URI) ?: throw NullPointerException("Media URI not provided")
-        val channel = intent.getParcelableExtra<Channel>(EXTRA_CHANNEL) ?: throw NullPointerException("Channel is not provided")
+        val uriString = intent.getStringExtra(EXTRA_MEDIA_URI)
+            ?: throw NullPointerException("Media URI not provided")
+        val channel = intent.getParcelableExtra<Channel>(EXTRA_CHANNEL)
+            ?: throw NullPointerException("Channel is not provided")
         val uriToDelete = intent.getStringExtra(EXTRA_MEDIA_URI_TO_DELETE) ?: "-"
         val fileName = intent.getStringExtra(EXTRA_MEDIA_FILE_NAME) ?: ""
         val dataType = intent.getStringExtra(EXTRA_UPLOAD_DATA_TYPE) ?: ""
@@ -90,7 +93,7 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
             var proj: Array<String>? = null
             val name: String
 
-            when(dataType) {
+            when (dataType) {
                 Constants.Chat.Media.TYPE_IMAGE -> {
                     Timber.e("TYPE_ == TYPE_IMAGE")
                     val projection = arrayOf(
@@ -105,19 +108,27 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                     val filePath: String
                     try {
                         if (cursor.moveToFirst()) {
-                            filePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA) ?: 0)
+                            filePath = cursor.getString(
+                                cursor.getColumnIndex(MediaStore.Images.Media.DATA) ?: 0
+                            )
                             Timber.e("data = $filePath")
-                            val title = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.TITLE) ?: 0)
+                            val title = cursor.getString(
+                                cursor.getColumnIndex(MediaStore.Images.Media.TITLE) ?: 0
+                            )
                             Timber.e("title  = $title")
-                            val name = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME) ?: 0)
+                            val name = cursor.getString(
+                                cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME) ?: 0
+                            )
                             Timber.e("name = $name")
                             var fileSizeInBytes = 0L
                             try {
                                 val size =
-                                    cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.SIZE) ?: 0).toLong()
+                                    cursor.getString(
+                                        cursor.getColumnIndex(MediaStore.Images.Media.SIZE) ?: 0
+                                    ).toLong()
                                 Timber.e("size = $size")
                                 fileSizeInBytes = size
-                            } catch (e:Exception) {
+                            } catch (e: Exception) {
                                 Timber.e("FUCK!")
                             }
                             //  Failed to upload media -> error: cursor.getString(cursor?….Images.Media.SIZE) ?: 0) must not be null
@@ -134,7 +145,8 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                             } else {
 
                                 Timber.e("Name = $name, filePath = $filePath")
-                                val type = Constants.Chat.Media.TYPE_IMAGE//contentResolver.getType(uri)
+                                val type =
+                                    Constants.Chat.Media.TYPE_IMAGE//contentResolver.getType(uri)
                                 val stream = contentResolver.openInputStream(uri)!!
 
                                 val media = Media(filePath, type, stream)
@@ -144,22 +156,29 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                                     .withMedia(media.stream, media.type)
                                     .withMediaProgressListener(object : ProgressListener() {
                                         override fun onStarted() = Timber.e("Start media upload")
-                                        override fun onProgress(bytes: Long) = Timber.e("Media upload progress - bytes done: ${bytes}")
-                                        override fun onCompleted(mediaSid: String) = Timber.e("Media upload completed")
+                                        override fun onProgress(bytes: Long) =
+                                            Timber.e("Media upload progress - bytes done: ${bytes}")
+
+                                        override fun onCompleted(mediaSid: String) =
+                                            Timber.e("Media upload completed")
                                     })
 
                                 val json = JSONObject()
                                 json.put("fileUri", uri.toString())
                                 json.put("fileName", /*fileName*/name)
                                 addUserData(json)
-                                options.withAttributes(json)
+                                options.withAttributes(Attributes(json))
 
-                                TwilioSingleton.instance.chatClient?.channels?.getChannel(channel.sid, ChatCallbackListener<Channel> {
-                                    it.messages.sendMessage(options, ChatCallbackListener<Message> {
-                                        Timber.e("Media message sent - sid: ${it.sid}, type: ${it.type}")
-                                        deferred.complete(Unit)
+                                TwilioSingleton.instance.chatClient?.channels?.getChannel(
+                                    channel.sid,
+                                    ChatCallbackListener<Channel> {
+                                        it.messages.sendMessage(
+                                            options,
+                                            ChatCallbackListener<Message> {
+                                                Timber.e("Media message sent - sid: ${it.sid}, type: ${it.type}")
+                                                deferred.complete(Unit)
+                                            })
                                     })
-                                })
 
                             }
                         }
@@ -169,26 +188,34 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                         cursor.close()
                     }
                 }
+
                 Constants.Chat.Media.TYPE_FILE, Constants.Chat.Media.TYPE_CAMERA -> {
                     Timber.e("TYPE_ == TYPE_FILE")
                     if (fileName.isNotEmpty()) {
                         proj = arrayOf(MediaStore.Images.Media.DATA)
-//                        proj = arrayOf(MediaStore.Files.FileColumns.DATA)
                     }
 
                     cursor = contentResolver.query(uri, proj, null, null, null)!!
 
-
                     try {
                         if (cursor.moveToFirst()) {
                             name = if (fileName.isNotEmpty()) {
-                                cursor.getString(cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA) ?: 0)
+                                safeAction {
+                                    cursor.getString(
+                                        cursor.getColumnIndex(MediaStore.Images.Media.DATA)
+                                            ?: 0
+                                    )
+                                }
                             } else {
-                                cursor.getString(cursor?.getColumnIndex(OpenableColumns.DISPLAY_NAME) ?: 0)
+                                safeAction {
+                                    cursor.getString(
+                                        cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME) ?: 0
+                                    )
+                                }
                             }
                             Timber.e("Name = $name")
                             val type = dataType//contentResolver.getType(uri)
-                            val stream = contentResolver.openInputStream(uri)!!
+                            val stream = contentResolver.openInputStream(uri) ?: return@launch
 
                             val media = Media(name, type, stream)
 
@@ -197,8 +224,11 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                                 .withMedia(media.stream, media.type)
                                 .withMediaProgressListener(object : ProgressListener() {
                                     override fun onStarted() = Timber.e("Start media upload")
-                                    override fun onProgress(bytes: Long) = Timber.e("Media upload progress - bytes done: ${bytes}")
-                                    override fun onCompleted(mediaSid: String) = Timber.e("Media upload completed")
+                                    override fun onProgress(bytes: Long) =
+                                        Timber.e("Media upload progress - bytes done: ${bytes}")
+
+                                    override fun onCompleted(mediaSid: String) =
+                                        Timber.e("Media upload completed")
                                 })
 
                             if (fileName.isNotEmpty()) {
@@ -206,30 +236,32 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                                 json.put("fileUri", uri.toString())
                                 json.put("fileName", fileName)
                                 addUserData(json)
-                                options.withAttributes(json)
+                                options.withAttributes(Attributes(json))
                             }
 
-                            TwilioSingleton.instance.chatClient?.channels?.getChannel(channel.sid, ChatCallbackListener<Channel> {
-                                it.messages.sendMessage(options, ChatCallbackListener<Message> {
-                                    Timber.e("Media message sent - sid: ${it.sid}, type: ${it.type}")
-                                    val file2 = File(cacheDir, uriToDelete)
-                                    Timber.e("File222 = $file2, ${file2.exists()}")
-                                    if (file2.exists()) {
-                                        val deleted = file2.delete()
-                                        Timber.e("is deleted = $deleted")
-                                    }
-                                    deferred.complete(Unit)
+                            TwilioSingleton.instance.chatClient?.channels?.getChannel(
+                                channel.sid,
+                                ChatCallbackListener<Channel> {
+                                    it.messages.sendMessage(options, ChatCallbackListener<Message> {
+                                        Timber.e("Media message sent - sid: ${it.sid}, type: ${it.type}")
+                                        val file2 = File(cacheDir, uriToDelete)
+                                        Timber.e("File222 = $file2, ${file2.exists()}")
+                                        if (file2.exists()) {
+                                            val deleted = file2.delete()
+                                            Timber.e("is deleted = $deleted")
+                                        }
+                                        deferred.complete(Unit)
+                                    })
                                 })
-                            })
 
                         }
                     } catch (e: Exception) {
                         Timber.e("Failed to upload media -> error: ${e.message}")
-                        deferred.completeExceptionally(e)
                     } finally {
                         cursor.close()
                     }
                 }
+
                 Constants.Chat.Media.TYPE_MUSIC -> {
                     val projection = arrayOf(
                         MediaStore.Audio.Media.DATA,
@@ -246,15 +278,37 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                     var filePath: String
                     try {
                         if (cursor.moveToFirst()) {
-                            filePath = cursor.getString(cursor?.getColumnIndex(MediaStore.Audio.Media.DATA) ?: 0)
+                            filePath = safeAction {
+                                cursor.getString(
+                                    cursor?.getColumnIndex(MediaStore.Audio.Media.DATA) ?: 0
+                                )
+                            }
                             Timber.e("data = $filePath")
-                            val title = cursor.getString(cursor?.getColumnIndex(MediaStore.Audio.Media.TITLE) ?: 0)
+                            val title = safeAction {
+                                cursor.getString(
+                                    cursor?.getColumnIndex(MediaStore.Audio.Media.TITLE) ?: 0
+                                )
+                            }
                             Timber.e("title  = $title")
-                            val name = cursor.getString(cursor?.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME) ?: 0)
+                            val name = safeAction {
+                                cursor.getString(
+                                    cursor?.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME) ?: 0
+                                )
+                            }
                             Timber.e("name = $name")
-                            val album = cursor.getString(cursor?.getColumnIndex(MediaStore.Audio.Media.ALBUM) ?: 0)
+                            val album = safeAction {
+                                cursor.getString(
+                                    cursor?.getColumnIndex(MediaStore.Audio.Media.ALBUM) ?: 0
+                                )
+                            }
                             Timber.e("album = $album")
-                            val milliseconds = cursor.getString(cursor?.getColumnIndex(MediaStore.Audio.Media.DURATION) ?: 0).toLong()
+                            val milliseconds = try {
+                                cursor.getString(
+                                    cursor?.getColumnIndex(MediaStore.Audio.Media.DURATION) ?: 0
+                                ).toLong()
+                            } catch (e: Exception) {
+                                0L
+                            }
                             Timber.e("duration = $milliseconds")
                             val hours = (milliseconds / (1000 * 60 * 60))
                             val minutes = (milliseconds % (1000 * 60 * 60)) / (1000 * 60)
@@ -267,9 +321,19 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                                 hours.toString().plus(":").plus(minutes).plus(":").plus(seconds)
                             Timber.e("Music duration = $duration")
 
-                            filePath = cursor.getString(cursor?.getColumnIndex(MediaStore.Audio.Media.ARTIST) ?: 0)
+                            filePath = safeAction {
+                                cursor.getString(
+                                    cursor?.getColumnIndex(MediaStore.Audio.Media.ARTIST) ?: 0
+                                )
+                            }
                             Timber.e("artist = $filePath")
-                            val size = cursor.getString(cursor?.getColumnIndex(MediaStore.Audio.Media.SIZE) ?: 0).toLong()
+                            val size = try {
+                                cursor.getString(
+                                    cursor?.getColumnIndex(MediaStore.Audio.Media.SIZE) ?: 0
+                                ).toLong()
+                            } catch (e: Exception) {
+                                0L
+                            }
                             Timber.e("size = $size")
                             Timber.e("Name file path = $filePath")
 
@@ -282,7 +346,8 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                             } else {
 
                                 Timber.e("Name = $name")
-                                val type = Constants.Chat.Media.TYPE_MUSIC//contentResolver.getType(uri)
+                                val type =
+                                    Constants.Chat.Media.TYPE_MUSIC//contentResolver.getType(uri)
                                 val stream = contentResolver.openInputStream(uri)!!
 
                                 val media = Media(name, type, stream)
@@ -292,8 +357,11 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                                     .withMedia(media.stream, media.type)
                                     .withMediaProgressListener(object : ProgressListener() {
                                         override fun onStarted() = Timber.e("Start media upload")
-                                        override fun onProgress(bytes: Long) = Timber.e("Media upload progress - bytes done: ${bytes}")
-                                        override fun onCompleted(mediaSid: String) = Timber.e("Media upload completed")
+                                        override fun onProgress(bytes: Long) =
+                                            Timber.e("Media upload progress - bytes done: ${bytes}")
+
+                                        override fun onCompleted(mediaSid: String) =
+                                            Timber.e("Media upload completed")
                                     })
 
                                 val json = JSONObject()
@@ -303,24 +371,31 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                                 json.put("musicTitle", title)
                                 json.put("musicDuration", duration)
                                 addUserData(json)
-                                options.withAttributes(json)
+                                options.withAttributes(Attributes(json))
 
-                                TwilioSingleton.instance.chatClient?.channels?.getChannel(channel.sid, ChatCallbackListener<Channel> {
-                                    it.messages.sendMessage(options, ChatCallbackListener<Message> {
-                                        Timber.e("Media message sent - sid: ${it.sid}, type: ${it.type}")
-                                        deferred.complete(Unit)
+                                TwilioSingleton.instance.chatClient?.channels?.getChannel(
+                                    channel.sid,
+                                    ChatCallbackListener<Channel> {
+                                        it.messages.sendMessage(
+                                            options,
+                                            ChatCallbackListener<Message> {
+                                                Timber.e("Media message sent - sid: ${it.sid}, type: ${it.type}")
+                                                deferred.complete(Unit)
+                                            })
                                     })
-                                })
 
                             }
                         }
                     } catch (e: Exception) {
                         Timber.e("Failed to upload media -> error: ${e.message}")
+//                        deferred.completeExceptionally(e)
                     } finally {
                         cursor.close()
                     }
                 }
+
                 Constants.Chat.Media.TYPE_VIDEO -> {
+
                     val projection = arrayOf(
                         MediaStore.Video.Media.DATA,
                         MediaStore.Video.Media.TITLE,
@@ -335,38 +410,74 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                     var filePath: String
                     try {
                         if (cursor.moveToFirst()) {
-                            filePath = cursor.getString(cursor?.getColumnIndex(MediaStore.Video.Media.DATA) ?: 0)
+                            filePath = safeAction {
+                                cursor.getString(
+                                    cursor?.getColumnIndex(MediaStore.Video.Media.DATA) ?: 0
+                                )
+                            }
+
                             Timber.e("data = $filePath")
-                            var title = cursor.getString(cursor?.getColumnIndex(MediaStore.Video.Media.TITLE) ?: 0)
+                            var title = safeAction {
+                                cursor.getString(
+                                    cursor?.getColumnIndex(MediaStore.Video.Media.TITLE) ?: 0
+                                )
+                            }
                             Timber.e("title 1 = $title")
                             if (title.contains(".")) {
                                 title = title.split(".").first()
                             }
                             Timber.e("title 2 = $title")
-                            val name = cursor.getString(cursor?.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME) ?: 0)
+                            val name = safeAction {
+                                cursor.getString(
+                                    cursor?.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME) ?: 0
+                                )
+                            }
                             Timber.e("name = $name")
-                            val album = cursor.getString(cursor?.getColumnIndex(MediaStore.Video.Media.ALBUM) ?: 0)
+                            val album = safeAction {
+                                cursor.getString(
+                                    cursor?.getColumnIndex(MediaStore.Video.Media.ALBUM) ?: 0
+                                )
+                            }
                             Timber.e("album = $album")
-                            val milliseconds = cursor.getString(cursor?.getColumnIndex(MediaStore.Video.Media.DURATION) ?: 0).toLong()
+                            val milliseconds = try {
+                                cursor.getString(
+                                    cursor?.getColumnIndex(MediaStore.Video.Media.DURATION) ?: 0
+                                ).toLong()
+                            } catch (e: Exception) {
+                                0L
+                            }
                             Timber.e("duration = $milliseconds")
                             val hours = (milliseconds / (1000 * 60 * 60))
                             val minutes = (milliseconds % (1000 * 60 * 60)) / (1000 * 60)
                             val seconds = (milliseconds % (1000 * 60 * 60)) % (1000 * 60) / 1000
                             Timber.e("Video duration 1 = hours = $hours, minutes = $minutes, seconds = $seconds")
 
-                            val secondsFormatted = if (seconds < 10) "0".plus(seconds) else seconds.toString()
+                            val secondsFormatted =
+                                if (seconds < 10) "0".plus(seconds) else seconds.toString()
 
                             val duration = if (hours == 0L)
                                 minutes.toString().plus(":").plus(secondsFormatted)
                             else if (hours == 0L && minutes == 0L)
                                 "0:".plus(secondsFormatted)
                             else
-                                hours.toString().plus(":").plus(minutes).plus(":").plus(secondsFormatted)
+                                hours.toString().plus(":").plus(minutes).plus(":")
+                                    .plus(secondsFormatted)
                             Timber.e("Video duration = $duration")
 
-                            filePath = cursor.getString(cursor?.getColumnIndex(MediaStore.Video.Media.ARTIST) ?: 0)
+                            filePath = safeAction {
+                                cursor.getString(
+                                    cursor?.getColumnIndex(MediaStore.Video.Media.ARTIST) ?: 0
+                                )
+                            }
                             Timber.e("artist = $filePath")
-                            val size = cursor.getString(cursor?.getColumnIndex(MediaStore.Video.Media.SIZE) ?: 0).toLong()
+                            val size = try {
+
+                                cursor.getString(
+                                    cursor?.getColumnIndex(MediaStore.Video.Media.SIZE) ?: 0
+                                ).toLong()
+                            } catch (e: Exception) {
+                                0L
+                            }
                             Timber.e("size = $size")
                             Timber.e("Name file path = $filePath")
 
@@ -379,7 +490,8 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                             } else {
 
                                 Timber.e("Name = $name")
-                                val type = Constants.Chat.Media.TYPE_VIDEO//contentResolver.getType(uri)
+                                val type =
+                                    Constants.Chat.Media.TYPE_VIDEO//contentResolver.getType(uri)
                                 val stream = contentResolver.openInputStream(uri)!!
 
                                 val media = Media(name, type, stream)
@@ -389,8 +501,11 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                                     .withMedia(media.stream, media.type)
                                     .withMediaProgressListener(object : ProgressListener() {
                                         override fun onStarted() = Timber.e("Start media upload")
-                                        override fun onProgress(bytes: Long) = Timber.e("Media upload progress - bytes done: ${bytes}")
-                                        override fun onCompleted(mediaSid: String) = Timber.e("Media upload completed")
+                                        override fun onProgress(bytes: Long) =
+                                            Timber.e("Media upload progress - bytes done: ${bytes}")
+
+                                        override fun onCompleted(mediaSid: String) =
+                                            Timber.e("Media upload completed")
                                     })
 
                                 val json = JSONObject()
@@ -400,14 +515,18 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
                                 json.put("videoTitle", title)
                                 json.put("videoDuration", duration)
                                 addUserData(json)
-                                options.withAttributes(json)
+                                options.withAttributes(Attributes(json))
 
-                                TwilioSingleton.instance.chatClient?.channels?.getChannel(channel.sid, ChatCallbackListener<Channel> {
-                                    it.messages.sendMessage(options, ChatCallbackListener<Message> {
-                                        Timber.e("Media message sent - sid: ${it.sid}, type: ${it.type}")
-                                        deferred.complete(Unit)
+                                TwilioSingleton.instance.chatClient?.channels?.getChannel(
+                                    channel.sid,
+                                    ChatCallbackListener<Channel> {
+                                        it.messages.sendMessage(
+                                            options,
+                                            ChatCallbackListener<Message> {
+                                                Timber.e("Media message sent - sid: ${it.sid}, type: ${it.type}")
+                                                deferred.complete(Unit)
+                                            })
                                     })
-                                })
 
                             }
                         }
@@ -425,6 +544,14 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
         }
     }
 
+    private fun safeAction(action: () -> String?): String = try {
+        action() ?: ""
+    } catch (e: Exception) {
+        Timber.e(e)
+        ""
+    }
+
+
     // actually useful in public chats
     private fun addUserData(json: JSONObject) {
         json.put("userId", UserMetadata.userId)
@@ -436,38 +563,49 @@ class MediaService : IntentService(MediaService::class.java.simpleName) {
 
 
     private fun download(intent: Intent, done: (mediaSid: String) -> Unit) {
-        val channel = intent.getParcelableExtra<Channel>(EXTRA_CHANNEL) ?: throw NullPointerException("Channel is not provided")
+        val channel = intent.getParcelableExtra<Channel>(EXTRA_CHANNEL)
+            ?: throw NullPointerException("Channel is not provided")
         val messageIndex = intent.getLongExtra(EXTRA_MESSAGE_INDEX, -1L)
 
         GlobalScope.launch(coroutineContext) {
             val deferred = CompletableDeferred<String>()
 
-            channel.messages.getMessageByIndex(messageIndex, ChatCallbackListener<Message> { message ->
-                val media = message.media ?: return@ChatCallbackListener
+            channel.messages.getMessageByIndex(
+                messageIndex,
+                ChatCallbackListener<Message> { message ->
+                    val media = message.media ?: return@ChatCallbackListener
 
-                Timber.e("Media received - sid: ${media.sid}, name: ${media.fileName}, type: ${media.type}, size: ${media.size}")
+                    Timber.e("Media received - sid: ${media.sid}, name: ${media.fileName}, type: ${media.type}, size: ${media.size}")
 
-                try {
-                    val f = Environment.getExternalStorageDirectory().absolutePath + "/" + media.sid
-                    Timber.e("download, f = $f")
-                    val f2 = File(f)
-                    val outStream = FileOutputStream(f2/*File(cacheDir, media.sid)*/)
+                    try {
+                        val f =
+                            Environment.getExternalStorageDirectory().absolutePath + "/" + media.sid
+                        Timber.e("download, f = $f")
+                        val f2 = File(f)
+                        val outStream: OutputStream =
+                            if (f2.exists()) FileOutputStream(f2)
+                            else return@ChatCallbackListener
 
-                    media.download(outStream, ChatStatusListener { Timber.e("Download completed") }, object : ProgressListener() {
-                        override fun onStarted() = Timber.e("Start media download")
-                        override fun onProgress(bytes: Long) = Timber.e("Media download progress - bytes done: ${bytes}")
-                        override fun onCompleted(mediaSid: String) {
-                            Timber.e("Media download completed, mediaSid = $mediaSid")
-                            deferred.complete(mediaSid)
-                            done.invoke(mediaSid)
-                        }
-                    })
 
-                } catch (e: Exception) {
-                    Timber.e("Failed to download media - error: ${e.message}")
-                    deferred.completeExceptionally(e)
-                }
-            })
+                        media.download(
+                            outStream,
+                            ChatStatusListener { Timber.e("Download completed") },
+                            object : ProgressListener() {
+                                override fun onStarted() = Timber.e("Start media download")
+                                override fun onProgress(bytes: Long) =
+                                    Timber.e("Media download progress - bytes done: ${bytes}")
+
+                                override fun onCompleted(mediaSid: String) {
+                                    Timber.e("Media download completed, mediaSid = $mediaSid")
+                                    deferred.complete(mediaSid)
+                                    done.invoke(mediaSid)
+                                }
+                            })
+
+                    } catch (e: Exception) {
+                        Timber.e("Failed to download media - error: ${e.message}")
+                    }
+                })
 
             deferred.await()
         }

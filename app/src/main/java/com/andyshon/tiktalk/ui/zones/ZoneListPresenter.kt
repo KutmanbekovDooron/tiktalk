@@ -17,6 +17,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 import ChatCallbackListener
 import com.andyshon.tiktalk.ui.zoneSingle.publicRoom.PublicRoomMetadata
+import com.twilio.chat.Attributes
 import com.twilio.chat.Channel
 
 class ZoneListPresenter @Inject constructor(private val model: PlacesModel) : BasePresenter<ZoneListContract.View>() {
@@ -60,9 +61,9 @@ class ZoneListPresenter @Inject constructor(private val model: PlacesModel) : Ba
 
             val attrs = channel?.attributes
             Timber.e("attrs object 1 = $attrs")
-            if (attrs != null && attrs.has("usersIds")) {
-                val usersEmails = attrs.getJSONArray("usersEmails")
-                val usersColors = attrs.getJSONArray("usersColors")
+            if (attrs != null && attrs.jsonObject?.has("usersIds") == true) {
+                val usersEmails = attrs.jsonObject?.getJSONArray("usersEmails")
+                val usersColors = attrs.jsonObject?.getJSONArray("usersColors")
 
                 PublicRoomMetadata.userColors = usersColors
                 PublicRoomMetadata.usersEmails = usersEmails
@@ -72,8 +73,8 @@ class ZoneListPresenter @Inject constructor(private val model: PlacesModel) : Ba
                 override fun onSuccess() {  // user join place first time
                     var atr = JSONObject()
 
-                    if (channel.attributes != null && channel.attributes.has("usersIds")) { // there is at least 1 user in channel
-                        atr = channel.attributes
+                    if (channel.attributes != null && channel.attributes.jsonObject?.has("usersIds") == true) { // there is at least 1 user in channel
+                        atr = channel.attributes.jsonObject!!
                         val usersIds = atr.getJSONArray("usersIds")
                         val usersEmails = atr.getJSONArray("usersEmails")
                         val usersNames = atr.getJSONArray("usersNames")
@@ -112,9 +113,9 @@ class ZoneListPresenter @Inject constructor(private val model: PlacesModel) : Ba
                     errorInfo?.let {
                         if (it.code == 50404) { //Member already exists
 
-                            if (channel.attributes != null && channel.attributes.has("usersIds")) {
+                            if (channel.attributes != null && channel.attributes.jsonObject?.has("usersIds") == true) {
                                 Timber.e("Member already exists, error code ${it.code}")
-                                val atr = updateUserAttributes(channel.attributes)
+                                val atr = updateUserAttributes(channel.attributes.jsonObject!!)
                                 setAttributesToChannel(channel, atr, placesResult)
                             }
                             else {
@@ -150,7 +151,7 @@ class ZoneListPresenter @Inject constructor(private val model: PlacesModel) : Ba
     }
 
     private fun setAttributesToChannel(channel: Channel, atr: JSONObject, placesResult: PlacesResult) {
-        channel.setAttributes(atr, object: StatusListener() {
+        channel.setAttributes(Attributes(atr) , object: StatusListener() {
             override fun onSuccess() {
                 view?.hideProgress()
                 Timber.e("onSuccess, setAttributes for channel ${channel.uniqueName}")

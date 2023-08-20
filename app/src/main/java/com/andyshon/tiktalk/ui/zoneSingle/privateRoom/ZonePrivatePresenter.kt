@@ -37,7 +37,7 @@ class ZonePrivatePresenter @Inject constructor(private val rxEventBus: RxEventBu
     }
 
     fun setTwilioListener() {
-        TwilioSingleton.instance.chatClient?.setListener(this@ZonePrivatePresenter)
+        TwilioSingleton.instance.chatClient?.addListener(this@ZonePrivatePresenter)
     }
 
     fun listAllChannels() {
@@ -59,26 +59,26 @@ class ZonePrivatePresenter @Inject constructor(private val rxEventBus: RxEventBu
                                         channelD.getChannel(object: CallbackListener<Channel>() {
                                             override fun onSuccess(channel: Channel?) {
                                                 Timber.e("CHCH = ${channel?.friendlyName}, ${channel?.uniqueName}, attrs = ${channel?.attributes}")
-                                                Timber.e("channelD.attributes size = ${channelD.attributes.length()}")
+                                                Timber.e("channelD.attributes size = ${channelD.attributes.jsonObject?.length()}")
 
                                                 // show channels only with attributes and with conversationStarted = true (but not include in that case)
 
-                                                if (channelD.attributes.length() != 0 &&
-                                                    channelD.attributes.has("userId1") /*&&
+                                                if (channelD.attributes.jsonObject?.length() != 0 &&
+                                                    channelD.attributes.jsonObject?.has("userId1") == true /*&&
                                                     channelD.attributes.getBoolean("conversationStarted")*/) {
 
-                                                    val userId1 = channelD.attributes.getInt("userId1")
-                                                    val userEmail = channelD.attributes.getString("userEmail1")
-                                                    val userEmail2 = channelD.attributes.getString("userEmail2") ?:""
+                                                    val userId1 = channelD.attributes.jsonObject?.getInt("userId1")?:0
+                                                    val userEmail = channelD.attributes.jsonObject?.getString("userEmail1")?:""
+                                                    val userEmail2 = channelD.attributes.jsonObject?.getString("userEmail2") ?:""
 
 //                                                    containsUser(if (userEmail == UserMetadata.userEmail) userEmail2 else userEmail) {
-                                                        val userName1 = channelD.attributes.getString("userName1")
-                                                        val userPhoto1 = channelD.attributes.getString("userPhoto1")
-                                                        val userPhone1 = channelD.attributes.getString("userPhone1")
-                                                        val userId2 = channelD.attributes.getInt("userId2")
-                                                        val userName2 = channelD.attributes.getString("userName2") ?:""
-                                                        val userPhoto2 = channelD.attributes.getString("userPhoto2")?:""
-                                                        val userPhone2 = channelD.attributes.getString("userPhone2")
+                                                        val userName1 = channelD.attributes.jsonObject?.getString("userName1")?:""
+                                                        val userPhoto1 = channelD.attributes.jsonObject?.getString("userPhoto1")?:""
+                                                        val userPhone1 = channelD.attributes.jsonObject?.getString("userPhone1")?:""
+                                                        val userId2 = channelD.attributes.jsonObject?.getInt("userId2")?:0
+                                                        val userName2 = channelD.attributes.jsonObject?.getString("userName2") ?:""
+                                                        val userPhoto2 = channelD.attributes.jsonObject?.getString("userPhoto2")?:""
+                                                        val userPhone2 = channelD.attributes.jsonObject?.getString("userPhone2")?:""
 
                                                         val channelUserData = ChannelUserData(userId1, userName1, userEmail, userPhoto1, userPhone1, userId2, userName2, userEmail2, userPhoto2, userPhone2)
 
@@ -180,17 +180,17 @@ class ZonePrivatePresenter @Inject constructor(private val rxEventBus: RxEventBu
     override fun onChannelUpdated(channel: Channel?, reason: Channel.UpdateReason?) {
         Timber.e("onChannelUpdated, UpdateReason = ${reason?.value}, channel = ${channel?.friendlyName}, ${channel?.friendlyName}, ${channel?.members?.membersList?.size}, ${channel?.sid}, ${channel?.messages?.lastConsumedMessageIndex}")
 //                listAllChannels()
-        if (channel?.attributes != null && channel.attributes?.has("userId1") != false) {
-            val userId1 = channel!!.attributes.getInt("userId1")
-            val userName1 = channel.attributes.getString("userName1")
-            val userEmail = channel.attributes.getString("userEmail1")
-            val userPhoto1 = channel.attributes.getString("userPhoto1")
-            val userPhone1 = channel.attributes.getString("userPhone1")
-            val userId2 = channel.attributes.getInt("userId2") ?:0
-            val userName2 = channel.attributes.getString("userName2") ?:""
-            val userEmail2 = channel.attributes.getString("userEmail2") ?:""
-            val userPhoto2 = channel.attributes.getString("userPhoto2")?:""
-            val userPhone2 = channel.attributes.getString("userPhone2")?:""
+        if (channel?.attributes != null && channel.attributes.jsonObject?.has("userId1") != false) {
+            val userId1 = channel!!.attributes.jsonObject?.getInt("userId1")?:0
+            val userName1 = channel.attributes.jsonObject?.getString("userName1")?:""
+            val userEmail = channel.attributes.jsonObject?.getString("userEmail1")?:""
+            val userPhoto1 = channel.attributes.jsonObject?.getString("userPhoto1")?:""
+            val userPhone1 = channel.attributes.jsonObject?.getString("userPhone1")?:""
+            val userId2 = channel.attributes.jsonObject?.getInt("userId2") ?:0
+            val userName2 = channel.attributes.jsonObject?.getString("userName2") ?:""
+            val userEmail2 = channel.attributes.jsonObject?.getString("userEmail2") ?:""
+            val userPhoto2 = channel.attributes.jsonObject?.getString("userPhoto2")?:""
+            val userPhone2 = channel.attributes.jsonObject?.getString("userPhone2")?:""
 
             val channelUserData = ChannelUserData(userId1, userName1, userEmail, userPhoto1, userPhone1, userId2, userName2, userEmail2, userPhoto2, userPhone2)
 

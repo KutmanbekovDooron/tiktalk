@@ -54,14 +54,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 private const val RC_SELECT_CONTACT = 101
 private const val RC_IT_IS_MATCH = 102
 
-class MainActivity : BaseInjectActivity(), MainContract.View, MessagesListener, ZoneListListener, MatchesListener, MatchesChatListener {
+class MainActivity : BaseInjectActivity(), MainContract.View, MessagesListener, ZoneListListener,
+    MatchesListener, MatchesChatListener {
 
-    @Inject lateinit var rxEventBus: RxEventBus
+    @Inject
+    lateinit var rxEventBus: RxEventBus
     private lateinit var navController: NavController
-    @Inject lateinit var prefs: PreferenceManager
+    @Inject
+    lateinit var prefs: PreferenceManager
 
     override fun getPresenter(): BaseContract.Presenter<*>? = presenter
-    @Inject lateinit var presenter: MainPresenter
+    @Inject
+    lateinit var presenter: MainPresenter
 
     private lateinit var tvNotificationBadge: TextView
 
@@ -79,7 +83,14 @@ class MainActivity : BaseInjectActivity(), MainContract.View, MessagesListener, 
 //        presenter.setTwilioListener()
 
         Timber.e("KEY_USER_NAME = ${prefs.getObject(Preference.KEY_USER_NAME, String::class.java)}")
-        Timber.e("KEY_USER_MAIN_PHOTO = ${prefs.getObject(Preference.KEY_USER_MAIN_PHOTO, String::class.java)}")
+        Timber.e(
+            "KEY_USER_MAIN_PHOTO = ${
+                prefs.getObject(
+                    Preference.KEY_USER_MAIN_PHOTO,
+                    String::class.java
+                )
+            }"
+        )
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         NavigationUI.setupWithNavController(navigationView, navController)
@@ -91,8 +102,10 @@ class MainActivity : BaseInjectActivity(), MainContract.View, MessagesListener, 
     }
 
     private fun initNotificationBadge() {
-        val notificationsTab = navigationView.findViewById<BottomNavigationItemView>(R.id.messagesFragment)
-        val badge = LayoutInflater.from(this).inflate(R.layout.tabbar_badge, notificationsTab, false)
+        val notificationsTab =
+            navigationView.findViewById<BottomNavigationItemView>(R.id.messagesFragment)
+        val badge =
+            LayoutInflater.from(this).inflate(R.layout.tabbar_badge, notificationsTab, false)
         tvNotificationBadge = badge.findViewById(R.id.notificationsBadgeTextView)
         tvNotificationBadge.hide()
         notificationsTab.addView(badge)
@@ -110,21 +123,20 @@ class MainActivity : BaseInjectActivity(), MainContract.View, MessagesListener, 
         onBackPressed()
     }
 
-    override fun openMatchChat(chatUser: ChannelModel) {
-//        openSingleChat(chatUser, isFromMatches = true)
+    override fun openMatchChat(channel: Channel, chatUser: ChannelModel) {
+        openSingleChat(channel, chatUser, isFromMatches = true)
     }
 
     override fun openSelectContact() {
         RxPermissions(this)
             .request(Manifest.permission.READ_CONTACTS)
-            .subscribe ({ granted ->
+            .subscribe({ granted ->
                 if (granted) {
                     if (canOpen()) {
                         val intent = Intent(this@MainActivity, SelectContactActivity::class.java)
                         startActivityForResult(intent, RC_SELECT_CONTACT)
                     }
-                }
-                else {
+                } else {
                     longToast("You should give access to your contacts")
                 }
             }, {
@@ -138,12 +150,15 @@ class MainActivity : BaseInjectActivity(), MainContract.View, MessagesListener, 
     }
 
     override fun openSingleChat(channel: Channel, item: ChannelModel, isFromMatches: Boolean) {
-        val userName = if (TwilioSingleton.instance.myIdentity() == item.userData?.userEmail1) item.userData?.userName2
-        else item.userData?.userName1
-        val userPhoto = if (TwilioSingleton.instance.myIdentity() == item.userData?.userEmail1) item.userData?.userPhoto2
-        else item.userData?.userPhoto1
-        val userPhone = if (TwilioSingleton.instance.myIdentity() == item.userData?.userEmail1) item.userData?.userPhone2
-        else item.userData?.userPhone1
+        val userName =
+            if (TwilioSingleton.instance.myIdentity() == item.userData?.userEmail1) item.userData?.userName2
+            else item.userData?.userName1
+        val userPhoto =
+            if (TwilioSingleton.instance.myIdentity() == item.userData?.userEmail1) item.userData?.userPhoto2
+            else item.userData?.userPhoto1
+        val userPhone =
+            if (TwilioSingleton.instance.myIdentity() == item.userData?.userEmail1) item.userData?.userPhone2
+            else item.userData?.userPhone1
 
         if (canOpen()) {
             //send channel sid to update badge counter
@@ -206,7 +221,7 @@ class MainActivity : BaseInjectActivity(), MainContract.View, MessagesListener, 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            when(requestCode) {
+            when (requestCode) {
                 RC_SELECT_CONTACT -> {  // create channel with conversationStarted = false
                     data?.let {
                         showProgress()
@@ -234,8 +249,19 @@ class MainActivity : BaseInjectActivity(), MainContract.View, MessagesListener, 
                                 hideProgress()
 
                                 it?.let {
-                                    val channelUserData = ChannelUserData(UserMetadata.userId, UserMetadata.userName, UserMetadata.userEmail, UserMetadata.photos.first().url,
-                                        UserMetadata.userPhone, id, name, email, photo, phone)
+
+                                    val channelUserData = ChannelUserData(
+                                        UserMetadata.userId,
+                                        UserMetadata.userName,
+                                        UserMetadata.userEmail,
+                                        UserMetadata.photos.first().url,
+                                        UserMetadata.userPhone,
+                                        id,
+                                        name,
+                                        email,
+                                        photo,
+                                        phone
+                                    )
                                     val channelModel = ChannelModel(it, channelUserData)
                                     openSingleChat(channel = it, item = channelModel)
                                 }
@@ -246,9 +272,10 @@ class MainActivity : BaseInjectActivity(), MainContract.View, MessagesListener, 
                         )
                     }
                 }
+
                 RC_IT_IS_MATCH -> {
                     data?.let {
-                        when(it.getIntExtra("type", 1)) {
+                        when (it.getIntExtra("type", 1)) {
                             //todo: need to check whether the user contact exists in user's phones book and route to messagesFragment or matchesChatFragment
                             1 -> navController.navigate(R.id.messagesFragment)
                             else -> navController.navigate(R.id.messagesFragment)
@@ -266,8 +293,7 @@ class MainActivity : BaseInjectActivity(), MainContract.View, MessagesListener, 
     override fun onBackPressed() {
         if (navController.currentDestination?.label != "MessagesFragment") {
             super.onBackPressed()
-        }
-        else if (navController.currentDestination?.label == "MessagesFragment") {
+        } else if (navController.currentDestination?.label == "MessagesFragment") {
             rxEventBus.post(OnBackPressedEvent())
         }
     }

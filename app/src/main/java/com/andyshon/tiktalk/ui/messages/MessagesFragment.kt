@@ -55,14 +55,12 @@ class MessagesFragment: BaseInjectFragment(), MessagesContract.View {
         super.onViewCreated(view, savedInstanceState)
         presentationComponent.inject(this)
         presenter.attachToView(this)
-
-
         initListeners()
         setupList()
         setupEvents()
 
-//        presenter.setTwilioListener()
-//        presenter.listAllChannels()
+        presenter.setTwilioListener()
+        presenter.listAllChannels()
     }
 
     override fun onResume() {

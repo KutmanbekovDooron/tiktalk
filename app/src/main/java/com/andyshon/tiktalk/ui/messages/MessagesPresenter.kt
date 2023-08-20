@@ -25,7 +25,7 @@ class MessagesPresenter @Inject constructor(private val rxEventBus: RxEventBus) 
     var checkedChats = 0
 
     fun setTwilioListener() {
-        TwilioSingleton.instance.chatClient?.setListener(this@MessagesPresenter)
+        TwilioSingleton.instance.chatClient?.addListener(this@MessagesPresenter)
     }
 
     fun listAllChannels() {
@@ -34,7 +34,9 @@ class MessagesPresenter @Inject constructor(private val rxEventBus: RxEventBus) 
             RxPermissions(it.getActivityContext())
                 .requestEach(Manifest.permission.READ_CONTACTS, Manifest.permission.RECORD_AUDIO)
                 .subscribe ({ permission ->
+
                     if (permission.granted) {
+
                         grantedPermCount++
                         if (grantedPermCount == 2) {
                             TwilioSingleton.instance.chatClient?.channels?.getUserChannelsList(object: CallbackListener<Paginator<ChannelDescriptor>>() {
@@ -47,29 +49,28 @@ class MessagesPresenter @Inject constructor(private val rxEventBus: RxEventBus) 
                                         view?.setEmptyChats(false)
 
                                         for (channelD in channelPaginator.items) {
+
                                             channelD.getChannel(object: CallbackListener<Channel>() {
                                                 override fun onSuccess(channel: Channel?) {
                                                     Timber.e("CHCH = ${channel?.sid}, ${channel?.friendlyName}, ${channel?.uniqueName}, attrs = ${channel?.attributes}")
-                                                    Timber.e("channelD.attributes size = ${channelD.attributes.length()}")
-
+                                                    Timber.e("channelD.attributes size = ${channelD.attributes.jsonObject?.length()}")
                                                     // show channels only with attributes and with conversationStarted = true
 
-                                                if (channelD.attributes.length() != 0 &&
-                                                    channelD.attributes.has("userId1") &&
-                                                    channelD.attributes.getBoolean("conversationStarted") &&
-                                                    channelD.attributes.getBoolean("isSecret").not()
+                                                    if (channelD.attributes.jsonObject?.length() != 0 &&
+                                                    channelD.attributes.jsonObject?.has("userId1") == true &&
+                                                    channelD.attributes.jsonObject?.getBoolean("isSecret")!!
+                                                        .not()
                                                 ) {
-
-                                                        val userId1 = channelD.attributes.getInt("userId1")
-                                                        val userName1 = channelD.attributes.getString("userName1")
-                                                        val userEmail = channelD.attributes.getString("userEmail1")
-                                                        val userPhoto1 = channelD.attributes.getString("userPhoto1")
-                                                        val userPhone1 = channelD.attributes.getString("userPhone1")
-                                                        val userId2 = channelD.attributes.getInt("userId2")
-                                                        val userName2 = channelD.attributes.getString("userName2") ?:""
-                                                        val userEmail2 = channelD.attributes.getString("userEmail2") ?:""
-                                                        val userPhoto2 = channelD.attributes.getString("userPhoto2")?:""
-                                                        val userPhone2 = channelD.attributes.getString("userPhone2")
+                                                        val userId1 = channelD.attributes.jsonObject?.getInt("userId1")?:0
+                                                        val userName1 = channelD.attributes.jsonObject?.getString("userName1")?:""
+                                                        val userEmail = channelD.attributes.jsonObject?.getString("userEmail1")?:""
+                                                        val userPhoto1 = channelD.attributes.jsonObject?.getString("userPhoto1")?:""
+                                                        val userPhone1 = channelD.attributes.jsonObject?.getString("userPhone1")?:""
+                                                        val userId2 = channelD.attributes.jsonObject?.getInt("userId2")?:0
+                                                        val userName2 = channelD.attributes.jsonObject?.getString("userName2") ?:""
+                                                        val userEmail2 = channelD.attributes.jsonObject?.getString("userEmail2") ?:""
+                                                        val userPhoto2 = channelD.attributes.jsonObject?.getString("userPhoto2")?:""
+                                                        val userPhone2 = channelD.attributes.jsonObject?.getString("userPhone2")?:""
 
                                                         val channelUserData = ChannelUserData(userId1, userName1, userEmail, userPhoto1, userPhone1, userId2, userName2, userEmail2, userPhoto2, userPhone2)
 
@@ -92,11 +93,11 @@ class MessagesPresenter @Inject constructor(private val rxEventBus: RxEventBus) 
                                                         }
 
                                                         val opponentUserPhone = TwilioSingleton.instance.getOpponentPhone(channelUserData)
-
-                                                        if (channel.messages == null) {
+                                                       val channelModel =  ChannelModel(channel, channelUserData)
+                                                        if (channel.messages == null || !chats.contains(channelModel)) {
                                                             //todo: in case to test on emulator
 //                                                        if (contactExists(getActivityContext(), opponentUserPhone)) {
-                                                            chats.add(ChannelModel(channel, channelUserData))
+                                                            chats.add(channelModel)
                                                             view?.updateAdapter()
                                                             view?.onChatsLoaded()
 //                                                        }
@@ -113,6 +114,7 @@ class MessagesPresenter @Inject constructor(private val rxEventBus: RxEventBus) 
 
                                                                     channel.getUnconsumedMessagesCount(ChatCallbackListener { unread ->
                                                                         Timber.e("$unread messages still unread")
+                                                                        if (unread == null) return@ChatCallbackListener
                                                                         if (unread >= 1) {
                                                                             if (channelUserData.lastMessageAuthor != UserMetadata.userEmail) {
                                                                                 rxEventBus.post(UpdateMessagesCounterEvent(channel.sid))
@@ -182,17 +184,17 @@ class MessagesPresenter @Inject constructor(private val rxEventBus: RxEventBus) 
     override fun onChannelUpdated(channel: Channel?, reason: Channel.UpdateReason?) {
         Timber.e("onChannelUpdated, UpdateReason = ${reason?.value}, channel = ${channel?.friendlyName}, ${channel?.friendlyName}, ${channel?.members?.membersList?.size}, ${channel?.sid}, ${channel?.messages?.lastConsumedMessageIndex}")
 //                listAllChannels()
-        if (channel?.attributes != null && channel.attributes?.has("userId1") != false) {
-            val userId1 = channel!!.attributes.getInt("userId1")
-            val userName1 = channel.attributes.getString("userName1")
-            val userEmail = channel.attributes.getString("userEmail1")
-            val userPhoto1 = channel.attributes.getString("userPhoto1")
-            val userPhone1 = channel.attributes.getString("userPhone1")
-            val userId2 = channel.attributes.getInt("userId2") ?:0
-            val userName2 = channel.attributes.getString("userName2") ?:""
-            val userEmail2 = channel.attributes.getString("userEmail2") ?:""
-            val userPhoto2 = channel.attributes.getString("userPhoto2")?:""
-            val userPhone2 = channel.attributes.getString("userPhone2")?:""
+        if (channel?.attributes != null && channel.attributes?.jsonObject?.has("userId1") != false) {
+            val userId1 = channel!!.attributes.jsonObject?.getInt("userId1")?:0
+            val userName1 = channel.attributes.jsonObject?.getString("userName1")?:""
+            val userEmail = channel.attributes.jsonObject?.getString("userEmail1")?:""
+            val userPhoto1 = channel.attributes.jsonObject?.getString("userPhoto1")?:""
+            val userPhone1 = channel.attributes.jsonObject?.getString("userPhone1")?:""
+            val userId2 = channel.attributes.jsonObject?.getInt("userId2") ?:0
+            val userName2 = channel.attributes.jsonObject?.getString("userName2") ?:""
+            val userEmail2 = channel.attributes.jsonObject?.getString("userEmail2") ?:""
+            val userPhoto2 = channel.attributes.jsonObject?.getString("userPhoto2")?:""
+            val userPhone2 = channel.attributes.jsonObject?.getString("userPhone2")?:""
 
             val channelUserData = ChannelUserData(userId1, userName1, userEmail, userPhoto1, userPhone1, userId2, userName2, userEmail2, userPhoto2, userPhone2)
 

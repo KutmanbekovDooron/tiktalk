@@ -7,7 +7,7 @@ abstract class TwilioCallbacks: CallbackListener<ChatClient>() {
     abstract fun mOnClientSynchronization(status: ChatClient.SynchronizationStatus?)
 
     override fun onSuccess(client: ChatClient) {
-        client.setListener(object : ChatClientListener {
+        client.addListener(object : ChatClientListener {
             override fun onChannelDeleted(p0: Channel?) {
 
             }

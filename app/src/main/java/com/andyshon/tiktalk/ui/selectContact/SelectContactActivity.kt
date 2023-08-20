@@ -1,37 +1,39 @@
 package com.andyshon.tiktalk.ui.selectContact
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.provider.ContactsContract
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.andyshon.tiktalk.R
 import com.andyshon.tiktalk.data.entity.MobileContact
-import com.andyshon.tiktalk.ui.base.recycler.ItemClickListener
-import kotlinx.android.synthetic.main.activity_select_contact.*
-import kotlinx.android.synthetic.main.app_toolbar_select_contact.*
-import android.provider.ContactsContract
-import timber.log.Timber
-import android.os.Handler
-import androidx.core.widget.doAfterTextChanged
 import com.andyshon.tiktalk.data.entity.User
 import com.andyshon.tiktalk.data.network.request.Friend
 import com.andyshon.tiktalk.ui.base.BaseContract
 import com.andyshon.tiktalk.ui.base.inject.BaseInjectActivity
+import com.andyshon.tiktalk.ui.base.recycler.ItemClickListener
 import com.andyshon.tiktalk.utils.extensions.hide
 import com.andyshon.tiktalk.utils.extensions.hideKeyboard
 import com.andyshon.tiktalk.utils.extensions.show
 import com.andyshon.tiktalk.utils.extensions.showKeyboard3
-import kotlinx.android.synthetic.main.app_toolbar_search_simple.*
-import javax.inject.Inject
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.NumberParseException
+import kotlinx.android.synthetic.main.activity_select_contact.*
+import kotlinx.android.synthetic.main.app_toolbar_search_simple.*
+import kotlinx.android.synthetic.main.app_toolbar_select_contact.*
+import timber.log.Timber
+import javax.inject.Inject
+
 
 class SelectContactActivity : BaseInjectActivity(), SelectContactContract.View {
 
-    @Inject lateinit var presenter: SelectContactPresenter
+    @Inject
+    lateinit var presenter: SelectContactPresenter
     override fun getPresenter(): BaseContract.Presenter<*>? = presenter
 
     private var adapter: SelectContactAdapter? = null
@@ -60,7 +62,7 @@ class SelectContactActivity : BaseInjectActivity(), SelectContactContract.View {
                     hideProgress()
                 }
             }).start()
-        }, 250)
+        }, 500)
     }
 
     private fun initListeners() {
@@ -92,7 +94,7 @@ class SelectContactActivity : BaseInjectActivity(), SelectContactContract.View {
     }
 
     private fun setClickListener(): ItemClickListener<User> {
-        return object: ItemClickListener<User> {
+        return object : ItemClickListener<User> {
             override fun onItemClick(view: View, pos: Int, item: User) {
                 selectedContact = item
                 setResult(Activity.RESULT_OK, Intent().apply {
@@ -116,12 +118,10 @@ class SelectContactActivity : BaseInjectActivity(), SelectContactContract.View {
         finish()
     }
 
-
     private fun getContactList() {
         val cr = contentResolver
         val cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)
 
-        val friends = arrayListOf<Friend>()
 
         if (cur?.count ?: 0 > 0) {
             while (cur != null && cur.moveToNext()) {
@@ -138,7 +138,8 @@ class SelectContactActivity : BaseInjectActivity(), SelectContactContract.View {
                     )
                     var no = false
                     while (pCur!!.moveToNext()) {
-                        val phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                        val phoneNo =
+                            pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
                         Timber.e("Name $name, Phone Number $phoneNo")
                         contacts.forEach {
                             if (it.phoneNumber == phoneNo) {
@@ -146,7 +147,7 @@ class SelectContactActivity : BaseInjectActivity(), SelectContactContract.View {
                             }
                         }
                         if (no.not()) {
-                            val phone = if (phoneNo[0]!='0') phoneNo else "+38".plus(phoneNo)
+                            val phone = if (phoneNo[0] != '0') phoneNo else "+38".plus(phoneNo)
                             contacts.add(MobileContact(name, phone))
                         }
                     }
@@ -157,23 +158,28 @@ class SelectContactActivity : BaseInjectActivity(), SelectContactContract.View {
         cur?.close()
         Timber.e("contacts size = ${contacts.size}")
 
-        contacts.forEach {
-            val phoneUtil = PhoneNumberUtil.getInstance()
-            try {
-                val numberProto = phoneUtil.parse(it.phoneNumber, "")
-                val number1 = it.phoneNumber
-                val number = numberProto.nationalNumber
-                val countryCode = numberProto.countryCode
-                friends.add(Friend(phoneNumber = number.toString(), countryCode = countryCode.toString()))
-                Timber.e("Phone full = $number1, Phone 2 = $number, countryCode = $countryCode, name = ${it.name}")
-            } catch (e: NumberParseException) {
-                System.err.println("NumberParseException was thrown: $e")
-            }
-        }
-        Timber.e("friends size = ${friends.size}")
+        val phoneNumberUtil = PhoneNumberUtil.getInstance()
+//        val friends = contacts.map { contact ->
+//            val countryCode = try {
+//                val parsedNumber = phoneNumberUtil.parse(contact.phoneNumber, null)
+//                parsedNumber.countryCode.toString()
+//            } catch (e: Exception) {
+//                "+38"
+//            }
+//
+//            Friend(
+//                phoneNumber = contact.phoneNumber,
+//                countryCode = countryCode
+//            )
+//        }
 
-//        val friends = arrayListOf(Friend("507142084", "+380"),Friend("957148782", "+380"), Friend("504542967", "+380"), Friend("507777777", "+380"))
-        if (friends.isNotEmpty())
-            presenter.getFriends(friends)
+        val friends = listOf(
+            Friend(
+                phoneNumber = "+996 550 13 55 55",
+                countryCode = "+380"
+            )
+        )
+        presenter.getFriends(friends)
     }
 }
+

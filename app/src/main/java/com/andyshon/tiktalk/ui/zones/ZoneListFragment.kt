@@ -19,6 +19,7 @@ import com.andyshon.tiktalk.ui.base.inject.BaseInjectFragment
 import com.andyshon.tiktalk.ui.base.recycler.ItemClickListener
 import com.andyshon.tiktalk.utils.extensions.*
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.rxkotlin.addTo
@@ -80,15 +81,14 @@ class ZoneListFragment: BaseInjectFragment(), ZoneListContract.View {
         Timber.e("lastLocationLng 1 = $lastLocationLng")
 
         lastLocationLat?.let {
-//            presenter.getPlaces(lastLocationLat.plus(",").plus(lastLocationLng), 1000)
-//            presenter.getPlaces("37.77657,-122.41750", 1000)
+            presenter.getPlaces(lastLocationLat.plus(",").plus(lastLocationLng), 1000)
+            presenter.getPlaces("37.77657,-122.41750", 1000)
         }
 
-        // Create the LocationRequest object
-//        val mLocationRequest = LocationRequest.create()
-//            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-//            .setInterval(10 * 1000)        // 10 seconds, in milliseconds
-//            .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+        val mLocationRequest = LocationRequest.create()
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+            .setInterval(10 * 1000)        // 10 seconds, in milliseconds
+            .setFastestInterval(1 * 1000); // 1 second, in milliseconds
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivityContext())
         RxPermissions(getActivityContext())

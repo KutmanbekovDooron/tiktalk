@@ -1,5 +1,6 @@
 package com.andyshon.tiktalk.ui.matches.chat
 
+import ChatCallbackListener
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -145,7 +146,10 @@ class MatchesChatFragment : BaseInjectFragment(), MatchesChatContract.View {
         return object : ItemChatClickListener<ChannelModel> {
 
             override fun onItemClick(view: View, pos: Int, item: ChannelModel) {
-                listener?.openMatchChat(item)
+                item.getChannel(ChatCallbackListener { channel ->
+                    listener?.openMatchChat(channel,item)
+                })
+
             }
 
             override fun onItemLongClick(view: View, pos: Int, item: ChannelModel, plusOrMinus: Boolean) {

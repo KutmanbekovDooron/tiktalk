@@ -9,11 +9,12 @@ import io.reactivex.rxkotlin.addTo
 import timber.log.Timber
 import javax.inject.Inject
 
-class SelectContactPresenter @Inject constructor(val model: AuthModel) : BasePresenter<SelectContactContract.View>() {
+class SelectContactPresenter @Inject constructor(val model: AuthModel) :
+    BasePresenter<SelectContactContract.View>() {
 
     var friends: ArrayList<User> = arrayListOf()
 
-    fun getFriends(friendsReq: ArrayList<Friend>) {
+    fun getFriends(friendsReq: List<Friend>) {
         val friendsRequest = FriendsRequest(friendsReq)
         model.getFriends(friendsRequest)
             .compose(applyProgressSingle())
