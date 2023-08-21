@@ -1,7 +1,6 @@
 package com.andyshon.tiktalk.ui.selectContact
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -23,9 +22,13 @@ import com.andyshon.tiktalk.utils.extensions.hideKeyboard
 import com.andyshon.tiktalk.utils.extensions.show
 import com.andyshon.tiktalk.utils.extensions.showKeyboard3
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import kotlinx.android.synthetic.main.activity_select_contact.*
-import kotlinx.android.synthetic.main.app_toolbar_search_simple.*
-import kotlinx.android.synthetic.main.app_toolbar_select_contact.*
+import kotlinx.android.synthetic.main.activity_select_contact.selectContactRecyclerView
+import kotlinx.android.synthetic.main.activity_select_contact.toolbarSelectContact
+import kotlinx.android.synthetic.main.activity_select_contact.toolbarSelectContactSearch
+import kotlinx.android.synthetic.main.app_toolbar_search_simple.etSearch
+import kotlinx.android.synthetic.main.app_toolbar_search_simple.toolbarSearchSimpleBtnBack
+import kotlinx.android.synthetic.main.app_toolbar_select_contact.toolbarBtnBack
+import kotlinx.android.synthetic.main.app_toolbar_select_contact.toolbarBtnSearch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -159,26 +162,19 @@ class SelectContactActivity : BaseInjectActivity(), SelectContactContract.View {
         Timber.e("contacts size = ${contacts.size}")
 
         val phoneNumberUtil = PhoneNumberUtil.getInstance()
-//        val friends = contacts.map { contact ->
-//            val countryCode = try {
-//                val parsedNumber = phoneNumberUtil.parse(contact.phoneNumber, null)
-//                parsedNumber.countryCode.toString()
-//            } catch (e: Exception) {
-//                "+38"
-//            }
-//
-//            Friend(
-//                phoneNumber = contact.phoneNumber,
-//                countryCode = countryCode
-//            )
-//        }
+        val friends = contacts.map { contact ->
+            val countryCode = try {
+                val parsedNumber = phoneNumberUtil.parse(contact.phoneNumber, null)
+                parsedNumber.countryCode.toString()
+            } catch (e: Exception) {
+                "+38"
+            }
 
-        val friends = listOf(
             Friend(
-                phoneNumber = "+996 550 13 55 55",
-                countryCode = "+380"
+                phoneNumber = contact.phoneNumber,
+                countryCode = countryCode
             )
-        )
+        }
         presenter.getFriends(friends)
     }
 }
