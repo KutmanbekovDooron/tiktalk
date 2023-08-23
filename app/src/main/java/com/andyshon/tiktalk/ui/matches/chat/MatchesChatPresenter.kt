@@ -7,6 +7,7 @@ import com.andyshon.tiktalk.utils.extensions.*
 import timber.log.Timber
 import javax.inject.Inject
 import ChatCallbackListener
+import com.andyshon.tiktalk.ui.secretChats.SecretChatsRepository
 import com.twilio.chat.*
 import com.twilio.chat.User
 
@@ -14,6 +15,10 @@ class MatchesChatPresenter @Inject constructor() : BasePresenter<MatchesChatCont
     ChatClientListener {
 
     var chats: ArrayList<ChannelModel> = arrayListOf()
+
+    private val secretChatsRepository: SecretChatsRepository by lazy {
+        SecretChatsRepository(getActivityContext())
+    }
 
     var checkedChats = 0
 
@@ -86,7 +91,12 @@ class MatchesChatPresenter @Inject constructor() : BasePresenter<MatchesChatCont
                         if (channel.messages == null) {
                             //todo: in case to test on emulator
 //                        if (contactExists(getActivityContext(), opponentUserPhone).not()) {
-                            chats.add(ChannelModel(channel, channelUserData))
+                            if (!secretChatsRepository.checkChatIsSecretBySid(
+                                    channel.sid
+                                )
+                            ) {
+                                chats.add(ChannelModel(channel, channelUserData))
+                            }
                             view?.updateAdapter()
                             view?.onChatsLoaded()
 //                        }
@@ -103,7 +113,13 @@ class MatchesChatPresenter @Inject constructor() : BasePresenter<MatchesChatCont
                                         val lastMessageAuthor = list.last().author
                                         channelUserData.lastMessageAuthor = lastMessageAuthor
                                     }
-                                    chats.add(ChannelModel(channel, channelUserData))
+                                    if (!secretChatsRepository.checkChatIsSecretBySid(
+                                            channel.sid
+                                        )
+                                    ) {
+                                        chats.add(ChannelModel(channel, channelUserData))
+
+                                    }
 //                            }
 
                                     view?.updateAdapter()
