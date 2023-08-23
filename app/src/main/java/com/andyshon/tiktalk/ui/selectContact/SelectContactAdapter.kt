@@ -44,7 +44,11 @@ class SelectContactAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val holder = ViewHolder.create(parent)
         holder.itemView.setOnClickListener {
-            itemClicksListener.onItemClick(it, holder.adapterPosition, items[holder.adapterPosition])
+            itemClicksListener.onItemClick(
+                it,
+                holder.adapterPosition,
+                items[holder.adapterPosition]
+            )
         }
         return holder
     }
@@ -58,8 +62,9 @@ class SelectContactAdapter(
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         companion object {
-            fun create(parent: ViewGroup?) : ViewHolder {
-                val v = LayoutInflater.from(parent?.context).inflate(R.layout.item_select_contact, parent, false)
+            fun create(parent: ViewGroup?): ViewHolder {
+                val v = LayoutInflater.from(parent?.context)
+                    .inflate(R.layout.item_select_contact, parent, false)
                 return ViewHolder(v)
             }
         }
@@ -67,7 +72,8 @@ class SelectContactAdapter(
         fun bind(user: User) {
             itemView.tvContactName.text = user.name
             if (user.images.isNotEmpty()) {
-                itemView.ivAvatar.loadRoundCornersImage(user.images.first().url)
+                val url = user.images.firstOrNull()?.url ?: ""
+                itemView.ivAvatar.loadRoundCornersImage(url)
             }
         }
     }

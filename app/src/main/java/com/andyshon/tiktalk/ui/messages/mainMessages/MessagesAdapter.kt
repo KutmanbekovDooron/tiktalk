@@ -12,7 +12,6 @@ import com.andyshon.tiktalk.utils.extensions.*
 import kotlinx.android.synthetic.main.item_main_messages.view.*
 import timber.log.Timber
 import ChatCallbackListener
-import android.util.Log
 import android.util.TypedValue
 import android.widget.ImageView
 import androidx.annotation.ColorInt
@@ -164,7 +163,6 @@ class MessagesAdapter(
 
             channel.getUnconsumedMessagesCount(
                 ChatCallbackListener { unread ->
-                    Log.e("Joseph", "$unread messages still unread")
                     if (unread == null) {
                         return@ChatCallbackListener
                     }

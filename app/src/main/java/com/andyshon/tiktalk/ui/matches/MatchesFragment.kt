@@ -25,15 +25,17 @@ import org.jetbrains.anko.support.v4.toast
 import timber.log.Timber
 import javax.inject.Inject
 
-class MatchesFragment: BaseInjectFragment(), MatchesContract.View, MatchesChatListener {
+class MatchesFragment : BaseInjectFragment(), MatchesContract.View, MatchesChatListener {
 
-    @Inject lateinit var presenter: MatchesPresenter
+    @Inject
+    lateinit var presenter: MatchesPresenter
     override fun getPresenter(): BaseContract.Presenter<*>? = presenter
 
     private var listener: MatchesListener? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_mathces_user_page, container, false)
     }
 
@@ -60,10 +62,13 @@ class MatchesFragment: BaseInjectFragment(), MatchesContract.View, MatchesChatLi
             if (presenter.matchUsers[presenter.currentUserPointer].images.isNotEmpty()) {
                 avatar.loadRoundCornersImageWithFallback(
                     radius = getActivityContext().resources.getDimensionPixelSize(R.dimen.radius_10),
-                    url = presenter.matchUsers[presenter.currentUserPointer].images.first().url
+                    url = presenter.matchUsers[presenter.currentUserPointer].images.firstOrNull()?.url
+                        ?: ""
                 )
             }
-            tvUserNameAndAge.text = presenter.matchUsers[presenter.currentUserPointer].name.plus(", ").plus(presenter.matchUsers[presenter.currentUserPointer].birthDate)
+            tvUserNameAndAge.text =
+                presenter.matchUsers[presenter.currentUserPointer].name.plus(", ")
+                    .plus(presenter.matchUsers[presenter.currentUserPointer].birthDate)
             tvUserHobby.text = presenter.matchUsers[presenter.currentUserPointer].country
 
             populateUsersData()
@@ -130,8 +135,9 @@ class MatchesFragment: BaseInjectFragment(), MatchesContract.View, MatchesChatLi
     override fun onMatched(user: User) {
         Timber.e("onMatched called")
         // It'status a match -> create channel
-        val photo = if (user.images.isEmpty()) "http://www.sclance.com/pngs/image-placeholder-png/image_placeholder_png_698412.png"
-        else user.images.first().url
+        val photo =
+            if (user.images.isEmpty()) "http://www.sclance.com/pngs/image-placeholder-png/image_placeholder_png_698412.png"
+            else user.images.first().url
         TwilioSingleton.instance.createChannel(
             true,
             UserMetadata.userId,

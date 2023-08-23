@@ -83,6 +83,7 @@
                     android:layout_width="54dp"
                     android:layout_height="24dp"
                     android:paddingStart="15dp"
+                    android:visibility="gone"
                     android:paddingEnd="15dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_sound_off"

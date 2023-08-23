@@ -104,7 +104,7 @@ class SelectContactActivity : BaseInjectActivity(), SelectContactContract.View {
                     putExtra("id", item.id)
                     putExtra("name", item.name)
                     putExtra("email", item.email)
-                    putExtra("photo", item.images.first().url)
+                    putExtra("photo", item.images.firstOrNull()?.url ?: "")
                     putExtra("phone", item.phoneNumber)
                 })
                 finish()
@@ -172,7 +172,7 @@ class SelectContactActivity : BaseInjectActivity(), SelectContactContract.View {
 
             Friend(
                 phoneNumber = contact.phoneNumber,
-                countryCode = countryCode
+                countryCode = "+380"
             )
         }
         presenter.getFriends(friends)

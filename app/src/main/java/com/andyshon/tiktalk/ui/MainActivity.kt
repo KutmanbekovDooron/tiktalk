@@ -60,10 +60,12 @@ class MainActivity : BaseInjectActivity(), MainContract.View, MessagesListener, 
     @Inject
     lateinit var rxEventBus: RxEventBus
     private lateinit var navController: NavController
+
     @Inject
     lateinit var prefs: PreferenceManager
 
     override fun getPresenter(): BaseContract.Presenter<*>? = presenter
+
     @Inject
     lateinit var presenter: MainPresenter
 
@@ -226,10 +228,10 @@ class MainActivity : BaseInjectActivity(), MainContract.View, MessagesListener, 
                     data?.let {
                         showProgress()
                         val id = it.getIntExtra("id", 0)
-                        val name = it.getStringExtra("name")!!
-                        val email = it.getStringExtra("email")!!
-                        val photo = it.getStringExtra("photo")!!
-                        val phone = it.getStringExtra("phone")!!
+                        val name = it.getStringExtra("name")?:""
+                        val email = it.getStringExtra("email")?:""
+                        val photo = it.getStringExtra("photo") ?: ""
+                        val phone = it.getStringExtra("phone")?:""
                         longToast(name.plus(", ").plus(phone))
 
                         TwilioSingleton.instance.createChannel(
@@ -247,9 +249,7 @@ class MainActivity : BaseInjectActivity(), MainContract.View, MessagesListener, 
                             channelCreated = {
                                 Timber.e("Create channel with conversationStarted = false, and joined success!")
                                 hideProgress()
-
                                 it?.let {
-
                                     val channelUserData = ChannelUserData(
                                         UserMetadata.userId,
                                         UserMetadata.userName,

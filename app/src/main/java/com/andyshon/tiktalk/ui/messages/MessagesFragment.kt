@@ -35,19 +35,22 @@ import ChatCallbackListener
 private const val TOOLBAR_STATE_SIMPLE = 1
 private const val TOOLBAR_STATE_TAPPED = 2
 
-class MessagesFragment: BaseInjectFragment(), MessagesContract.View {
+class MessagesFragment : BaseInjectFragment(), MessagesContract.View {
 
-    @Inject lateinit var presenter: MessagesPresenter
+    @Inject
+    lateinit var presenter: MessagesPresenter
     override fun getPresenter(): BaseContract.Presenter<*>? = presenter
 
-    @Inject lateinit var rxEventBus: RxEventBus
+    @Inject
+    lateinit var rxEventBus: RxEventBus
 
     private var adapter: MessagesAdapter? = null
 
     private var listener: MessagesListener? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_messages, container, false)
     }
 
@@ -109,21 +112,26 @@ class MessagesFragment: BaseInjectFragment(), MessagesContract.View {
                 "pattern" -> {
                     listener?.openPattern()
                 }
+
                 "pin" -> {
                     listener?.openPIN()
                 }
+
                 "fingerprint" -> {
                     listener?.openFingerprint()
                 }
+
                 else -> {
                     showChooseLockDialog(getActivityContext()) {
                         when (it) {
                             "Pattern" -> {
                                 listener?.openPattern()
                             }
+
                             "PIN" -> {
                                 listener?.openPIN()
                             }
+
                             "Fingerprint" -> {
                                 listener?.openFingerprint()
                             }
@@ -145,12 +153,18 @@ class MessagesFragment: BaseInjectFragment(), MessagesContract.View {
         }
         toolbarBtnDelete.setOnClickListener {
             val name = StringBuilder()
+            val deleteChatSids = mutableListOf<String>()
             adapter?.names?.forEach {
-                if (adapter?.names?.indexOf(it) != adapter?.names?.lastIndex)
+                if (adapter?.names?.indexOf(it) != adapter?.names?.lastIndex) {
                     name.append(it.name.plus(", "))
-                else name.append(it.name)
+                    deleteChatSids.add(it.chatSid)
+                } else {
+                    name.append(it.name)
+                    deleteChatSids.add(it.chatSid)
+                }
             }
-            presenter.deleteChat(name.toString().trim())
+
+            presenter.deleteChat(name.toString(), deleteChatSids)
 //            adapter?.selectedModeOff()
 //            changeToolbarState(TOOLBAR_STATE_SIMPLE)
 //            if (presenter.chats.isEmpty()) {
@@ -161,8 +175,18 @@ class MessagesFragment: BaseInjectFragment(), MessagesContract.View {
             presenter.muteNotifications()
         }
         toolbarBtnVisibilityOff.setOnClickListener {
-            val name = adapter?.names?.first()?.name ?: ""
-            presenter.setVisibility(/*adapter?.names?.toString()?:""*/name)
+            val name = StringBuilder()
+            val secretChatSids = mutableListOf<String>()
+            adapter?.names?.forEach {
+                if (adapter?.names?.indexOf(it) != adapter?.names?.lastIndex) {
+                    name.append(it.name.plus(", "))
+                    secretChatSids.add(it.chatSid)
+                } else {
+                    name.append(it.name)
+                    secretChatSids.add(it.chatSid)
+                }
+            }
+            presenter.setVisibility(name.toString(), secretChatSids)
         }
         toolbarBtnPin.setOnClickListener {
             adapter?.pinedSelectedItems()
@@ -185,7 +209,12 @@ class MessagesFragment: BaseInjectFragment(), MessagesContract.View {
 
     private fun setupList() {
         chatsRecyclerView?.let { it.layoutManager = LinearLayoutManager(getActivityContext()) }
-        adapter = MessagesAdapter(presenter.chats, setClickListener(), isSecret = false, rxEventBus = rxEventBus)
+        adapter = MessagesAdapter(
+            presenter.chats,
+            setClickListener(),
+            isSecret = false,
+            rxEventBus = rxEventBus
+        )
         chatsRecyclerView.adapter = adapter
         adapter?.notifyDataSetChanged()
     }
@@ -204,7 +233,12 @@ class MessagesFragment: BaseInjectFragment(), MessagesContract.View {
                 })
             }
 
-            override fun onItemLongClick(view: View, pos: Int, item: ChannelModel, plusOrMinus: Boolean) {
+            override fun onItemLongClick(
+                view: View,
+                pos: Int,
+                item: ChannelModel,
+                plusOrMinus: Boolean
+            ) {
                 if (plusOrMinus) {
                     presenter.checkedChats++
                 } else {
@@ -223,13 +257,14 @@ class MessagesFragment: BaseInjectFragment(), MessagesContract.View {
         }
     }
 
-    private fun changeToolbarState(state: Int, isUserPinned: Boolean=false) {
-        when(state) {
+    private fun changeToolbarState(state: Int, isUserPinned: Boolean = false) {
+        when (state) {
             TOOLBAR_STATE_SIMPLE -> {
                 presenter.checkedChats = 0
                 toolbarMainMessages.show()
                 toolbarMainMessagesTap.hide()
             }
+
             TOOLBAR_STATE_TAPPED -> {
                 changePinRes(isUserPinned)
                 toolbarMainMessages.hide()
@@ -239,11 +274,10 @@ class MessagesFragment: BaseInjectFragment(), MessagesContract.View {
         }
     }
 
-    private fun changePinRes(b:Boolean) {
+    private fun changePinRes(b: Boolean) {
         if (b) {
             toolbarBtnPin.setImageResource(R.drawable.ic_pin_off)
-        }
-        else {
+        } else {
             toolbarBtnPin.setImageResource(R.drawable.ic_pin)
         }
     }
@@ -270,8 +304,7 @@ class MessagesFragment: BaseInjectFragment(), MessagesContract.View {
         if (empty) {
             layoutEmptyChats.show()
             chatsRecyclerView.hide()
-        }
-        else {
+        } else {
             layoutEmptyChats.hide()
             chatsRecyclerView.show()
         }

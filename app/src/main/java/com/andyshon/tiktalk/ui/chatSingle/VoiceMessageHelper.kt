@@ -7,7 +7,6 @@ import android.media.MediaRecorder
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import com.andyshon.tiktalk.Constants
 import com.andyshon.tiktalk.data.UserMetadata
 import com.andyshon.tiktalk.data.entity.Media

@@ -251,7 +251,6 @@ class MatchesChatPresenter @Inject constructor() : BasePresenter<MatchesChatCont
             showVisibilityDialog(it.getActivityContext(), name) {
                 when (it) {
                     "Pattern" -> {
-
                     }
 
                     "PIN" -> {

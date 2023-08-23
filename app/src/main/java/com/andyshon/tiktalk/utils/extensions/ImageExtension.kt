@@ -60,7 +60,7 @@ fun ImageView.loadRoundCornersImage(
 }
 
 fun ImageView.loadRoundCornersImageWithFallback(
-    url: String,
+    url: String?,
     radius: Int = context.resources.getDimensionPixelSize(R.dimen.radius_100),
     margin: Int = 0,
     cornerType: RoundedCornersTransformation.CornerType = RoundedCornersTransformation.CornerType.ALL

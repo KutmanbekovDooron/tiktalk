@@ -80,7 +80,7 @@ class ProfileAddPhotosActivity : BaseInjectActivity(), AddPhotosContract.View {
         btnDone.setOnClickListener {
             if (canOpen()) {
                 val email = intent.getStringExtra("email") ?: ""
-                val phone =   intent.getStringExtra("phone") ?: ""
+                val phone = intent.getStringExtra("phone") ?: ""
                 val codeCountry = intent.getStringExtra("codeCountry") ?: ""
                 val name = intent.getStringExtra("name") ?: ""
                 val dob = intent.getStringExtra("dob") ?: ""

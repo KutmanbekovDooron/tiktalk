@@ -32,6 +32,8 @@ import kotlinx.android.synthetic.main.app_toolbar_secret_chat.*
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 import ChatCallbackListener
+import androidx.core.view.isVisible
+import java.lang.StringBuilder
 
 private const val TOOLBAR_STATE_SIMPLE = 1
 private const val TOOLBAR_STATE_TAPPED = 2
@@ -176,20 +178,26 @@ class SecretChatsActivity : BaseInjectActivity(), SecretChatsContract.View {
         }
         toolbarBtnDelete.setOnClickListener {
             val name = StringBuilder()
+            val secretChatSids = mutableListOf<String>()
             adapter?.names?.forEach {
-                if (adapter?.names?.indexOf(it) != adapter?.names?.lastIndex)
+                if (adapter?.names?.indexOf(it) != adapter?.names?.lastIndex) {
                     name.append(it.name.plus(", "))
-                else name.append(it.name)
+                    secretChatSids.add(it.chatSid)
+                } else {
+                    name.append(it.name)
+                    secretChatSids.add(it.chatSid)
+                }
             }
-            presenter.deleteChat(name.toString().trim())
+            presenter.deleteChat(name.toString().trim(),secretChatSids)
         }
         toolbarBtnSoundOff.setOnClickListener {
             presenter.muteNotifications()
         }
-        toolbarBtnVisibilityOff.setOnClickListener {
-            val name = adapter?.names?.first()?.name ?: ""
-            presenter.setVisibility(/*adapter?.names?.toString()?:""*/name)
-        }
+        toolbarBtnVisibilityOff.isVisible = false
+//        toolbarBtnVisibilityOff.setOnClickListener {
+//            val name = adapter?.names?.first()?.name ?: ""
+//            presenter.setVisibility(/*adapter?.names?.toString()?:""*/name)
+//        }
         toolbarBtnPin.setOnClickListener {
             adapter?.pinedSelectedItems()
             changeToolbarState(TOOLBAR_STATE_SIMPLE)

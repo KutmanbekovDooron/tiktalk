@@ -180,9 +180,9 @@ class TwilioSingleton @Inject constructor() : ChatClientListener, CallbackListen
 
                                     showMemberOfChannel(it)
 
-                                    channelCreated.invoke(channel)
                                 })
                             })
+                            channelCreated.invoke(channel)
                         }
                     }
 

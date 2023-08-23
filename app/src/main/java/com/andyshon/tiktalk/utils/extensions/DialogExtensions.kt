@@ -60,19 +60,7 @@ fun showVisibilityDialog(context: Context, name: String, choose:(msg: String) ->
     view.findViewById<TextView>(R.id.btnCancel).setOnClickListener { alertDialog.dismiss() }
     view.findViewById<TextView>(R.id.btnOk).setOnClickListener {
         alertDialog.dismiss()
-        showChooseLockDialog(context) {
-            when (it) {
-                "Pattern" -> {
-                    choose.invoke("Pattern")
-                }
-                "PIN" -> {
-                    choose.invoke("PIN")
-                }
-                "Fingerprint" -> {
-                    choose.invoke("Fingerprint")
-                }
-            }
-        }
+        choose.invoke("Pattern")
     }
 }
 
