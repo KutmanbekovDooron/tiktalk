@@ -56,7 +56,6 @@ class VoiceMessageHelper(
 
         // make sure the directory we plan to store the recording in exists
         val directory = file?.parentFile
-        Log.e("Joseph", "directory: ${directory}")
 
         if (directory?.exists() == false && directory.mkdirs()) {
             throw IOException("Path to file could not be created.")
@@ -68,7 +67,6 @@ class VoiceMessageHelper(
         try {
             mediaRecorder.prepare()
         } catch (e: IOException) {
-            Log.e("Joseph", "startRecording: ", e)
         }
         mediaRecorder.start()
     }
